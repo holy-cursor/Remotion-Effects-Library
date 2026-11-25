@@ -1,0 +1,19 @@
+node_modules/
+gallery/node_modules/
+gallery/dist/
+*.mp4
+review/**/*.jpg
+review/**/*.png
+review/*-clips/
+*.log
+
+# internal: review film tooling, render evidence, client one-offs
+review/
+gallery/before.html
+gallery/src/before.tsx
+gallery/vite.log
+StonkLogoTrace.tsx
+
+# generated at build time from meta/
+gallery/public/llms-components.txt
+gallery/public/components.json

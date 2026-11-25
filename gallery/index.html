@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Remotion Effects Library</title>
+    <meta name="description" content="Progress-driven effects for Remotion video, each with a live player, customize panel, presets, usage code and typed props." />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate" type="text/plain" href="/llms-components.txt" title="Agent manifest" />
+    <script>
+      (function () {
+        var t = null;
+        try { t = localStorage.getItem("fx-site-theme"); } catch (e) {}
+        if (t !== "light" && t !== "dark") t = "dark";
+        document.documentElement.dataset.theme = t;
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,1156 @@
+# Remotion Effects Library: progress-driven Remotion effects
+
+> Source: https://github.com/holy-cursor/Remotion-Effects-Library. Copy the library files (not gallery/) into a Remotion 4 project and import from them. Agents: see SKILL.md.
+> No license file yet: all rights reserved until one is added.
+
+## How to use
+- Every effect is a pure function of `progress` (0..1). Compute it from `useCurrentFrame()` with `interpolate(..., {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})`.
+- Wrapper effects animate their `children`. Text effects take `text` and inherit font size. Scene effects fill their parent box; give the parent explicit width and height.
+- Shared props: progress, speed, delay, theme, palette, accent, fontFamily, background, scale, grain, grid, tokens, style.
+- Defaults are transparent (`background="none"`). Pass `background="canvas"` for a themed stage with optional `grid` and `grain`.
+- Wrap a subtree in `<EffectTheme palette=… theme=… accent=…>` to set defaults for every effect below it.
+
+## Palettes
+- `saint-orange` Saint Orange: The original orange and cream look of this library, kept as-is.
+- `graphite` Graphite: Neutral product UI: quiet greys with one cobalt accent.
+- `editorial` Editorial: Printed-matter warmth: bone paper, black ink, a single vermilion.
+- `indigo-signal` Indigo Signal: Indigo, black and white with a lime signal colour for one key moment.
+- `monochrome` Monochrome: Grayscale only. Motion and type carry everything.
+- `ember` Late Ember: Warm glow on near-black; a dark-first sibling of Saint Orange.
+
+## Style presets
+- `saint-orange` Saint Orange: Original cream and orange, crisp sans, no grain. Matches the old gallery. (palette saint-orange, light, font sans, grain 0, speed 1)
+- `saint-night` Saint Night: Saint Orange on warm black with a little film grain. (palette saint-orange, dark, font sans, grain 0.35, speed 1)
+- `studio-graphite` Studio Graphite: Product-launch neutral. Dark graphite, cobalt focus, brisk timing. (palette graphite, dark, font grotesk, grain 0.15, speed 1.25)
+- `broadsheet` Broadsheet: Editorial serif on bone paper, unhurried, with a print-like tooth. (palette editorial, light, font serif, grain 0.45, speed 0.85)
+- `signal` Signal: Indigo night with a lime moment. Mono labels, fast in, long hold. (palette indigo-signal, dark, font mono, grain 0.2, speed 1.5)
+- `ink-only` Ink Only: Monochrome and calm. Good for checking that motion reads without colour. (palette monochrome, light, font sans, grain 0.1, speed 0.9)
+- `late-ember` Late Ember: Glowing warm accents on near-black, heavier grain, slower settle. (palette ember, dark, font display, grain 0.55, speed 0.8)
+
+## Shared props
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `progress` (required) | `number` | 0 | Normalised timeline position. Drive it from useCurrentFrame(). |
+| `speed` | `number` | 1 | Speed multiplier on the progress timeline. 2 finishes at the halfway mark. |
+| `delay` | `number` | 0 | Share of the timeline before motion starts. |
+| `theme` | `"light" \| "dark" \| Partial<LegacyPalette>` | "light" | Light or dark role set. Legacy palette objects are also accepted. |
+| `palette` | `PaletteId` | "saint-orange" | Palette id from core/tokens. |
+| `accent` | `string` | — | Overrides the palette accent role. |
+| `fontFamily` | `FontId \| string` | "inherit" | Font id (sans, serif, mono…) or any CSS font-family. Default inherits. |
+| `background` | `"none" \| "canvas" \| "surface" \| string` | "none" | Backdrop. "none" keeps the transparent legacy behaviour; any CSS colour also works. |
+| `scale` | `number` | 1 | Uniform content scale. |
+| `grain` | `number` | 0 | Film grain over the backdrop (needs a background). |
+| `grid` | `boolean` | false | Dotted grid on the backdrop (needs a background). |
+| `tokens` | `Partial<Roles>` | — | Fine-grained colour role overrides. |
+| `style` | `React.CSSProperties` | — | Inline styles on the effect root. |
+
+## Effects
+
+## Extrude (`Extrude`)
+
+Give any SVG silhouette (text, paths) solid depth. Pass `contours` for lit, rotating walls instead.
+
+- Category: Primitives. Kind: primitive. Source: `shared-effects/Extrude.tsx`.
+- Import: `import {Extrude} from "./shared-effects";`
+
+- Primitive: does not take the shared props.
+- Not progress-driven: animate dx/dy yourself.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `silhouette` (required) | `React.ReactNode` | — | SVG elements that define the shape. |
+| `dx` | `number` | 12 | Depth projection on x, in SVG units. |
+| `dy` | `number` | 18 | Depth projection on y, in SVG units. |
+| `face` | `string` | "#f7f3eb" | Front face colour. |
+| `side` | `string` | "#46404d" | Side wall colour. |
+| `children` | `React.ReactNode` | — | Artwork masked onto the face. |
+
+## Shape Transform (`ShapeTransform`)
+
+A centered shape smoothly morphs between circle and rounded rectangle. Translation is opt-in.
+
+- Category: Primitives. Kind: primitive. Source: `shared-effects/ShapeTransform.tsx`.
+- Import: `import {ShapeTransform} from "./shared-effects";`
+
+- Primitive: does not take the shared props.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `progress` (required) | `number` | 0 | Timeline position. |
+| `from` | `ShapePose` | — | Start pose {x, y, width, height, radius} in composition px. |
+| `to` | `ShapePose` | — | End pose. |
+| `stationary` | `boolean` | true | Keep the starting center fixed throughout the morph. |
+| `arc` | `number` | 0 | Arc height in px. |
+| `stretch` | `number` | 0 | Squash and stretch amount. |
+| `fill` | `string` | "currentColor" | Fill colour. |
+| `children` | `React.ReactNode` | — | Content clipped inside the shape. |
+
+## Molten Metal (`MoltenMetal`)
+
+WebGL liquid-metal field. Driven by the Remotion frame; colours and flow are props.
+
+- Category: Light & Texture. Kind: primitive. Source: `shared-effects/MoltenMetal.tsx`.
+- Import: `import {MoltenMetal} from "./shared-effects";`
+- Requires: ogl
+- Primitive: does not take the shared props.
+- Uses useCurrentFrame; render with --gl=angle or swiftshader in headless renders.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `color1` | `string` | "#5227FF" | Shadow tone. |
+| `color2` | `string` | "#FF9FFC" | Mid tone. |
+| `color3` | `string` | "#FFFFFF" | Highlight tone. |
+| `backgroundColor` | `string` | "#FFFFFF" | Background in light mode. |
+| `lightMode` | `boolean` | false | Paint on a light background instead of additive glow. |
+| `paletteOnly` | `boolean` | false | Use only the three colours (no darkening). |
+| `speed` | `number` | 0.35 | Flow speed. |
+| `scale` | `number` | 4 | Pattern scale. |
+| `detail` | `number` | 3 | Iterations. |
+| `glow` | `number` | 1.6 | Glow strength. |
+| `brightness` | `number` | 1.3 | Brightness. |
+| `grain` | `boolean` | true | Shader grain. |
+
+## Noise Dissolve (`NoiseDissolve`)
+
+Content breaks into fractal noise and disappears.
+
+- Category: Reveals & Masks. Kind: wrapper. Source: `shared-effects/ReviewEffects.tsx`.
+- Import: `import {NoiseDissolve} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Exit effect: progress 1 means fully hidden.
+- Legacy: a numeric `grain` is read as noise frequency on this effect.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` (required) | `React.ReactNode` | — | Content to animate. |
+| `noiseScale` | `number` | 0.48 | Noise frequency: low is coarse, high is fine. |
+| `seed` | `number` | 18 | Noise seed. |
+
+## Liquid Wipe (`LiquidWipe`)
+
+An organic blob grows from a point, led by an accent wave.
+
+- Category: Reveals & Masks. Kind: wrapper. Source: `shared-effects/ReviewEffects.tsx`.
+- Import: `import {LiquidWipe} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` (required) | `React.ReactNode` | — | Content to animate. |
+| `origin` | `[number, number]` | [0.5,0.5] | Origin of the blob in 0..1. |
+| `waves` | `number` | 3 | Lobes around the edge. |
+| `lead` | `boolean` | true | Accent wave running ahead of the reveal. |
+| `color` | `string` | — | Lead wave colour (default accent). |
+
+## Dither Reveal (`DitherReveal`)
+
+Content appears through an ordered dither that sweeps across it.
+
+- Category: Reveals & Masks. Kind: wrapper. Source: `shared-effects/ReviewEffects.tsx`.
+- Import: `import {DitherReveal} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` (required) | `React.ReactNode` | — | Content to animate. |
+| `columns` | `number` | 64 | Cells across. |
+| `rows` | `number` | 20 | Cells down. |
+| `pattern` | `"bayer" \| "random"` | "bayer" | Ordered Bayer pattern or random cells (legacy). |
+| `from` | `"left" \| "none"` | "left" | Sweep direction. |
+| `seed` | `number` | 1 | Seed for the random pattern. |
+
+## Paper Flip (`PaperFlip`)
+
+Tiles flip down from their top edge in sequence, with paper shading.
+
+- Category: Transitions. Kind: wrapper. Source: `shared-effects/ReviewEffects.tsx`.
+- Import: `import {PaperFlip} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Each child is one tile.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` (required) | `React.ReactNode` | — | Content to animate. |
+| `columns` | `number` | 4 | Grid columns. |
+| `stagger` | `number` | 0.5 | Share of the timeline used for stagger. |
+| `gap` | `number` | 4 | Gap between tiles in px. |
+
+## CRT (`CRT`)
+
+Chromatic split, scanlines, vignette and a rolling refresh bar.
+
+- Category: Light & Texture. Kind: wrapper. Source: `shared-effects/ReviewEffects.tsx`.
+- Import: `import {CRT} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- `progress` is optional; without it the effect is static.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` (required) | `React.ReactNode` | — | Content to animate. |
+| `split` | `number` | 2 | Chromatic split in px. |
+| `pitch` | `number` | 4 | Scanline pitch in px. |
+| `vignette` | `number` | 0.6 | Corner vignette. |
+
+## Fisheye Picker (`FisheyePicker`)
+
+A drum picker: items curve away from a focus slot with depth, blur and fade.
+
+- Category: UI Stories. Kind: scene. Source: `shared-effects/ReviewEffects.tsx`.
+- Import: `import {FisheyePicker} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `items` (required) | `React.ReactNode[]` | — | Items to show. |
+| `position` | `number` | 0 | Fractional focused index. Overrides progress. |
+| `spacing` | `number` | 66 | Row spacing in px. |
+| `guides` | `boolean` | true | Accent guide lines around the focus slot. |
+
+## Halftone Stairs (`HalftoneStairs`)
+
+Halftone columns rise as a staircase from the bottom edge.
+
+- Category: Light & Texture. Kind: scene. Source: `shared-effects/ReviewEffects.tsx`.
+- Import: `import {HalftoneStairs} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `steps` | `number` | 9 | Number of columns. |
+| `pitch` | `number` | 8 | Dot pitch in px. |
+| `color` | `string` | — | Column colour (default accent). |
+| `dot` | `string` | — | Dot colour (default tertiary). |
+
+## Iris (`Iris`)
+
+Circular aperture reveal with a travelling accent ring.
+
+- Category: Reveals & Masks. Kind: wrapper. Source: `shared-effects/MoreEffects.tsx`.
+- Import: `import {Iris} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` (required) | `React.ReactNode` | — | Content to animate. |
+| `origin` | `[number, number]` | [0.5,0.5] | Centre of the aperture in 0..1. |
+| `ring` | `boolean` | true | Accent ring on the opening edge. |
+| `feather` | `number` | 1.5 | Edge softness. |
+| `color` | `string` | — | Ring colour (default accent). |
+
+Presets:
+- From the corner: Opens from bottom-left with a softer edge. `{"origin":[0.15,0.85],"feather":4}`
+- Hard cut: No ring, crisp edge, quick. `{"ring":false,"feather":0,"speed":1.4}`
+
+## Strip Wipe (`StripWipe`)
+
+Bands wipe in one after another, each led by an accent sliver.
+
+- Category: Transitions. Kind: wrapper. Source: `shared-effects/MoreEffects.tsx`.
+- Import: `import {StripWipe} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` (required) | `React.ReactNode` | — | Content to animate. |
+| `bands` | `number` | 8 | Number of bands. |
+| `edge` | `boolean` | true | Accent sliver on each leading edge. |
+| `color` | `string` | — | Edge colour (default accent). |
+
+## Focus Pull (`FocusPull`)
+
+Rack focus: content resolves from a soft, slightly oversized blur.
+
+- Category: Reveals & Masks. Kind: wrapper. Source: `shared-effects/MoreEffects.tsx`.
+- Import: `import {FocusPull} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` (required) | `React.ReactNode` | — | Content to animate. |
+| `blur` | `number` | 14 | Starting blur in px. |
+
+## Sheen (`Sheen`)
+
+A light sweep across content: wide soft bloom with a bright core.
+
+- Category: Light & Texture. Kind: wrapper. Source: `shared-effects/MoreEffects.tsx`.
+- Import: `import {Sheen} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` (required) | `React.ReactNode` | — | Content to animate. |
+| `color` | `string` | "#ffffff" | Light colour. |
+| `angle` | `number` | 115 | Sweep angle in degrees. |
+
+## Orbit (`Orbit`)
+
+Items circle on a tilted ellipse with depth: far items shrink, blur and dim.
+
+- Category: Paths & Particles. Kind: wrapper. Source: `shared-effects/MoreEffects.tsx`.
+- Import: `import {Orbit} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Each child is one orbiting item. progress 0→1 is one full turn.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` (required) | `React.ReactNode` | — | Content to animate. |
+| `radius` | `number` | 145 | Orbit radius in px. |
+| `tilt` | `number` | 0.45 | Vertical squash of the ellipse. |
+| `depth` | `boolean` | true | Depth blur and dimming. |
+
+## Glowing Trace (`GlowingTrace`)
+
+Draws an SVG path with a bloom, a hot head and a faint guide track.
+
+- Category: Paths & Particles. Kind: scene. Source: `shared-effects/MoreEffects.tsx`.
+- Import: `import {GlowingTrace} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `path` (required) | `string` | "M30 130 H80 L125 55 H190 L235 109 H310 L358 23 H406" | SVG path data. |
+| `viewBox` | `string` | "0 0 420 160" | SVG viewBox for the path. |
+| `width` | `number \| string` | "80%" | Rendered width. |
+| `strokeWidth` | `number` | 4 | Stroke width. |
+| `color` | `string` | — | Stroke colour (default accent). |
+
+## Color Wave (`ColorWave`)
+
+A crest of accent colour travels through the text, lifting each letter it passes.
+
+- Category: Text. Kind: text. Source: `shared-effects/MoreEffects.tsx`.
+- Import: `import {ColorWave} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` (required) | `string` | "Color Wave" | Text to animate. |
+| `fontSize` | `number` | 76 | Font size in px. |
+| `width` | `number` | 1.6 | Crest width in letters. |
+| `color` | `string` | — | Crest colour (default accent). |
+| `base` | `string` | — | Resting colour (default ink). |
+
+Presets:
+- Slow serif: Editorial pace with a serif face. `{"speed":0.8,"fontFamily":"serif"}`
+- Punchy: Fast in, long hold, grotesk. `{"speed":1.6,"fontFamily":"grotesk"}`
+- Mono label: Technical label feel. `{"fontFamily":"mono","speed":1.2}`
+
+## Letter Swing (`LetterSwing`)
+
+Letters swing down from a top-left hinge and settle on a spring.
+
+- Category: Text. Kind: text. Source: `shared-effects/MoreEffects.tsx`.
+- Import: `import {LetterSwing} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` (required) | `string` | "Letter Swing" | Text to animate. |
+| `fontSize` | `number` | 72 | Font size in px. |
+
+Presets:
+- Slow serif: Editorial pace with a serif face. `{"speed":0.8,"fontFamily":"serif"}`
+- Punchy: Fast in, long hold, grotesk. `{"speed":1.6,"fontFamily":"grotesk"}`
+- Mono label: Technical label feel. `{"fontFamily":"mono","speed":1.2}`
+
+## Scramble (`Scramble`)
+
+Decoder text: characters churn through a glyph pool and lock in left to right.
+
+- Category: Text. Kind: text. Source: `shared-effects/MoreEffects.tsx`.
+- Import: `import {Scramble} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` (required) | `string` | "SCRAMBLE" | Text to resolve. |
+| `pool` | `string` | "ABCDEFGHJKLMNPQRSTUVWXYZ0123456789#%&*+/<>" | Glyphs used while unresolved. |
+| `churn` | `number` | 0.35 | Share of the timeline each character scrambles. |
+| `fontSize` | `number` | 68 | Font size in px. |
+| `seed` | `number` | 3 | Scramble seed. |
+
+Presets:
+- Long decode: Characters churn longer before locking. `{"churn":0.6,"speed":0.8}`
+- Binary: Only 0 and 1 while resolving. `{"pool":"01","churn":0.25}`
+
+## Tracking Reveal (`TrackingReveal`)
+
+Wide-tracked, blurred letters pull together into the final word shape.
+
+- Category: Text. Kind: wrapper. Source: `shared-effects/MoreEffects.tsx`.
+- Import: `import {TrackingReveal} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` (required) | `React.ReactNode` | — | Content to animate. |
+| `tracking` | `number` | 18 | Starting extra letter-spacing in px. |
+| `fontSize` | `number` | 66 | Font size in px. |
+
+## Roll Counter (`RollCounter`)
+
+Odometer counter: each digit column rolls, with blur proportional to its speed.
+
+- Category: Numbers & Progress. Kind: text. Source: `shared-effects/MoreEffects.tsx`.
+- Import: `import {RollCounter} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `from` | `number` | 0 | Start value. |
+| `to` | `number` | 100 | End value. |
+| `prefix` | `string` | "" | Text before the number (e.g. $). |
+| `suffix` | `string` | "" | Text after the number (e.g. %). |
+| `grouping` | `boolean` | true | Thousands separators. |
+| `fontSize` | `number` | 80 | Font size in px. |
+
+Presets:
+- Revenue: Dollar figure with grouping. `{"from":0,"to":48250,"prefix":"$"}`
+- Percent: Small range with a suffix. `{"from":12,"to":98,"suffix":"%"}`
+
+## Compression Ring (`CompressionRing`)
+
+A full ring compresses to a sliver while a lagging trail arc follows it in.
+
+- Category: Numbers & Progress. Kind: scene. Source: `shared-effects/MoreEffects.tsx`.
+- Import: `import {CompressionRing} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `end` | `number` | 0.15 | Share of the ring left at progress 1. |
+| `size` | `number` | 200 | Size in px. |
+| `thickness` | `number` | 17 | Stroke width. |
+| `showValue` | `boolean` | false | Percentage in the centre. |
+| `label` | `string` | "" | Caption under the value. |
+| `color` | `string` | — | Lead arc colour (default accent). |
+| `trailColor` | `string` | — | Trail arc colour (default secondary). |
+
+Presets:
+- With readout: Shows the remaining share. `{"showValue":true,"label":"Compressed","end":0.22}`
+
+## Segment Fill (`SegmentFill`)
+
+Skewed segments light up in sequence, each with a small spring pop.
+
+- Category: Numbers & Progress. Kind: scene. Source: `shared-effects/MoreEffects.tsx`.
+- Import: `import {SegmentFill} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `count` | `number` | 16 | Number of segments. |
+| `width` | `number` | 18 | Segment width. |
+| `height` | `number` | 65 | Segment height. |
+| `gap` | `number` | 4 | Gap in px. |
+| `color` | `string` | — | Lit colour (default accent). |
+| `inactiveColor` | `string` | — | Unlit colour (default line). |
+
+## Depth Fly In (`DepthFlyIn`)
+
+Content flies in from depth with a 3D turn and atmospheric blur.
+
+- Category: Depth & Camera. Kind: wrapper. Source: `shared-effects/MoreEffects.tsx`.
+- Import: `import {DepthFlyIn} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` (required) | `React.ReactNode` | — | Content to animate. |
+
+## Fold Away (`FoldAway`)
+
+Content folds back on its top hinge, darkening as it turns away.
+
+- Category: Transitions. Kind: wrapper. Source: `shared-effects/MoreEffects.tsx`.
+- Import: `import {FoldAway} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Exit effect: progress 1 means folded away.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` (required) | `React.ReactNode` | — | Content to animate. |
+
+## Dock (`Dock`)
+
+Content travels on an arc to a docked corner and shrinks.
+
+- Category: Paths & Particles. Kind: wrapper. Source: `shared-effects/MoreEffects.tsx`.
+- Import: `import {Dock} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Legacy: without targetScale, a numeric `scale` is read as the target scale.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` (required) | `React.ReactNode` | — | Content to animate. |
+| `x` | `number` | 175 | Target x offset in px. |
+| `y` | `number` | -86 | Target y offset in px. |
+| `targetScale` | `number` | 0.32 | Scale at progress 1. |
+| `arc` | `number` | 40 | Arc height in px. |
+
+## Moving Blobs (`MovingBlobs`)
+
+Soft colour fields drift on Lissajous paths. Fills its parent.
+
+- Category: Light & Texture. Kind: scene. Source: `shared-effects/MoreEffects.tsx`.
+- Import: `import {MovingBlobs} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `colors` | `string[]` | — | Blob colours (default accent, secondary, tertiary). |
+| `blur` | `number` | 48 | Blur in px. |
+| `size` | `number` | 220 | Blob size in px. |
+
+## Dot Drift (`DotDrift`)
+
+A dotted field drifts diagonally behind the content.
+
+- Category: Light & Texture. Kind: wrapper. Source: `shared-effects/MoreEffects.tsx`.
+- Import: `import {DotDrift} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` (required) | `React.ReactNode` | — | Content to animate. |
+| `spacing` | `number` | 18 | Dot spacing in px. |
+| `color` | `string` | — | Dot colour (default accent). |
+
+## Scan (`Scan`)
+
+A glowing scan line sweeps down; scanned content is tinted.
+
+- Category: Light & Texture. Kind: wrapper. Source: `shared-effects/MoreEffects.tsx`.
+- Import: `import {Scan} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` (required) | `React.ReactNode` | — | Content to animate. |
+| `tint` | `boolean` | true | Tint the scanned area. |
+| `color` | `string` | — | Line colour (default accent). |
+
+## Masked Rise (`MaskedRise`)
+
+Letters rise from behind a baseline mask with a slight skew.
+
+- Category: Text. Kind: text. Source: `shared-effects/AdditionalEffects.tsx`.
+- Import: `import {MaskedRise} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` (required) | `string` | "Masked Rise" | Text to animate. Inherits font size from its parent. |
+| `color` | `string` | — | Highlight / stroke colour. Defaults to the accent role. |
+
+Presets:
+- Slow serif: Editorial pace with a serif face. `{"speed":0.8,"fontFamily":"serif"}`
+- Punchy: Fast in, long hold, grotesk. `{"speed":1.6,"fontFamily":"grotesk"}`
+- Mono label: Technical label feel. `{"fontFamily":"mono","speed":1.2}`
+
+## Spring Pop (`SpringPop`)
+
+Letters pop up from small to full size on a bouncy spring.
+
+- Category: Text. Kind: text. Source: `shared-effects/AdditionalEffects.tsx`.
+- Import: `import {SpringPop} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` (required) | `string` | "Spring Pop" | Text to animate. Inherits font size from its parent. |
+| `color` | `string` | — | Highlight / stroke colour. Defaults to the accent role. |
+
+Presets:
+- Slow serif: Editorial pace with a serif face. `{"speed":0.8,"fontFamily":"serif"}`
+- Punchy: Fast in, long hold, grotesk. `{"speed":1.6,"fontFamily":"grotesk"}`
+- Mono label: Technical label feel. `{"fontFamily":"mono","speed":1.2}`
+
+## Typewriter (`Typewriter`)
+
+Characters type on with a blinking accent caret.
+
+- Category: Text. Kind: text. Source: `shared-effects/AdditionalEffects.tsx`.
+- Import: `import {Typewriter} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` (required) | `string` | "Typewriter" | Text to animate. Inherits font size from its parent. |
+| `color` | `string` | — | Highlight / stroke colour. Defaults to the accent role. |
+
+Presets:
+- Slow serif: Editorial pace with a serif face. `{"speed":0.8,"fontFamily":"serif"}`
+- Punchy: Fast in, long hold, grotesk. `{"speed":1.6,"fontFamily":"grotesk"}`
+- Mono label: Technical label feel. `{"fontFamily":"mono","speed":1.2}`
+
+## Character Flip (`CharacterFlip`)
+
+Letters flip up on their baseline with a soft spring and a colour fade.
+
+- Category: Text. Kind: text. Source: `shared-effects/AdditionalEffects.tsx`.
+- Import: `import {CharacterFlip} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` (required) | `string` | "Character Flip" | Text to animate. Inherits font size from its parent. |
+| `color` | `string` | — | Highlight / stroke colour. Defaults to the accent role. |
+
+Presets:
+- Slow serif: Editorial pace with a serif face. `{"speed":0.8,"fontFamily":"serif"}`
+- Punchy: Fast in, long hold, grotesk. `{"speed":1.6,"fontFamily":"grotesk"}`
+- Mono label: Technical label feel. `{"fontFamily":"mono","speed":1.2}`
+
+## Elastic Baseline (`ElasticBaseline`)
+
+The baseline ripples like a plucked string and settles flat.
+
+- Category: Text. Kind: text. Source: `shared-effects/AdditionalEffects.tsx`.
+- Import: `import {ElasticBaseline} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` (required) | `string` | "Elastic Baseline" | Text to animate. Inherits font size from its parent. |
+| `color` | `string` | — | Highlight / stroke colour. Defaults to the accent role. |
+
+Presets:
+- Slow serif: Editorial pace with a serif face. `{"speed":0.8,"fontFamily":"serif"}`
+- Punchy: Fast in, long hold, grotesk. `{"speed":1.6,"fontFamily":"grotesk"}`
+- Mono label: Technical label feel. `{"fontFamily":"mono","speed":1.2}`
+
+## Word Slide (`WordSlide`)
+
+Words slide in from behind their own masks, one after another.
+
+- Category: Text. Kind: text. Source: `shared-effects/AdditionalEffects.tsx`.
+- Import: `import {WordSlide} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` (required) | `string` | "Word Slide" | Text to animate. Inherits font size from its parent. |
+| `color` | `string` | — | Highlight / stroke colour. Defaults to the accent role. |
+
+Presets:
+- Slow serif: Editorial pace with a serif face. `{"speed":0.8,"fontFamily":"serif"}`
+- Punchy: Fast in, long hold, grotesk. `{"speed":1.6,"fontFamily":"grotesk"}`
+- Mono label: Technical label feel. `{"fontFamily":"mono","speed":1.2}`
+
+## Text Unfold (`TextUnfold`)
+
+Letters unfold upward from the baseline with a small overshoot.
+
+- Category: Text. Kind: text. Source: `shared-effects/AdditionalEffects.tsx`.
+- Import: `import {TextUnfold} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` (required) | `string` | "Text Unfold" | Text to animate. Inherits font size from its parent. |
+| `color` | `string` | — | Highlight / stroke colour. Defaults to the accent role. |
+
+Presets:
+- Slow serif: Editorial pace with a serif face. `{"speed":0.8,"fontFamily":"serif"}`
+- Punchy: Fast in, long hold, grotesk. `{"speed":1.6,"fontFamily":"grotesk"}`
+- Mono label: Technical label feel. `{"fontFamily":"mono","speed":1.2}`
+
+## Selection Highlight (`SelectionHighlight`)
+
+A highlighter selection sweeps across the text with a caret.
+
+- Category: Text. Kind: text. Source: `shared-effects/AdditionalEffects.tsx`.
+- Import: `import {SelectionHighlight} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` (required) | `string` | "Selection Highlight" | Text to animate. Inherits font size from its parent. |
+| `color` | `string` | — | Highlight / stroke colour. Defaults to the accent role. |
+
+Presets:
+- Slow serif: Editorial pace with a serif face. `{"speed":0.8,"fontFamily":"serif"}`
+- Punchy: Fast in, long hold, grotesk. `{"speed":1.6,"fontFamily":"grotesk"}`
+- Mono label: Technical label feel. `{"fontFamily":"mono","speed":1.2}`
+
+## Outline Fill (`OutlineFill`)
+
+An outline draws in, then fills left to right.
+
+- Category: Text. Kind: text. Source: `shared-effects/AdditionalEffects.tsx`.
+- Import: `import {OutlineFill} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` (required) | `string` | "Outline Fill" | Text to animate. Inherits font size from its parent. |
+| `color` | `string` | — | Highlight / stroke colour. Defaults to the accent role. |
+
+Presets:
+- Slow serif: Editorial pace with a serif face. `{"speed":0.8,"fontFamily":"serif"}`
+- Punchy: Fast in, long hold, grotesk. `{"speed":1.6,"fontFamily":"grotesk"}`
+- Mono label: Technical label feel. `{"fontFamily":"mono","speed":1.2}`
+
+## Character Scatter (`CharacterScatter`)
+
+Scattered, spinning letters gather into the word.
+
+- Category: Text. Kind: text. Source: `shared-effects/AdditionalEffects.tsx`.
+- Import: `import {CharacterScatter} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` (required) | `string` | "Character Scatter" | Text to animate. Inherits font size from its parent. |
+| `color` | `string` | — | Highlight / stroke colour. Defaults to the accent role. |
+
+Presets:
+- Slow serif: Editorial pace with a serif face. `{"speed":0.8,"fontFamily":"serif"}`
+- Punchy: Fast in, long hold, grotesk. `{"speed":1.6,"fontFamily":"grotesk"}`
+- Mono label: Technical label feel. `{"fontFamily":"mono","speed":1.2}`
+
+## Pixel Cascade (`PixelCascade`)
+
+Tiles of the content drop into place in a diagonal cascade.
+
+- Category: Reveals & Masks. Kind: wrapper. Source: `shared-effects/AdditionalEffects.tsx`.
+- Import: `import {PixelCascade} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` (required) | `React.ReactNode` | — | Content to animate. |
+
+## Card Carousel (`CardCarousel`)
+
+Copies ride a shallow 3D ellipse with depth blur.
+
+- Category: Depth & Camera. Kind: wrapper. Source: `shared-effects/AdditionalEffects.tsx`.
+- Import: `import {CardCarousel} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` (required) | `React.ReactNode` | — | Content to animate. |
+
+## Border Runner (`BorderRunner`)
+
+A comet of light runs around a card border.
+
+- Category: Light & Texture. Kind: wrapper. Source: `shared-effects/AdditionalEffects.tsx`.
+- Import: `import {BorderRunner} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` (required) | `React.ReactNode` | — | Content to animate. |
+
+## Camera Push (`CameraPush`)
+
+Exponential camera pull-back with lateral drift.
+
+- Category: Depth & Camera. Kind: wrapper. Source: `shared-effects/AdditionalEffects.tsx`.
+- Import: `import {CameraPush} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` (required) | `React.ReactNode` | — | Content to animate. |
+
+## Parallax Stack (`ParallaxStack`)
+
+Layered copies separate at different rates.
+
+- Category: Depth & Camera. Kind: wrapper. Source: `shared-effects/AdditionalEffects.tsx`.
+- Import: `import {ParallaxStack} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` (required) | `React.ReactNode` | — | Content to animate. |
+
+## Fan Spread (`FanSpread`)
+
+Copies fan out from a shared pivot on a spring.
+
+- Category: Paths & Particles. Kind: wrapper. Source: `shared-effects/AdditionalEffects.tsx`.
+- Import: `import {FanSpread} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` (required) | `React.ReactNode` | — | Content to animate. |
+
+## Accordion (`Accordion`)
+
+Vertical panels unfold edge to edge in 3D.
+
+- Category: Transitions. Kind: wrapper. Source: `shared-effects/AdditionalEffects.tsx`.
+- Import: `import {Accordion} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` (required) | `React.ReactNode` | — | Content to animate. |
+
+## Checker Fold (`CheckerFold`)
+
+Tiles fold up in a diagonal wave.
+
+- Category: Transitions. Kind: wrapper. Source: `shared-effects/AdditionalEffects.tsx`.
+- Import: `import {CheckerFold} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` (required) | `React.ReactNode` | — | Content to animate. |
+
+## Path Follow (`PathFollow`)
+
+Content travels a figure-eight and banks into its turns.
+
+- Category: Paths & Particles. Kind: wrapper. Source: `shared-effects/AdditionalEffects.tsx`.
+- Import: `import {PathFollow} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` (required) | `React.ReactNode` | — | Content to animate. |
+
+## Grid Ripple (`GridRipple`)
+
+A ring of scale passes through a grid of copies.
+
+- Category: Paths & Particles. Kind: wrapper. Source: `shared-effects/AdditionalEffects.tsx`.
+- Import: `import {GridRipple} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` (required) | `React.ReactNode` | — | Content to animate. |
+
+## Trail Echo (`TrailEcho`)
+
+Fading, blurred echoes follow the lead copy.
+
+- Category: Paths & Particles. Kind: wrapper. Source: `shared-effects/AdditionalEffects.tsx`.
+- Import: `import {TrailEcho} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` (required) | `React.ReactNode` | — | Content to animate. |
+
+## Corner Peel (`CornerPeel`)
+
+The bottom-right corner folds diagonally across the entire page, revealing the scene underneath.
+
+- Category: Transitions. Kind: wrapper. Source: `shared-effects/CornerPeel.tsx`.
+- Import: `import {CornerPeel} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Exit effect: progress 1 means gone. Match width and height to the source scene.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` (required) | `React.ReactNode` | — | Entire outgoing scene. |
+| `width` | `number` | 640 | Scene coordinate width. |
+| `height` | `number` | 360 | Scene coordinate height. |
+| `backColor` | `string` | — | Paper back colour. |
+
+## Split Slide (`SplitSlide`)
+
+Top and bottom halves slide in from opposite sides.
+
+- Category: Transitions. Kind: wrapper. Source: `shared-effects/AdditionalEffects.tsx`.
+- Import: `import {SplitSlide} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` (required) | `React.ReactNode` | — | Content to animate. |
+
+## Word Gap Insert (`WordGapInsert`)
+
+A gap opens between two words and an object springs into it.
+
+- Category: Text. Kind: scene. Source: `shared-effects/InventoryEffects.tsx`.
+- Import: `import {WordGapInsert} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Draws in a 600 × 260 viewBox and fills its parent box.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `left` | `string` | "Make" | Left word. |
+| `right` | `string` | "room." | Right word. |
+| `gap` | `number` | 100 | Gap width in px. |
+| `children` | `React.ReactNode` | — | Object to insert (default: a star). |
+
+## Glyph Selection (`GlyphSelection`)
+
+A vector selection box turns filled glyphs into outlines.
+
+- Category: UI Stories. Kind: scene. Source: `shared-effects/InventoryEffects.tsx`.
+- Import: `import {GlyphSelection} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Draws in a 600 × 260 viewBox and fills its parent box.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "CREATE" | Word to select. |
+| `glyphs` | `React.ReactNode` | — | Custom SVG glyphs instead of text. |
+
+## Proof Stack Tumble (`ProofStackTumble`)
+
+Proof cards tumble off a stack one by one; the last one stays.
+
+- Category: Numbers & Progress. Kind: scene. Source: `shared-effects/InventoryEffects.tsx`.
+- Import: `import {ProofStackTumble} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Draws in a 600 × 260 viewBox and fills its parent box.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `cards` | `{ value: string; label: string }[]` | [{"value":"2B+","label":"Impressions"},{"value":"50+","label":"Projects"},{"value":"20","label":"New effects"}] | Cards, top first. |
+
+## Selection Roulette (`SelectionRoulette`)
+
+Drag a selection, cycle candidates, lock one and expand it.
+
+- Category: UI Stories. Kind: scene. Source: `shared-effects/InventoryEffects.tsx`.
+- Import: `import {SelectionRoulette} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Draws in a 600 × 260 viewBox and fills its parent box.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `items` | `string[]` | ["01 / Form","02 / Type","03 / Mark"] | Candidates. |
+| `selectedIndex` | `number` | 2 | Index that wins. |
+
+## Leaderboard Promotion (`LeaderboardPromotion`)
+
+A highlighted row lifts, overtakes the others and settles at the top.
+
+- Category: UI Stories. Kind: scene. Source: `shared-effects/InventoryEffects.tsx`.
+- Import: `import {LeaderboardPromotion} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Draws in a 600 × 260 viewBox and fills its parent box.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `items` | `string[]` | ["Studio A","Studio B","Studio C","Your studio"] | Rows, top first. |
+| `fromIndex` | `number` | 3 | Row that moves. |
+| `toIndex` | `number` | 0 | Where it lands. |
+
+## Form Send Flight (`FormSendFlight`)
+
+The send button presses, the form contracts into an envelope, its flap closes, and the envelope flies away.
+
+- Category: UI Stories. Kind: scene. Source: `shared-effects/InventoryEffects.tsx`.
+- Import: `import {FormSendFlight} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Draws in a 600 × 260 viewBox and fills its parent box.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `sendLabel` | `string` | "Send" | Button label. |
+| `sentLabel` | `string` | "Sent" | Success label. |
+| `recipient` | `string` | "hello@studio.co" | Recipient line. |
+| `message` | `string` | "Let’s make something great." | Body text. |
+
+## Folder Catch (`FolderCatch`)
+
+Cards drop behind a folder rim, each landing with a pulse.
+
+- Category: UI Stories. Kind: scene. Source: `shared-effects/InventoryEffects.tsx`.
+- Import: `import {FolderCatch} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Draws in a 600 × 260 viewBox and fills its parent box.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `count` | `number` | 5 | Number of cards. |
+| `label` | `string` | "Inbox" | Folder label. |
+
+## Delivery Status (`DeliveryStatus`)
+
+Sent, delivered and seen checks, then the message body expands.
+
+- Category: UI Stories. Kind: scene. Source: `shared-effects/InventoryEffects.tsx`.
+- Import: `import {DeliveryStatus} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Draws in a 600 × 260 viewBox and fills its parent box.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `subject` | `string` | "Your next project" | Subject line. |
+| `body` | `string[]` | — | Body lines. |
+| `labels` | `[string, string, string]` | ["Sent","Delivered","Seen"] | Status labels. |
+
+## Candlestick HUD (`CandlestickHUD`)
+
+OHLC candles draw one by one with a live price and volume readout.
+
+- Category: Data & Charts. Kind: scene. Source: `shared-effects/InventoryEffects.tsx`.
+- Import: `import {CandlestickHUD} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Draws in a 600 × 260 viewBox and fills its parent box.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `data` | `CandleDatum[]` | — | OHLC data (synthetic by default). |
+
+## Tracking Line Chart (`TrackingLineChart`)
+
+A live series draws with a tracking camera, a pulsing tip and a delta readout.
+
+- Category: Data & Charts. Kind: scene. Source: `shared-effects/InventoryEffects.tsx`.
+- Import: `import {TrackingLineChart} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Draws in a 600 × 260 viewBox and fills its parent box.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `values` | `number[]` | — | Series values (synthetic by default). |
+| `format` | `(value: number) => string` | — | Number formatter. |
+
+## Token Pot Fill (`TokenPotFill`)
+
+Each arriving token bumps the counter and the pot fill together.
+
+- Category: Data & Charts. Kind: scene. Source: `shared-effects/InventoryEffects.tsx`.
+- Import: `import {TokenPotFill} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Draws in a 600 × 260 viewBox and fills its parent box.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `amounts` | `number[]` | [10,15,10,20,15,30] | Amount per token. |
+| `format` | `(value: number) => string` | — | Number formatter. |
+
+## Timeline Rise (`TimelineRise`)
+
+Time segments fill in sequence, then a two-point rise with a percentage.
+
+- Category: Data & Charts. Kind: scene. Source: `shared-effects/InventoryEffects.tsx`.
+- Import: `import {TimelineRise} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Draws in a 600 × 260 viewBox and fills its parent box.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `labels` | `string[]` | ["Year 1","Year 2","Year 3","Year 4"] | Segment labels. |
+| `segments` | `TimelineSegment[]` | — | Segments with label and optional color; overrides labels. |
+| `fromValue` | `number` | 0 | Starting value. |
+| `toValue` | `number` | — | Ending value; overrides increase. |
+| `unit` | `string` | "%" | Value suffix. |
+| `showSegments` | `boolean` | true | Show the timeline rail. |
+| `showAxes` | `boolean` | true | Show axes. |
+| `showArea` | `boolean` | true | Show the filled area. |
+| `showValue` | `boolean` | true | Show the value. |
+| `chartHeight` | `number` | 100 | Chart height in viewBox units. |
+| `lineWidth` | `number` | 4 | Line width. |
+| `riseStart` | `number` | 0.48 | Growth starts. |
+| `riseEnd` | `number` | 0.96 | Growth ends. |
+| `segmentEnd` | `number` | 0.45 | Rail finishes filling. |
+| `format` | `(value: number) => string` | — | Custom number formatter. |
+| `increase` | `number` | 86 | Percentage shown at the end. |
+
+## Logo Landing (`LogoLanding`)
+
+A mark falls, squashes on contact, rebounds and settles on its shadow.
+
+- Category: Paths & Particles. Kind: scene. Source: `shared-effects/InventoryEffects.tsx`.
+- Import: `import {LogoLanding} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Draws in a 600 × 260 viewBox and fills its parent box.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` | `React.ReactNode` | — | Your mark (120 × 120). |
+
+## Device Conditions (`DeviceConditions`)
+
+A browser shell becomes a phone; dark-mode and network rows tick in.
+
+- Category: UI Stories. Kind: scene. Source: `shared-effects/InventoryEffects.tsx`.
+- Import: `import {DeviceConditions} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Draws in a 600 × 260 viewBox and fills its parent box.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `labels` | `string[]` | ["Dark mode","Slow network"] | Condition labels. |
+| `conditions` | `DeviceCondition[]` | — | Rows {label, at?, passed?}; overrides labels. |
+| `fromDevice` | `DeviceSize` | {"width":390,"height":192,"radius":10} | Starting {width, height, radius}. |
+| `toDevice` | `DeviceSize` | {"width":140,"height":226,"radius":23} | Ending {width, height, radius}. |
+| `children` | `React.ReactNode` | — | Custom responsive screen content. |
+| `showConditions` | `boolean` | true | Show condition rows. |
+| `darkScreen` | `boolean` | true | Switch to a dark screen at checksStart. |
+| `morphStart` | `number` | 0.24 | Device resize starts. |
+| `morphEnd` | `number` | 0.58 | Device resize ends. |
+| `checksStart` | `number` | 0.64 | Default checklist start. |

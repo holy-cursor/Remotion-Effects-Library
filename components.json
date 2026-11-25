@@ -1,0 +1,3937 @@
+{
+  "name": "shared-effects",
+  "status": "preview",
+  "sharedProps": {
+    "progress": {
+      "kind": "number",
+      "type": "number",
+      "default": 0,
+      "min": 0,
+      "max": 1,
+      "step": 0.001,
+      "description": "Normalised timeline position. Drive it from useCurrentFrame().",
+      "group": "timing",
+      "required": true,
+      "control": false
+    },
+    "speed": {
+      "kind": "number",
+      "type": "number",
+      "default": 1,
+      "min": 0.25,
+      "max": 3,
+      "step": 0.05,
+      "description": "Speed multiplier on the progress timeline. 2 finishes at the halfway mark.",
+      "group": "timing"
+    },
+    "delay": {
+      "kind": "number",
+      "type": "number",
+      "default": 0,
+      "min": 0,
+      "max": 0.6,
+      "step": 0.01,
+      "description": "Share of the timeline before motion starts.",
+      "group": "timing"
+    },
+    "theme": {
+      "kind": "select",
+      "type": "\"light\" | \"dark\" | Partial<LegacyPalette>",
+      "default": "light",
+      "options": [
+        "light",
+        "dark"
+      ],
+      "description": "Light or dark role set. Legacy palette objects are also accepted.",
+      "group": "style"
+    },
+    "palette": {
+      "kind": "select",
+      "type": "PaletteId",
+      "default": "saint-orange",
+      "options": [
+        "saint-orange",
+        "graphite",
+        "editorial",
+        "indigo-signal",
+        "monochrome",
+        "ember"
+      ],
+      "description": "Palette id from core/tokens.",
+      "group": "style"
+    },
+    "accent": {
+      "kind": "color",
+      "type": "string",
+      "description": "Overrides the palette accent role.",
+      "group": "style"
+    },
+    "fontFamily": {
+      "kind": "select",
+      "type": "FontId | string",
+      "default": "inherit",
+      "options": [
+        "inherit",
+        "sans",
+        "grotesk",
+        "serif",
+        "display",
+        "mono",
+        "system"
+      ],
+      "description": "Font id (sans, serif, mono…) or any CSS font-family. Default inherits.",
+      "group": "style"
+    },
+    "background": {
+      "kind": "select",
+      "type": "\"none\" | \"canvas\" | \"surface\" | string",
+      "default": "none",
+      "options": [
+        "none",
+        "canvas",
+        "surface"
+      ],
+      "description": "Backdrop. \"none\" keeps the transparent legacy behaviour; any CSS colour also works.",
+      "group": "style"
+    },
+    "scale": {
+      "kind": "number",
+      "type": "number",
+      "default": 1,
+      "min": 0.5,
+      "max": 2,
+      "step": 0.05,
+      "description": "Uniform content scale.",
+      "group": "style"
+    },
+    "grain": {
+      "kind": "number",
+      "type": "number",
+      "default": 0,
+      "min": 0,
+      "max": 1,
+      "step": 0.05,
+      "description": "Film grain over the backdrop (needs a background).",
+      "group": "style"
+    },
+    "grid": {
+      "kind": "boolean",
+      "type": "boolean",
+      "default": false,
+      "description": "Dotted grid on the backdrop (needs a background).",
+      "group": "style"
+    },
+    "tokens": {
+      "kind": "json",
+      "type": "Partial<Roles>",
+      "description": "Fine-grained colour role overrides.",
+      "group": "style",
+      "control": false
+    },
+    "style": {
+      "kind": "json",
+      "type": "React.CSSProperties",
+      "description": "Inline styles on the effect root.",
+      "group": "style",
+      "control": false
+    }
+  },
+  "categories": [
+    {
+      "id": "reveals",
+      "name": "Reveals & Masks",
+      "blurb": "Bring content on screen through a shape, pattern or blur."
+    },
+    {
+      "id": "text",
+      "name": "Text",
+      "blurb": "Per-letter and per-word typography motion."
+    },
+    {
+      "id": "numbers",
+      "name": "Numbers & Progress",
+      "blurb": "Counters, rings and meters that read at a glance."
+    },
+    {
+      "id": "depth",
+      "name": "Depth & Camera",
+      "blurb": "3D turns, push-ins and parallax."
+    },
+    {
+      "id": "transitions",
+      "name": "Transitions",
+      "blurb": "Slices, folds and peels between states."
+    },
+    {
+      "id": "paths",
+      "name": "Paths & Particles",
+      "blurb": "Travel, orbit, echo and gather."
+    },
+    {
+      "id": "texture",
+      "name": "Light & Texture",
+      "blurb": "Sheens, scans, CRT, halftone and colour fields."
+    },
+    {
+      "id": "ui",
+      "name": "UI Stories",
+      "blurb": "Product-interface moments: chat, forms, toggles, rankings."
+    },
+    {
+      "id": "data",
+      "name": "Data & Charts",
+      "blurb": "Series, candles, timelines and fills driven by your data."
+    },
+    {
+      "id": "primitives",
+      "name": "Primitives",
+      "blurb": "Low-level building blocks with explicit geometry."
+    }
+  ],
+  "palettes": {
+    "saint-orange": {
+      "id": "saint-orange",
+      "name": "Saint Orange",
+      "description": "The original orange and cream look of this library, kept as-is.",
+      "light": {
+        "canvas": "#FFFFFE",
+        "surface": "#FFFFFE",
+        "line": "#F6E7C1",
+        "ink": "#FB4001",
+        "inkMuted": "#FB7501",
+        "accent": "#FB7501",
+        "onAccent": "#FFFFFE",
+        "secondary": "#FBA107",
+        "tertiary": "#FAD889",
+        "shadow": "#FBA107"
+      },
+      "dark": {
+        "canvas": "#0C0D0F",
+        "surface": "#17191C",
+        "line": "#2A2D31",
+        "ink": "#F6E7C1",
+        "inkMuted": "#A1A1AA",
+        "accent": "#FB7501",
+        "onAccent": "#FFFFFE",
+        "secondary": "#FBA107",
+        "tertiary": "#FAD889",
+        "shadow": "#000000"
+      }
+    },
+    "graphite": {
+      "id": "graphite",
+      "name": "Graphite",
+      "description": "Neutral product UI: quiet greys with one cobalt accent.",
+      "light": {
+        "canvas": "#F7F7F5",
+        "surface": "#FFFFFF",
+        "line": "#E2E2DE",
+        "ink": "#151517",
+        "inkMuted": "#6B6B70",
+        "accent": "#3D5AFE",
+        "onAccent": "#FFFFFF",
+        "secondary": "#7FA2FF",
+        "tertiary": "#C9D6FF",
+        "shadow": "#1B2440"
+      },
+      "dark": {
+        "canvas": "#0E0F12",
+        "surface": "#17191E",
+        "line": "#2A2D35",
+        "ink": "#ECECEF",
+        "inkMuted": "#8B8E99",
+        "accent": "#7FA2FF",
+        "onAccent": "#0E0F12",
+        "secondary": "#3D5AFE",
+        "tertiary": "#3A4A7A",
+        "shadow": "#000000"
+      }
+    },
+    "editorial": {
+      "id": "editorial",
+      "name": "Editorial",
+      "description": "Printed-matter warmth: bone paper, black ink, a single vermilion.",
+      "light": {
+        "canvas": "#F3EEE4",
+        "surface": "#FBF8F2",
+        "line": "#DDD4C3",
+        "ink": "#1C1A17",
+        "inkMuted": "#6E665A",
+        "accent": "#D7301F",
+        "onAccent": "#FBF8F2",
+        "secondary": "#C98A1B",
+        "tertiary": "#E9D9B6",
+        "shadow": "#3A2A14"
+      },
+      "dark": {
+        "canvas": "#14120F",
+        "surface": "#1F1C17",
+        "line": "#36302A",
+        "ink": "#EFE7D8",
+        "inkMuted": "#9C9283",
+        "accent": "#E8513E",
+        "onAccent": "#14120F",
+        "secondary": "#C98A1B",
+        "tertiary": "#4A3B22",
+        "shadow": "#000000"
+      }
+    },
+    "indigo-signal": {
+      "id": "indigo-signal",
+      "name": "Indigo Signal",
+      "description": "Indigo, black and white with a lime signal colour for one key moment.",
+      "light": {
+        "canvas": "#F4F3FA",
+        "surface": "#FFFFFF",
+        "line": "#DCDAEC",
+        "ink": "#17133A",
+        "inkMuted": "#625D86",
+        "accent": "#5B3DF5",
+        "onAccent": "#FFFFFF",
+        "secondary": "#9B87FF",
+        "tertiary": "#C6F432",
+        "shadow": "#2A1F7A"
+      },
+      "dark": {
+        "canvas": "#0C0A1A",
+        "surface": "#161330",
+        "line": "#2B2650",
+        "ink": "#EEEBFF",
+        "inkMuted": "#8F89B5",
+        "accent": "#9B87FF",
+        "onAccent": "#0C0A1A",
+        "secondary": "#5B3DF5",
+        "tertiary": "#C6F432",
+        "shadow": "#000000"
+      }
+    },
+    "monochrome": {
+      "id": "monochrome",
+      "name": "Monochrome",
+      "description": "Grayscale only. Motion and type carry everything.",
+      "light": {
+        "canvas": "#F2F2F2",
+        "surface": "#FFFFFF",
+        "line": "#D9D9D9",
+        "ink": "#111111",
+        "inkMuted": "#6A6A6A",
+        "accent": "#111111",
+        "onAccent": "#FFFFFF",
+        "secondary": "#9A9A9A",
+        "tertiary": "#D9D9D9",
+        "shadow": "#000000"
+      },
+      "dark": {
+        "canvas": "#0B0B0B",
+        "surface": "#171717",
+        "line": "#2E2E2E",
+        "ink": "#F0F0F0",
+        "inkMuted": "#8A8A8A",
+        "accent": "#F0F0F0",
+        "onAccent": "#0B0B0B",
+        "secondary": "#8A8A8A",
+        "tertiary": "#2E2E2E",
+        "shadow": "#000000"
+      }
+    },
+    "ember": {
+      "id": "ember",
+      "name": "Late Ember",
+      "description": "Warm glow on near-black; a dark-first sibling of Saint Orange.",
+      "light": {
+        "canvas": "#FFF4EA",
+        "surface": "#FFFFFF",
+        "line": "#F1D9C6",
+        "ink": "#3A1A0E",
+        "inkMuted": "#8A6553",
+        "accent": "#FF5A1F",
+        "onAccent": "#FFFFFF",
+        "secondary": "#FFB547",
+        "tertiary": "#FF8A6B",
+        "shadow": "#7A2A0A"
+      },
+      "dark": {
+        "canvas": "#120C0A",
+        "surface": "#1E1411",
+        "line": "#3B2720",
+        "ink": "#FFE9D6",
+        "inkMuted": "#A88D7B",
+        "accent": "#FF5A1F",
+        "onAccent": "#FFFFFF",
+        "secondary": "#FFB547",
+        "tertiary": "#FF8A6B",
+        "shadow": "#000000"
+      }
+    }
+  },
+  "stylePresets": [
+    {
+      "id": "saint-orange",
+      "name": "Saint Orange",
+      "description": "Original cream and orange, crisp sans, no grain. Matches the old gallery.",
+      "palette": "saint-orange",
+      "theme": "light",
+      "fontFamily": "sans",
+      "grain": 0,
+      "speed": 1,
+      "delay": 0
+    },
+    {
+      "id": "saint-night",
+      "name": "Saint Night",
+      "description": "Saint Orange on warm black with a little film grain.",
+      "palette": "saint-orange",
+      "theme": "dark",
+      "fontFamily": "sans",
+      "grain": 0.35,
+      "speed": 1,
+      "delay": 0
+    },
+    {
+      "id": "studio-graphite",
+      "name": "Studio Graphite",
+      "description": "Product-launch neutral. Dark graphite, cobalt focus, brisk timing.",
+      "palette": "graphite",
+      "theme": "dark",
+      "fontFamily": "grotesk",
+      "grain": 0.15,
+      "speed": 1.25,
+      "delay": 0
+    },
+    {
+      "id": "broadsheet",
+      "name": "Broadsheet",
+      "description": "Editorial serif on bone paper, unhurried, with a print-like tooth.",
+      "palette": "editorial",
+      "theme": "light",
+      "fontFamily": "serif",
+      "grain": 0.45,
+      "speed": 0.85,
+      "delay": 0.05
+    },
+    {
+      "id": "signal",
+      "name": "Signal",
+      "description": "Indigo night with a lime moment. Mono labels, fast in, long hold.",
+      "palette": "indigo-signal",
+      "theme": "dark",
+      "fontFamily": "mono",
+      "grain": 0.2,
+      "speed": 1.5,
+      "delay": 0
+    },
+    {
+      "id": "ink-only",
+      "name": "Ink Only",
+      "description": "Monochrome and calm. Good for checking that motion reads without colour.",
+      "palette": "monochrome",
+      "theme": "light",
+      "fontFamily": "sans",
+      "grain": 0.1,
+      "speed": 0.9,
+      "delay": 0
+    },
+    {
+      "id": "late-ember",
+      "name": "Late Ember",
+      "description": "Glowing warm accents on near-black, heavier grain, slower settle.",
+      "palette": "ember",
+      "theme": "dark",
+      "fontFamily": "display",
+      "grain": 0.55,
+      "speed": 0.8,
+      "delay": 0.04
+    }
+  ],
+  "effects": [
+    {
+      "sharedProps": false,
+      "props": {
+        "silhouette": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "SVG elements that define the shape.",
+          "group": "content",
+          "control": false,
+          "required": true
+        },
+        "dx": {
+          "kind": "number",
+          "type": "number",
+          "default": 12,
+          "min": -40,
+          "max": 40,
+          "step": 1,
+          "description": "Depth projection on x, in SVG units.",
+          "group": "style"
+        },
+        "dy": {
+          "kind": "number",
+          "type": "number",
+          "default": 18,
+          "min": -40,
+          "max": 40,
+          "step": 1,
+          "description": "Depth projection on y, in SVG units.",
+          "group": "style"
+        },
+        "face": {
+          "kind": "color",
+          "type": "string",
+          "default": "#f7f3eb",
+          "description": "Front face colour.",
+          "group": "style"
+        },
+        "side": {
+          "kind": "color",
+          "type": "string",
+          "default": "#46404d",
+          "description": "Side wall colour.",
+          "group": "style"
+        },
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Artwork masked onto the face.",
+          "group": "content",
+          "control": false,
+          "required": false
+        }
+      },
+      "slug": "extrude",
+      "name": "Extrude",
+      "exportName": "Extrude",
+      "file": "Extrude.tsx",
+      "category": "primitives",
+      "kind": "primitive",
+      "description": "Give any SVG silhouette (text, paths) solid depth. Pass `contours` for lit, rotating walls instead.",
+      "tags": [
+        "3d",
+        "svg",
+        "depth"
+      ],
+      "notes": [
+        "Not progress-driven: animate dx/dy yourself."
+      ]
+    },
+    {
+      "sharedProps": false,
+      "props": {
+        "progress": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 1,
+          "step": 0.001,
+          "description": "Timeline position.",
+          "group": "timing",
+          "required": true,
+          "control": false
+        },
+        "from": {
+          "kind": "json",
+          "type": "ShapePose",
+          "description": "Start pose {x, y, width, height, radius} in composition px.",
+          "group": "content",
+          "control": false
+        },
+        "to": {
+          "kind": "json",
+          "type": "ShapePose",
+          "description": "End pose.",
+          "group": "content",
+          "control": false
+        },
+        "stationary": {
+          "kind": "boolean",
+          "type": "boolean",
+          "default": true,
+          "description": "Keep the starting center fixed throughout the morph.",
+          "group": "style"
+        },
+        "arc": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 200,
+          "step": 1,
+          "description": "Arc height in px.",
+          "group": "style"
+        },
+        "stretch": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.5,
+          "step": 0.01,
+          "description": "Squash and stretch amount.",
+          "group": "style"
+        },
+        "fill": {
+          "kind": "color",
+          "type": "string",
+          "default": "currentColor",
+          "description": "Fill colour.",
+          "group": "style"
+        },
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Content clipped inside the shape.",
+          "group": "content",
+          "control": false,
+          "required": false
+        }
+      },
+      "slug": "shape-transform",
+      "name": "Shape Transform",
+      "exportName": "ShapeTransform",
+      "file": "ShapeTransform.tsx",
+      "category": "primitives",
+      "kind": "primitive",
+      "description": "A centered shape smoothly morphs between circle and rounded rectangle. Translation is opt-in.",
+      "tags": [
+        "morph",
+        "squash",
+        "stretch"
+      ]
+    },
+    {
+      "sharedProps": false,
+      "props": {
+        "color1": {
+          "kind": "color",
+          "type": "string",
+          "default": "#5227FF",
+          "description": "Shadow tone.",
+          "group": "style"
+        },
+        "color2": {
+          "kind": "color",
+          "type": "string",
+          "default": "#FF9FFC",
+          "description": "Mid tone.",
+          "group": "style"
+        },
+        "color3": {
+          "kind": "color",
+          "type": "string",
+          "default": "#FFFFFF",
+          "description": "Highlight tone.",
+          "group": "style"
+        },
+        "backgroundColor": {
+          "kind": "color",
+          "type": "string",
+          "default": "#FFFFFF",
+          "description": "Background in light mode.",
+          "group": "style"
+        },
+        "lightMode": {
+          "kind": "boolean",
+          "type": "boolean",
+          "default": false,
+          "description": "Paint on a light background instead of additive glow.",
+          "group": "style"
+        },
+        "paletteOnly": {
+          "kind": "boolean",
+          "type": "boolean",
+          "default": false,
+          "description": "Use only the three colours (no darkening).",
+          "group": "style"
+        },
+        "speed": {
+          "kind": "number",
+          "type": "number",
+          "default": 0.35,
+          "min": 0,
+          "max": 2,
+          "step": 0.05,
+          "description": "Flow speed.",
+          "group": "timing"
+        },
+        "scale": {
+          "kind": "number",
+          "type": "number",
+          "default": 4,
+          "min": 1,
+          "max": 8,
+          "step": 0.1,
+          "description": "Pattern scale.",
+          "group": "style"
+        },
+        "detail": {
+          "kind": "number",
+          "type": "number",
+          "default": 3,
+          "min": 1,
+          "max": 8,
+          "step": 1,
+          "description": "Iterations.",
+          "group": "style"
+        },
+        "glow": {
+          "kind": "number",
+          "type": "number",
+          "default": 1.6,
+          "min": 0,
+          "max": 4,
+          "step": 0.1,
+          "description": "Glow strength.",
+          "group": "style"
+        },
+        "brightness": {
+          "kind": "number",
+          "type": "number",
+          "default": 1.3,
+          "min": 0.2,
+          "max": 3,
+          "step": 0.1,
+          "description": "Brightness.",
+          "group": "style"
+        },
+        "grain": {
+          "kind": "boolean",
+          "type": "boolean",
+          "default": true,
+          "description": "Shader grain.",
+          "group": "style"
+        }
+      },
+      "slug": "molten-metal",
+      "name": "Molten Metal",
+      "exportName": "MoltenMetal",
+      "file": "MoltenMetal.tsx",
+      "category": "texture",
+      "kind": "primitive",
+      "requires": [
+        "ogl"
+      ],
+      "description": "WebGL liquid-metal field. Driven by the Remotion frame; colours and flow are props.",
+      "tags": [
+        "webgl",
+        "shader",
+        "background"
+      ],
+      "notes": [
+        "Uses useCurrentFrame; render with --gl=angle or swiftshader in headless renders."
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Content to animate.",
+          "group": "content",
+          "control": false,
+          "required": true
+        },
+        "noiseScale": {
+          "kind": "number",
+          "type": "number",
+          "default": 0.48,
+          "min": 0.05,
+          "max": 1,
+          "step": 0.01,
+          "description": "Noise frequency: low is coarse, high is fine.",
+          "group": "style"
+        },
+        "seed": {
+          "kind": "number",
+          "type": "number",
+          "default": 18,
+          "min": 0,
+          "max": 99,
+          "step": 1,
+          "description": "Noise seed.",
+          "group": "style"
+        }
+      },
+      "slug": "noise-dissolve",
+      "name": "Noise Dissolve",
+      "exportName": "NoiseDissolve",
+      "file": "ReviewEffects.tsx",
+      "category": "reveals",
+      "kind": "wrapper",
+      "description": "Content breaks into fractal noise and disappears.",
+      "tags": [
+        "mask",
+        "noise",
+        "exit"
+      ],
+      "notes": [
+        "Exit effect: progress 1 means fully hidden.",
+        "Legacy: a numeric `grain` is read as noise frequency on this effect."
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Content to animate.",
+          "group": "content",
+          "control": false,
+          "required": true
+        },
+        "origin": {
+          "kind": "vec2",
+          "type": "[number, number]",
+          "default": [
+            0.5,
+            0.5
+          ],
+          "min": 0,
+          "max": 1,
+          "step": 0.01,
+          "description": "Origin of the blob in 0..1.",
+          "group": "style"
+        },
+        "waves": {
+          "kind": "number",
+          "type": "number",
+          "default": 3,
+          "min": 1,
+          "max": 8,
+          "step": 1,
+          "description": "Lobes around the edge.",
+          "group": "style"
+        },
+        "lead": {
+          "kind": "boolean",
+          "type": "boolean",
+          "default": true,
+          "description": "Accent wave running ahead of the reveal.",
+          "group": "style"
+        },
+        "color": {
+          "kind": "color",
+          "type": "string",
+          "description": "Lead wave colour (default accent).",
+          "group": "style"
+        }
+      },
+      "slug": "liquid-wipe",
+      "name": "Liquid Wipe",
+      "exportName": "LiquidWipe",
+      "file": "ReviewEffects.tsx",
+      "category": "reveals",
+      "kind": "wrapper",
+      "description": "An organic blob grows from a point, led by an accent wave.",
+      "tags": [
+        "mask",
+        "blob",
+        "wipe"
+      ],
+      "flagship": true
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Content to animate.",
+          "group": "content",
+          "control": false,
+          "required": true
+        },
+        "columns": {
+          "kind": "number",
+          "type": "number",
+          "default": 64,
+          "min": 8,
+          "max": 120,
+          "step": 1,
+          "description": "Cells across.",
+          "group": "style"
+        },
+        "rows": {
+          "kind": "number",
+          "type": "number",
+          "default": 20,
+          "min": 4,
+          "max": 48,
+          "step": 1,
+          "description": "Cells down.",
+          "group": "style"
+        },
+        "pattern": {
+          "kind": "select",
+          "type": "\"bayer\" | \"random\"",
+          "default": "bayer",
+          "options": [
+            "bayer",
+            "random"
+          ],
+          "description": "Ordered Bayer pattern or random cells (legacy).",
+          "group": "style"
+        },
+        "from": {
+          "kind": "select",
+          "type": "\"left\" | \"none\"",
+          "default": "left",
+          "options": [
+            "left",
+            "none"
+          ],
+          "description": "Sweep direction.",
+          "group": "style"
+        },
+        "seed": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0,
+          "max": 99,
+          "step": 1,
+          "description": "Seed for the random pattern.",
+          "group": "style"
+        }
+      },
+      "slug": "dither-reveal",
+      "name": "Dither Reveal",
+      "exportName": "DitherReveal",
+      "file": "ReviewEffects.tsx",
+      "category": "reveals",
+      "kind": "wrapper",
+      "description": "Content appears through an ordered dither that sweeps across it.",
+      "tags": [
+        "mask",
+        "dither",
+        "pixel"
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Content to animate.",
+          "group": "content",
+          "control": false,
+          "required": true
+        },
+        "columns": {
+          "kind": "number",
+          "type": "number",
+          "default": 4,
+          "min": 1,
+          "max": 8,
+          "step": 1,
+          "description": "Grid columns.",
+          "group": "style"
+        },
+        "stagger": {
+          "kind": "number",
+          "type": "number",
+          "default": 0.5,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.05,
+          "description": "Share of the timeline used for stagger.",
+          "group": "timing"
+        },
+        "gap": {
+          "kind": "number",
+          "type": "number",
+          "default": 4,
+          "min": 0,
+          "max": 24,
+          "step": 1,
+          "description": "Gap between tiles in px.",
+          "group": "style"
+        }
+      },
+      "slug": "paper-flip",
+      "name": "Paper Flip",
+      "exportName": "PaperFlip",
+      "file": "ReviewEffects.tsx",
+      "category": "transitions",
+      "kind": "wrapper",
+      "description": "Tiles flip down from their top edge in sequence, with paper shading.",
+      "tags": [
+        "tiles",
+        "flip",
+        "grid"
+      ],
+      "notes": [
+        "Each child is one tile."
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Content to animate.",
+          "group": "content",
+          "control": false,
+          "required": true
+        },
+        "split": {
+          "kind": "number",
+          "type": "number",
+          "default": 2,
+          "min": 0,
+          "max": 8,
+          "step": 0.5,
+          "description": "Chromatic split in px.",
+          "group": "style"
+        },
+        "pitch": {
+          "kind": "number",
+          "type": "number",
+          "default": 4,
+          "min": 2,
+          "max": 10,
+          "step": 1,
+          "description": "Scanline pitch in px.",
+          "group": "style"
+        },
+        "vignette": {
+          "kind": "number",
+          "type": "number",
+          "default": 0.6,
+          "min": 0,
+          "max": 1,
+          "step": 0.05,
+          "description": "Corner vignette.",
+          "group": "style"
+        }
+      },
+      "slug": "crt",
+      "name": "CRT",
+      "exportName": "CRT",
+      "file": "ReviewEffects.tsx",
+      "category": "texture",
+      "kind": "wrapper",
+      "description": "Chromatic split, scanlines, vignette and a rolling refresh bar.",
+      "tags": [
+        "retro",
+        "scanlines",
+        "chromatic"
+      ],
+      "notes": [
+        "`progress` is optional; without it the effect is static."
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "items": {
+          "kind": "node",
+          "type": "React.ReactNode[]",
+          "description": "Items to show.",
+          "group": "content",
+          "control": false,
+          "required": true
+        },
+        "position": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 10,
+          "step": 0.01,
+          "description": "Fractional focused index. Overrides progress.",
+          "group": "timing",
+          "control": false
+        },
+        "spacing": {
+          "kind": "number",
+          "type": "number",
+          "default": 66,
+          "min": 30,
+          "max": 120,
+          "step": 1,
+          "description": "Row spacing in px.",
+          "group": "style"
+        },
+        "guides": {
+          "kind": "boolean",
+          "type": "boolean",
+          "default": true,
+          "description": "Accent guide lines around the focus slot.",
+          "group": "style"
+        }
+      },
+      "slug": "fisheye-picker",
+      "name": "Fisheye Picker",
+      "exportName": "FisheyePicker",
+      "file": "ReviewEffects.tsx",
+      "category": "ui",
+      "kind": "scene",
+      "description": "A drum picker: items curve away from a focus slot with depth, blur and fade.",
+      "tags": [
+        "picker",
+        "wheel",
+        "list"
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "steps": {
+          "kind": "number",
+          "type": "number",
+          "default": 9,
+          "min": 2,
+          "max": 24,
+          "step": 1,
+          "description": "Number of columns.",
+          "group": "style"
+        },
+        "pitch": {
+          "kind": "number",
+          "type": "number",
+          "default": 8,
+          "min": 4,
+          "max": 20,
+          "step": 1,
+          "description": "Dot pitch in px.",
+          "group": "style"
+        },
+        "color": {
+          "kind": "color",
+          "type": "string",
+          "description": "Column colour (default accent).",
+          "group": "style"
+        },
+        "dot": {
+          "kind": "color",
+          "type": "string",
+          "description": "Dot colour (default tertiary).",
+          "group": "style"
+        }
+      },
+      "slug": "halftone-stairs",
+      "name": "Halftone Stairs",
+      "exportName": "HalftoneStairs",
+      "file": "ReviewEffects.tsx",
+      "category": "texture",
+      "kind": "scene",
+      "description": "Halftone columns rise as a staircase from the bottom edge.",
+      "tags": [
+        "halftone",
+        "dots",
+        "wipe"
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Content to animate.",
+          "group": "content",
+          "control": false,
+          "required": true
+        },
+        "origin": {
+          "kind": "vec2",
+          "type": "[number, number]",
+          "default": [
+            0.5,
+            0.5
+          ],
+          "min": 0,
+          "max": 1,
+          "step": 0.01,
+          "description": "Centre of the aperture in 0..1.",
+          "group": "style"
+        },
+        "ring": {
+          "kind": "boolean",
+          "type": "boolean",
+          "default": true,
+          "description": "Accent ring on the opening edge.",
+          "group": "style"
+        },
+        "feather": {
+          "kind": "number",
+          "type": "number",
+          "default": 1.5,
+          "min": 0,
+          "max": 10,
+          "step": 0.5,
+          "description": "Edge softness.",
+          "group": "style"
+        },
+        "color": {
+          "kind": "color",
+          "type": "string",
+          "description": "Ring colour (default accent).",
+          "group": "style"
+        }
+      },
+      "slug": "iris",
+      "name": "Iris",
+      "exportName": "Iris",
+      "file": "MoreEffects.tsx",
+      "category": "reveals",
+      "kind": "wrapper",
+      "description": "Circular aperture reveal with a travelling accent ring.",
+      "tags": [
+        "mask",
+        "circle",
+        "aperture"
+      ],
+      "flagship": true,
+      "presets": [
+        {
+          "id": "corner",
+          "name": "From the corner",
+          "description": "Opens from bottom-left with a softer edge.",
+          "values": {
+            "origin": [
+              0.15,
+              0.85
+            ],
+            "feather": 4
+          }
+        },
+        {
+          "id": "hard-cut",
+          "name": "Hard cut",
+          "description": "No ring, crisp edge, quick.",
+          "values": {
+            "ring": false,
+            "feather": 0,
+            "speed": 1.4
+          }
+        }
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Content to animate.",
+          "group": "content",
+          "control": false,
+          "required": true
+        },
+        "bands": {
+          "kind": "number",
+          "type": "number",
+          "default": 8,
+          "min": 1,
+          "max": 24,
+          "step": 1,
+          "description": "Number of bands.",
+          "group": "style"
+        },
+        "edge": {
+          "kind": "boolean",
+          "type": "boolean",
+          "default": true,
+          "description": "Accent sliver on each leading edge.",
+          "group": "style"
+        },
+        "color": {
+          "kind": "color",
+          "type": "string",
+          "description": "Edge colour (default accent).",
+          "group": "style"
+        }
+      },
+      "slug": "strip-wipe",
+      "name": "Strip Wipe",
+      "exportName": "StripWipe",
+      "file": "MoreEffects.tsx",
+      "category": "transitions",
+      "kind": "wrapper",
+      "description": "Bands wipe in one after another, each led by an accent sliver.",
+      "tags": [
+        "bands",
+        "wipe",
+        "stagger"
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Content to animate.",
+          "group": "content",
+          "control": false,
+          "required": true
+        },
+        "blur": {
+          "kind": "number",
+          "type": "number",
+          "default": 14,
+          "min": 0,
+          "max": 40,
+          "step": 1,
+          "description": "Starting blur in px.",
+          "group": "style"
+        }
+      },
+      "slug": "focus-pull",
+      "name": "Focus Pull",
+      "exportName": "FocusPull",
+      "file": "MoreEffects.tsx",
+      "category": "reveals",
+      "kind": "wrapper",
+      "description": "Rack focus: content resolves from a soft, slightly oversized blur.",
+      "tags": [
+        "blur",
+        "focus",
+        "lens"
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Content to animate.",
+          "group": "content",
+          "control": false,
+          "required": true
+        },
+        "color": {
+          "kind": "color",
+          "type": "string",
+          "default": "#ffffff",
+          "description": "Light colour.",
+          "group": "style"
+        },
+        "angle": {
+          "kind": "number",
+          "type": "number",
+          "default": 115,
+          "min": 0,
+          "max": 180,
+          "step": 1,
+          "description": "Sweep angle in degrees.",
+          "group": "style"
+        }
+      },
+      "slug": "sheen",
+      "name": "Sheen",
+      "exportName": "Sheen",
+      "file": "MoreEffects.tsx",
+      "category": "texture",
+      "kind": "wrapper",
+      "description": "A light sweep across content: wide soft bloom with a bright core.",
+      "tags": [
+        "light",
+        "shine",
+        "card"
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Content to animate.",
+          "group": "content",
+          "control": false,
+          "required": true
+        },
+        "radius": {
+          "kind": "number",
+          "type": "number",
+          "default": 145,
+          "min": 40,
+          "max": 280,
+          "step": 1,
+          "description": "Orbit radius in px.",
+          "group": "style"
+        },
+        "tilt": {
+          "kind": "number",
+          "type": "number",
+          "default": 0.45,
+          "min": 0,
+          "max": 1,
+          "step": 0.01,
+          "description": "Vertical squash of the ellipse.",
+          "group": "style"
+        },
+        "depth": {
+          "kind": "boolean",
+          "type": "boolean",
+          "default": true,
+          "description": "Depth blur and dimming.",
+          "group": "style"
+        }
+      },
+      "slug": "orbit",
+      "name": "Orbit",
+      "exportName": "Orbit",
+      "file": "MoreEffects.tsx",
+      "category": "paths",
+      "kind": "wrapper",
+      "description": "Items circle on a tilted ellipse with depth: far items shrink, blur and dim.",
+      "tags": [
+        "orbit",
+        "loop",
+        "3d"
+      ],
+      "notes": [
+        "Each child is one orbiting item. progress 0→1 is one full turn."
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "path": {
+          "kind": "string",
+          "type": "string",
+          "default": "M30 130 H80 L125 55 H190 L235 109 H310 L358 23 H406",
+          "description": "SVG path data.",
+          "group": "content",
+          "required": true
+        },
+        "viewBox": {
+          "kind": "string",
+          "type": "string",
+          "default": "0 0 420 160",
+          "description": "SVG viewBox for the path.",
+          "group": "style"
+        },
+        "width": {
+          "kind": "string",
+          "type": "number | string",
+          "default": "80%",
+          "description": "Rendered width.",
+          "group": "style"
+        },
+        "strokeWidth": {
+          "kind": "number",
+          "type": "number",
+          "default": 4,
+          "min": 1,
+          "max": 12,
+          "step": 0.5,
+          "description": "Stroke width.",
+          "group": "style"
+        },
+        "color": {
+          "kind": "color",
+          "type": "string",
+          "description": "Stroke colour (default accent).",
+          "group": "style"
+        }
+      },
+      "slug": "glowing-trace",
+      "name": "Glowing Trace",
+      "exportName": "GlowingTrace",
+      "file": "MoreEffects.tsx",
+      "category": "paths",
+      "kind": "scene",
+      "flagship": true,
+      "description": "Draws an SVG path with a bloom, a hot head and a faint guide track.",
+      "tags": [
+        "svg",
+        "stroke",
+        "line",
+        "glow"
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "default": "Color Wave",
+          "description": "Text to animate.",
+          "group": "content",
+          "required": true
+        },
+        "fontSize": {
+          "kind": "number",
+          "type": "number",
+          "default": 76,
+          "min": 24,
+          "max": 160,
+          "step": 1,
+          "description": "Font size in px.",
+          "group": "style"
+        },
+        "width": {
+          "kind": "number",
+          "type": "number",
+          "default": 1.6,
+          "min": 0.5,
+          "max": 6,
+          "step": 0.1,
+          "description": "Crest width in letters.",
+          "group": "style"
+        },
+        "color": {
+          "kind": "color",
+          "type": "string",
+          "description": "Crest colour (default accent).",
+          "group": "style"
+        },
+        "base": {
+          "kind": "color",
+          "type": "string",
+          "description": "Resting colour (default ink).",
+          "group": "style"
+        }
+      },
+      "slug": "color-wave",
+      "name": "Color Wave",
+      "exportName": "ColorWave",
+      "file": "MoreEffects.tsx",
+      "category": "text",
+      "kind": "text",
+      "description": "A crest of accent colour travels through the text, lifting each letter it passes.",
+      "tags": [
+        "text",
+        "colour",
+        "wave"
+      ],
+      "presets": [
+        {
+          "id": "slow-serif",
+          "name": "Slow serif",
+          "description": "Editorial pace with a serif face.",
+          "values": {
+            "speed": 0.8,
+            "fontFamily": "serif"
+          }
+        },
+        {
+          "id": "punchy",
+          "name": "Punchy",
+          "description": "Fast in, long hold, grotesk.",
+          "values": {
+            "speed": 1.6,
+            "fontFamily": "grotesk"
+          }
+        },
+        {
+          "id": "mono-label",
+          "name": "Mono label",
+          "description": "Technical label feel.",
+          "values": {
+            "fontFamily": "mono",
+            "speed": 1.2
+          }
+        }
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "default": "Letter Swing",
+          "description": "Text to animate.",
+          "group": "content",
+          "required": true
+        },
+        "fontSize": {
+          "kind": "number",
+          "type": "number",
+          "default": 72,
+          "min": 24,
+          "max": 160,
+          "step": 1,
+          "description": "Font size in px.",
+          "group": "style"
+        }
+      },
+      "slug": "letter-swing",
+      "name": "Letter Swing",
+      "exportName": "LetterSwing",
+      "file": "MoreEffects.tsx",
+      "category": "text",
+      "kind": "text",
+      "description": "Letters swing down from a top-left hinge and settle on a spring.",
+      "tags": [
+        "text",
+        "spring",
+        "hinge"
+      ],
+      "presets": [
+        {
+          "id": "slow-serif",
+          "name": "Slow serif",
+          "description": "Editorial pace with a serif face.",
+          "values": {
+            "speed": 0.8,
+            "fontFamily": "serif"
+          }
+        },
+        {
+          "id": "punchy",
+          "name": "Punchy",
+          "description": "Fast in, long hold, grotesk.",
+          "values": {
+            "speed": 1.6,
+            "fontFamily": "grotesk"
+          }
+        },
+        {
+          "id": "mono-label",
+          "name": "Mono label",
+          "description": "Technical label feel.",
+          "values": {
+            "fontFamily": "mono",
+            "speed": 1.2
+          }
+        }
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "default": "SCRAMBLE",
+          "description": "Text to resolve.",
+          "group": "content",
+          "required": true
+        },
+        "pool": {
+          "kind": "string",
+          "type": "string",
+          "default": "ABCDEFGHJKLMNPQRSTUVWXYZ0123456789#%&*+/<>",
+          "description": "Glyphs used while unresolved.",
+          "group": "style"
+        },
+        "churn": {
+          "kind": "number",
+          "type": "number",
+          "default": 0.35,
+          "min": 0.05,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Share of the timeline each character scrambles.",
+          "group": "timing"
+        },
+        "fontSize": {
+          "kind": "number",
+          "type": "number",
+          "default": 68,
+          "min": 24,
+          "max": 160,
+          "step": 1,
+          "description": "Font size in px.",
+          "group": "style"
+        },
+        "seed": {
+          "kind": "number",
+          "type": "number",
+          "default": 3,
+          "min": 0,
+          "max": 99,
+          "step": 1,
+          "description": "Scramble seed.",
+          "group": "style"
+        }
+      },
+      "slug": "scramble",
+      "name": "Scramble",
+      "exportName": "Scramble",
+      "file": "MoreEffects.tsx",
+      "category": "text",
+      "kind": "text",
+      "flagship": true,
+      "description": "Decoder text: characters churn through a glyph pool and lock in left to right.",
+      "tags": [
+        "text",
+        "decode",
+        "mono",
+        "glitch"
+      ],
+      "presets": [
+        {
+          "id": "long-decode",
+          "name": "Long decode",
+          "description": "Characters churn longer before locking.",
+          "values": {
+            "churn": 0.6,
+            "speed": 0.8
+          }
+        },
+        {
+          "id": "binary",
+          "name": "Binary",
+          "description": "Only 0 and 1 while resolving.",
+          "values": {
+            "pool": "01",
+            "churn": 0.25
+          }
+        }
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Content to animate.",
+          "group": "content",
+          "control": false,
+          "required": true
+        },
+        "tracking": {
+          "kind": "number",
+          "type": "number",
+          "default": 18,
+          "min": 0,
+          "max": 60,
+          "step": 1,
+          "description": "Starting extra letter-spacing in px.",
+          "group": "style"
+        },
+        "fontSize": {
+          "kind": "number",
+          "type": "number",
+          "default": 66,
+          "min": 24,
+          "max": 160,
+          "step": 1,
+          "description": "Font size in px.",
+          "group": "style"
+        }
+      },
+      "slug": "tracking-reveal",
+      "name": "Tracking Reveal",
+      "exportName": "TrackingReveal",
+      "file": "MoreEffects.tsx",
+      "category": "text",
+      "kind": "wrapper",
+      "description": "Wide-tracked, blurred letters pull together into the final word shape.",
+      "tags": [
+        "text",
+        "tracking",
+        "blur"
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "from": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": -100000,
+          "max": 1000000,
+          "step": 1,
+          "description": "Start value.",
+          "group": "content"
+        },
+        "to": {
+          "kind": "number",
+          "type": "number",
+          "default": 100,
+          "min": -100000,
+          "max": 1000000,
+          "step": 1,
+          "description": "End value.",
+          "group": "content"
+        },
+        "prefix": {
+          "kind": "string",
+          "type": "string",
+          "default": "",
+          "description": "Text before the number (e.g. $).",
+          "group": "content"
+        },
+        "suffix": {
+          "kind": "string",
+          "type": "string",
+          "default": "",
+          "description": "Text after the number (e.g. %).",
+          "group": "content"
+        },
+        "grouping": {
+          "kind": "boolean",
+          "type": "boolean",
+          "default": true,
+          "description": "Thousands separators.",
+          "group": "style"
+        },
+        "fontSize": {
+          "kind": "number",
+          "type": "number",
+          "default": 80,
+          "min": 24,
+          "max": 200,
+          "step": 1,
+          "description": "Font size in px.",
+          "group": "style"
+        }
+      },
+      "slug": "roll-counter",
+      "name": "Roll Counter",
+      "exportName": "RollCounter",
+      "file": "MoreEffects.tsx",
+      "category": "numbers",
+      "kind": "text",
+      "flagship": true,
+      "description": "Odometer counter: each digit column rolls, with blur proportional to its speed.",
+      "tags": [
+        "number",
+        "counter",
+        "odometer",
+        "stats"
+      ],
+      "presets": [
+        {
+          "id": "revenue",
+          "name": "Revenue",
+          "description": "Dollar figure with grouping.",
+          "values": {
+            "from": 0,
+            "to": 48250,
+            "prefix": "$"
+          }
+        },
+        {
+          "id": "percent",
+          "name": "Percent",
+          "description": "Small range with a suffix.",
+          "values": {
+            "from": 12,
+            "to": 98,
+            "suffix": "%"
+          }
+        }
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 0.15,
+          "min": 0,
+          "max": 1,
+          "step": 0.01,
+          "description": "Share of the ring left at progress 1.",
+          "group": "style"
+        },
+        "size": {
+          "kind": "number",
+          "type": "number",
+          "default": 200,
+          "min": 80,
+          "max": 320,
+          "step": 1,
+          "description": "Size in px.",
+          "group": "style"
+        },
+        "thickness": {
+          "kind": "number",
+          "type": "number",
+          "default": 17,
+          "min": 4,
+          "max": 40,
+          "step": 1,
+          "description": "Stroke width.",
+          "group": "style"
+        },
+        "showValue": {
+          "kind": "boolean",
+          "type": "boolean",
+          "default": false,
+          "description": "Percentage in the centre.",
+          "group": "content"
+        },
+        "label": {
+          "kind": "string",
+          "type": "string",
+          "default": "",
+          "description": "Caption under the value.",
+          "group": "content"
+        },
+        "color": {
+          "kind": "color",
+          "type": "string",
+          "description": "Lead arc colour (default accent).",
+          "group": "style"
+        },
+        "trailColor": {
+          "kind": "color",
+          "type": "string",
+          "description": "Trail arc colour (default secondary).",
+          "group": "style"
+        }
+      },
+      "slug": "compression-ring",
+      "name": "Compression Ring",
+      "exportName": "CompressionRing",
+      "file": "MoreEffects.tsx",
+      "category": "numbers",
+      "kind": "scene",
+      "flagship": true,
+      "description": "A full ring compresses to a sliver while a lagging trail arc follows it in.",
+      "tags": [
+        "ring",
+        "progress",
+        "gauge"
+      ],
+      "presets": [
+        {
+          "id": "readout",
+          "name": "With readout",
+          "description": "Shows the remaining share.",
+          "values": {
+            "showValue": true,
+            "label": "Compressed",
+            "end": 0.22
+          }
+        }
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "count": {
+          "kind": "number",
+          "type": "number",
+          "default": 16,
+          "min": 2,
+          "max": 40,
+          "step": 1,
+          "description": "Number of segments.",
+          "group": "style"
+        },
+        "width": {
+          "kind": "number",
+          "type": "number",
+          "default": 18,
+          "min": 4,
+          "max": 40,
+          "step": 1,
+          "description": "Segment width.",
+          "group": "style"
+        },
+        "height": {
+          "kind": "number",
+          "type": "number",
+          "default": 65,
+          "min": 10,
+          "max": 140,
+          "step": 1,
+          "description": "Segment height.",
+          "group": "style"
+        },
+        "gap": {
+          "kind": "number",
+          "type": "number",
+          "default": 4,
+          "min": 0,
+          "max": 16,
+          "step": 1,
+          "description": "Gap in px.",
+          "group": "style"
+        },
+        "color": {
+          "kind": "color",
+          "type": "string",
+          "description": "Lit colour (default accent).",
+          "group": "style"
+        },
+        "inactiveColor": {
+          "kind": "color",
+          "type": "string",
+          "description": "Unlit colour (default line).",
+          "group": "style"
+        }
+      },
+      "slug": "segment-fill",
+      "name": "Segment Fill",
+      "exportName": "SegmentFill",
+      "file": "MoreEffects.tsx",
+      "category": "numbers",
+      "kind": "scene",
+      "description": "Skewed segments light up in sequence, each with a small spring pop.",
+      "tags": [
+        "meter",
+        "progress",
+        "bars"
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Content to animate.",
+          "group": "content",
+          "control": false,
+          "required": true
+        }
+      },
+      "slug": "depth-fly-in",
+      "name": "Depth Fly In",
+      "exportName": "DepthFlyIn",
+      "file": "MoreEffects.tsx",
+      "category": "depth",
+      "kind": "wrapper",
+      "description": "Content flies in from depth with a 3D turn and atmospheric blur.",
+      "tags": [
+        "3d",
+        "enter",
+        "perspective"
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Content to animate.",
+          "group": "content",
+          "control": false,
+          "required": true
+        }
+      },
+      "slug": "fold-away",
+      "name": "Fold Away",
+      "exportName": "FoldAway",
+      "file": "MoreEffects.tsx",
+      "category": "transitions",
+      "kind": "wrapper",
+      "description": "Content folds back on its top hinge, darkening as it turns away.",
+      "tags": [
+        "3d",
+        "exit",
+        "hinge"
+      ],
+      "notes": [
+        "Exit effect: progress 1 means folded away."
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Content to animate.",
+          "group": "content",
+          "control": false,
+          "required": true
+        },
+        "x": {
+          "kind": "number",
+          "type": "number",
+          "default": 175,
+          "min": -320,
+          "max": 320,
+          "step": 1,
+          "description": "Target x offset in px.",
+          "group": "style"
+        },
+        "y": {
+          "kind": "number",
+          "type": "number",
+          "default": -86,
+          "min": -180,
+          "max": 180,
+          "step": 1,
+          "description": "Target y offset in px.",
+          "group": "style"
+        },
+        "targetScale": {
+          "kind": "number",
+          "type": "number",
+          "default": 0.32,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Scale at progress 1.",
+          "group": "style"
+        },
+        "arc": {
+          "kind": "number",
+          "type": "number",
+          "default": 40,
+          "min": 0,
+          "max": 160,
+          "step": 1,
+          "description": "Arc height in px.",
+          "group": "style"
+        }
+      },
+      "slug": "dock",
+      "name": "Dock",
+      "exportName": "Dock",
+      "file": "MoreEffects.tsx",
+      "category": "paths",
+      "kind": "wrapper",
+      "description": "Content travels on an arc to a docked corner and shrinks.",
+      "tags": [
+        "dock",
+        "minimise",
+        "arc"
+      ],
+      "notes": [
+        "Legacy: without targetScale, a numeric `scale` is read as the target scale."
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "colors": {
+          "kind": "json",
+          "type": "string[]",
+          "description": "Blob colours (default accent, secondary, tertiary).",
+          "group": "content",
+          "control": false
+        },
+        "blur": {
+          "kind": "number",
+          "type": "number",
+          "default": 48,
+          "min": 0,
+          "max": 120,
+          "step": 1,
+          "description": "Blur in px.",
+          "group": "style"
+        },
+        "size": {
+          "kind": "number",
+          "type": "number",
+          "default": 220,
+          "min": 60,
+          "max": 420,
+          "step": 1,
+          "description": "Blob size in px.",
+          "group": "style"
+        }
+      },
+      "slug": "moving-blobs",
+      "name": "Moving Blobs",
+      "exportName": "MovingBlobs",
+      "file": "MoreEffects.tsx",
+      "category": "texture",
+      "kind": "scene",
+      "description": "Soft colour fields drift on Lissajous paths. Fills its parent.",
+      "tags": [
+        "background",
+        "gradient",
+        "mesh"
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Content to animate.",
+          "group": "content",
+          "control": false,
+          "required": true
+        },
+        "spacing": {
+          "kind": "number",
+          "type": "number",
+          "default": 18,
+          "min": 8,
+          "max": 48,
+          "step": 1,
+          "description": "Dot spacing in px.",
+          "group": "style"
+        },
+        "color": {
+          "kind": "color",
+          "type": "string",
+          "description": "Dot colour (default accent).",
+          "group": "style"
+        }
+      },
+      "slug": "dot-drift",
+      "name": "Dot Drift",
+      "exportName": "DotDrift",
+      "file": "MoreEffects.tsx",
+      "category": "texture",
+      "kind": "wrapper",
+      "description": "A dotted field drifts diagonally behind the content.",
+      "tags": [
+        "background",
+        "dots",
+        "grid"
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Content to animate.",
+          "group": "content",
+          "control": false,
+          "required": true
+        },
+        "tint": {
+          "kind": "boolean",
+          "type": "boolean",
+          "default": true,
+          "description": "Tint the scanned area.",
+          "group": "style"
+        },
+        "color": {
+          "kind": "color",
+          "type": "string",
+          "description": "Line colour (default accent).",
+          "group": "style"
+        }
+      },
+      "slug": "scan",
+      "name": "Scan",
+      "exportName": "Scan",
+      "file": "MoreEffects.tsx",
+      "category": "texture",
+      "kind": "wrapper",
+      "description": "A glowing scan line sweeps down; scanned content is tinted.",
+      "tags": [
+        "scan",
+        "line",
+        "hud"
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "default": "Masked Rise",
+          "description": "Text to animate. Inherits font size from its parent.",
+          "group": "content",
+          "required": true
+        },
+        "color": {
+          "kind": "color",
+          "type": "string",
+          "description": "Highlight / stroke colour. Defaults to the accent role.",
+          "group": "style"
+        }
+      },
+      "slug": "masked-rise",
+      "name": "Masked Rise",
+      "exportName": "MaskedRise",
+      "file": "AdditionalEffects.tsx",
+      "category": "text",
+      "kind": "text",
+      "description": "Letters rise from behind a baseline mask with a slight skew.",
+      "tags": [
+        "text",
+        "mask",
+        "rise"
+      ],
+      "presets": [
+        {
+          "id": "slow-serif",
+          "name": "Slow serif",
+          "description": "Editorial pace with a serif face.",
+          "values": {
+            "speed": 0.8,
+            "fontFamily": "serif"
+          }
+        },
+        {
+          "id": "punchy",
+          "name": "Punchy",
+          "description": "Fast in, long hold, grotesk.",
+          "values": {
+            "speed": 1.6,
+            "fontFamily": "grotesk"
+          }
+        },
+        {
+          "id": "mono-label",
+          "name": "Mono label",
+          "description": "Technical label feel.",
+          "values": {
+            "fontFamily": "mono",
+            "speed": 1.2
+          }
+        }
+      ],
+      "flagship": true
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "default": "Spring Pop",
+          "description": "Text to animate. Inherits font size from its parent.",
+          "group": "content",
+          "required": true
+        },
+        "color": {
+          "kind": "color",
+          "type": "string",
+          "description": "Highlight / stroke colour. Defaults to the accent role.",
+          "group": "style"
+        }
+      },
+      "slug": "spring-pop",
+      "name": "Spring Pop",
+      "exportName": "SpringPop",
+      "file": "AdditionalEffects.tsx",
+      "category": "text",
+      "kind": "text",
+      "description": "Letters pop up from small to full size on a bouncy spring.",
+      "tags": [
+        "text",
+        "spring",
+        "pop"
+      ],
+      "presets": [
+        {
+          "id": "slow-serif",
+          "name": "Slow serif",
+          "description": "Editorial pace with a serif face.",
+          "values": {
+            "speed": 0.8,
+            "fontFamily": "serif"
+          }
+        },
+        {
+          "id": "punchy",
+          "name": "Punchy",
+          "description": "Fast in, long hold, grotesk.",
+          "values": {
+            "speed": 1.6,
+            "fontFamily": "grotesk"
+          }
+        },
+        {
+          "id": "mono-label",
+          "name": "Mono label",
+          "description": "Technical label feel.",
+          "values": {
+            "fontFamily": "mono",
+            "speed": 1.2
+          }
+        }
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "default": "Typewriter",
+          "description": "Text to animate. Inherits font size from its parent.",
+          "group": "content",
+          "required": true
+        },
+        "color": {
+          "kind": "color",
+          "type": "string",
+          "description": "Highlight / stroke colour. Defaults to the accent role.",
+          "group": "style"
+        }
+      },
+      "slug": "typewriter",
+      "name": "Typewriter",
+      "exportName": "Typewriter",
+      "file": "AdditionalEffects.tsx",
+      "category": "text",
+      "kind": "text",
+      "description": "Characters type on with a blinking accent caret.",
+      "tags": [
+        "text",
+        "type",
+        "caret"
+      ],
+      "presets": [
+        {
+          "id": "slow-serif",
+          "name": "Slow serif",
+          "description": "Editorial pace with a serif face.",
+          "values": {
+            "speed": 0.8,
+            "fontFamily": "serif"
+          }
+        },
+        {
+          "id": "punchy",
+          "name": "Punchy",
+          "description": "Fast in, long hold, grotesk.",
+          "values": {
+            "speed": 1.6,
+            "fontFamily": "grotesk"
+          }
+        },
+        {
+          "id": "mono-label",
+          "name": "Mono label",
+          "description": "Technical label feel.",
+          "values": {
+            "fontFamily": "mono",
+            "speed": 1.2
+          }
+        }
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "default": "Character Flip",
+          "description": "Text to animate. Inherits font size from its parent.",
+          "group": "content",
+          "required": true
+        },
+        "color": {
+          "kind": "color",
+          "type": "string",
+          "description": "Highlight / stroke colour. Defaults to the accent role.",
+          "group": "style"
+        }
+      },
+      "slug": "character-flip",
+      "name": "Character Flip",
+      "exportName": "CharacterFlip",
+      "file": "AdditionalEffects.tsx",
+      "category": "text",
+      "kind": "text",
+      "description": "Letters flip up on their baseline with a soft spring and a colour fade.",
+      "tags": [
+        "text",
+        "flip",
+        "3d"
+      ],
+      "presets": [
+        {
+          "id": "slow-serif",
+          "name": "Slow serif",
+          "description": "Editorial pace with a serif face.",
+          "values": {
+            "speed": 0.8,
+            "fontFamily": "serif"
+          }
+        },
+        {
+          "id": "punchy",
+          "name": "Punchy",
+          "description": "Fast in, long hold, grotesk.",
+          "values": {
+            "speed": 1.6,
+            "fontFamily": "grotesk"
+          }
+        },
+        {
+          "id": "mono-label",
+          "name": "Mono label",
+          "description": "Technical label feel.",
+          "values": {
+            "fontFamily": "mono",
+            "speed": 1.2
+          }
+        }
+      ],
+      "flagship": true
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "default": "Elastic Baseline",
+          "description": "Text to animate. Inherits font size from its parent.",
+          "group": "content",
+          "required": true
+        },
+        "color": {
+          "kind": "color",
+          "type": "string",
+          "description": "Highlight / stroke colour. Defaults to the accent role.",
+          "group": "style"
+        }
+      },
+      "slug": "elastic-baseline",
+      "name": "Elastic Baseline",
+      "exportName": "ElasticBaseline",
+      "file": "AdditionalEffects.tsx",
+      "category": "text",
+      "kind": "text",
+      "description": "The baseline ripples like a plucked string and settles flat.",
+      "tags": [
+        "text",
+        "wave",
+        "elastic"
+      ],
+      "presets": [
+        {
+          "id": "slow-serif",
+          "name": "Slow serif",
+          "description": "Editorial pace with a serif face.",
+          "values": {
+            "speed": 0.8,
+            "fontFamily": "serif"
+          }
+        },
+        {
+          "id": "punchy",
+          "name": "Punchy",
+          "description": "Fast in, long hold, grotesk.",
+          "values": {
+            "speed": 1.6,
+            "fontFamily": "grotesk"
+          }
+        },
+        {
+          "id": "mono-label",
+          "name": "Mono label",
+          "description": "Technical label feel.",
+          "values": {
+            "fontFamily": "mono",
+            "speed": 1.2
+          }
+        }
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "default": "Word Slide",
+          "description": "Text to animate. Inherits font size from its parent.",
+          "group": "content",
+          "required": true
+        },
+        "color": {
+          "kind": "color",
+          "type": "string",
+          "description": "Highlight / stroke colour. Defaults to the accent role.",
+          "group": "style"
+        }
+      },
+      "slug": "word-slide",
+      "name": "Word Slide",
+      "exportName": "WordSlide",
+      "file": "AdditionalEffects.tsx",
+      "category": "text",
+      "kind": "text",
+      "description": "Words slide in from behind their own masks, one after another.",
+      "tags": [
+        "text",
+        "words",
+        "slide"
+      ],
+      "presets": [
+        {
+          "id": "slow-serif",
+          "name": "Slow serif",
+          "description": "Editorial pace with a serif face.",
+          "values": {
+            "speed": 0.8,
+            "fontFamily": "serif"
+          }
+        },
+        {
+          "id": "punchy",
+          "name": "Punchy",
+          "description": "Fast in, long hold, grotesk.",
+          "values": {
+            "speed": 1.6,
+            "fontFamily": "grotesk"
+          }
+        },
+        {
+          "id": "mono-label",
+          "name": "Mono label",
+          "description": "Technical label feel.",
+          "values": {
+            "fontFamily": "mono",
+            "speed": 1.2
+          }
+        }
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "default": "Text Unfold",
+          "description": "Text to animate. Inherits font size from its parent.",
+          "group": "content",
+          "required": true
+        },
+        "color": {
+          "kind": "color",
+          "type": "string",
+          "description": "Highlight / stroke colour. Defaults to the accent role.",
+          "group": "style"
+        }
+      },
+      "slug": "text-unfold",
+      "name": "Text Unfold",
+      "exportName": "TextUnfold",
+      "file": "AdditionalEffects.tsx",
+      "category": "text",
+      "kind": "text",
+      "description": "Letters unfold upward from the baseline with a small overshoot.",
+      "tags": [
+        "text",
+        "unfold",
+        "scale"
+      ],
+      "presets": [
+        {
+          "id": "slow-serif",
+          "name": "Slow serif",
+          "description": "Editorial pace with a serif face.",
+          "values": {
+            "speed": 0.8,
+            "fontFamily": "serif"
+          }
+        },
+        {
+          "id": "punchy",
+          "name": "Punchy",
+          "description": "Fast in, long hold, grotesk.",
+          "values": {
+            "speed": 1.6,
+            "fontFamily": "grotesk"
+          }
+        },
+        {
+          "id": "mono-label",
+          "name": "Mono label",
+          "description": "Technical label feel.",
+          "values": {
+            "fontFamily": "mono",
+            "speed": 1.2
+          }
+        }
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "default": "Selection Highlight",
+          "description": "Text to animate. Inherits font size from its parent.",
+          "group": "content",
+          "required": true
+        },
+        "color": {
+          "kind": "color",
+          "type": "string",
+          "description": "Highlight / stroke colour. Defaults to the accent role.",
+          "group": "style"
+        }
+      },
+      "slug": "selection-highlight",
+      "name": "Selection Highlight",
+      "exportName": "SelectionHighlight",
+      "file": "AdditionalEffects.tsx",
+      "category": "text",
+      "kind": "text",
+      "description": "A highlighter selection sweeps across the text with a caret.",
+      "tags": [
+        "text",
+        "highlight",
+        "marker"
+      ],
+      "presets": [
+        {
+          "id": "slow-serif",
+          "name": "Slow serif",
+          "description": "Editorial pace with a serif face.",
+          "values": {
+            "speed": 0.8,
+            "fontFamily": "serif"
+          }
+        },
+        {
+          "id": "punchy",
+          "name": "Punchy",
+          "description": "Fast in, long hold, grotesk.",
+          "values": {
+            "speed": 1.6,
+            "fontFamily": "grotesk"
+          }
+        },
+        {
+          "id": "mono-label",
+          "name": "Mono label",
+          "description": "Technical label feel.",
+          "values": {
+            "fontFamily": "mono",
+            "speed": 1.2
+          }
+        }
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "default": "Outline Fill",
+          "description": "Text to animate. Inherits font size from its parent.",
+          "group": "content",
+          "required": true
+        },
+        "color": {
+          "kind": "color",
+          "type": "string",
+          "description": "Highlight / stroke colour. Defaults to the accent role.",
+          "group": "style"
+        }
+      },
+      "slug": "outline-fill",
+      "name": "Outline Fill",
+      "exportName": "OutlineFill",
+      "file": "AdditionalEffects.tsx",
+      "category": "text",
+      "kind": "text",
+      "description": "An outline draws in, then fills left to right.",
+      "tags": [
+        "text",
+        "stroke",
+        "fill"
+      ],
+      "presets": [
+        {
+          "id": "slow-serif",
+          "name": "Slow serif",
+          "description": "Editorial pace with a serif face.",
+          "values": {
+            "speed": 0.8,
+            "fontFamily": "serif"
+          }
+        },
+        {
+          "id": "punchy",
+          "name": "Punchy",
+          "description": "Fast in, long hold, grotesk.",
+          "values": {
+            "speed": 1.6,
+            "fontFamily": "grotesk"
+          }
+        },
+        {
+          "id": "mono-label",
+          "name": "Mono label",
+          "description": "Technical label feel.",
+          "values": {
+            "fontFamily": "mono",
+            "speed": 1.2
+          }
+        }
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "default": "Character Scatter",
+          "description": "Text to animate. Inherits font size from its parent.",
+          "group": "content",
+          "required": true
+        },
+        "color": {
+          "kind": "color",
+          "type": "string",
+          "description": "Highlight / stroke colour. Defaults to the accent role.",
+          "group": "style"
+        }
+      },
+      "slug": "character-scatter",
+      "name": "Character Scatter",
+      "exportName": "CharacterScatter",
+      "file": "AdditionalEffects.tsx",
+      "category": "text",
+      "kind": "text",
+      "description": "Scattered, spinning letters gather into the word.",
+      "tags": [
+        "text",
+        "scatter",
+        "gather"
+      ],
+      "presets": [
+        {
+          "id": "slow-serif",
+          "name": "Slow serif",
+          "description": "Editorial pace with a serif face.",
+          "values": {
+            "speed": 0.8,
+            "fontFamily": "serif"
+          }
+        },
+        {
+          "id": "punchy",
+          "name": "Punchy",
+          "description": "Fast in, long hold, grotesk.",
+          "values": {
+            "speed": 1.6,
+            "fontFamily": "grotesk"
+          }
+        },
+        {
+          "id": "mono-label",
+          "name": "Mono label",
+          "description": "Technical label feel.",
+          "values": {
+            "fontFamily": "mono",
+            "speed": 1.2
+          }
+        }
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Content to animate.",
+          "group": "content",
+          "control": false,
+          "required": true
+        }
+      },
+      "slug": "pixel-cascade",
+      "name": "Pixel Cascade",
+      "exportName": "PixelCascade",
+      "file": "AdditionalEffects.tsx",
+      "category": "reveals",
+      "kind": "wrapper",
+      "description": "Tiles of the content drop into place in a diagonal cascade.",
+      "tags": [
+        "tiles",
+        "drop"
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Content to animate.",
+          "group": "content",
+          "control": false,
+          "required": true
+        }
+      },
+      "slug": "card-carousel",
+      "name": "Card Carousel",
+      "exportName": "CardCarousel",
+      "file": "AdditionalEffects.tsx",
+      "category": "depth",
+      "kind": "wrapper",
+      "description": "Copies ride a shallow 3D ellipse with depth blur.",
+      "tags": [
+        "carousel",
+        "3d"
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Content to animate.",
+          "group": "content",
+          "control": false,
+          "required": true
+        }
+      },
+      "slug": "border-runner",
+      "name": "Border Runner",
+      "exportName": "BorderRunner",
+      "file": "AdditionalEffects.tsx",
+      "category": "texture",
+      "kind": "wrapper",
+      "description": "A comet of light runs around a card border.",
+      "tags": [
+        "border",
+        "glow"
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Content to animate.",
+          "group": "content",
+          "control": false,
+          "required": true
+        }
+      },
+      "slug": "camera-push",
+      "name": "Camera Push",
+      "exportName": "CameraPush",
+      "file": "AdditionalEffects.tsx",
+      "category": "depth",
+      "kind": "wrapper",
+      "description": "Exponential camera pull-back with lateral drift.",
+      "tags": [
+        "camera",
+        "zoom"
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Content to animate.",
+          "group": "content",
+          "control": false,
+          "required": true
+        }
+      },
+      "slug": "parallax-stack",
+      "name": "Parallax Stack",
+      "exportName": "ParallaxStack",
+      "file": "AdditionalEffects.tsx",
+      "category": "depth",
+      "kind": "wrapper",
+      "description": "Layered copies separate at different rates.",
+      "tags": [
+        "parallax",
+        "layers"
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Content to animate.",
+          "group": "content",
+          "control": false,
+          "required": true
+        }
+      },
+      "slug": "fan-spread",
+      "name": "Fan Spread",
+      "exportName": "FanSpread",
+      "file": "AdditionalEffects.tsx",
+      "category": "paths",
+      "kind": "wrapper",
+      "description": "Copies fan out from a shared pivot on a spring.",
+      "tags": [
+        "fan",
+        "cards"
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Content to animate.",
+          "group": "content",
+          "control": false,
+          "required": true
+        }
+      },
+      "slug": "accordion",
+      "name": "Accordion",
+      "exportName": "Accordion",
+      "file": "AdditionalEffects.tsx",
+      "category": "transitions",
+      "kind": "wrapper",
+      "description": "Vertical panels unfold edge to edge in 3D.",
+      "tags": [
+        "panels",
+        "fold"
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Content to animate.",
+          "group": "content",
+          "control": false,
+          "required": true
+        }
+      },
+      "slug": "checker-fold",
+      "name": "Checker Fold",
+      "exportName": "CheckerFold",
+      "file": "AdditionalEffects.tsx",
+      "category": "transitions",
+      "kind": "wrapper",
+      "description": "Tiles fold up in a diagonal wave.",
+      "tags": [
+        "tiles",
+        "fold"
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Content to animate.",
+          "group": "content",
+          "control": false,
+          "required": true
+        }
+      },
+      "slug": "path-follow",
+      "name": "Path Follow",
+      "exportName": "PathFollow",
+      "file": "AdditionalEffects.tsx",
+      "category": "paths",
+      "kind": "wrapper",
+      "description": "Content travels a figure-eight and banks into its turns.",
+      "tags": [
+        "path",
+        "loop"
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Content to animate.",
+          "group": "content",
+          "control": false,
+          "required": true
+        }
+      },
+      "slug": "grid-ripple",
+      "name": "Grid Ripple",
+      "exportName": "GridRipple",
+      "file": "AdditionalEffects.tsx",
+      "category": "paths",
+      "kind": "wrapper",
+      "description": "A ring of scale passes through a grid of copies.",
+      "tags": [
+        "grid",
+        "ripple"
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Content to animate.",
+          "group": "content",
+          "control": false,
+          "required": true
+        }
+      },
+      "slug": "trail-echo",
+      "name": "Trail Echo",
+      "exportName": "TrailEcho",
+      "file": "AdditionalEffects.tsx",
+      "category": "paths",
+      "kind": "wrapper",
+      "description": "Fading, blurred echoes follow the lead copy.",
+      "tags": [
+        "trail",
+        "echo"
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Entire outgoing scene.",
+          "group": "content",
+          "control": false,
+          "required": true
+        },
+        "width": {
+          "kind": "number",
+          "type": "number",
+          "default": 640,
+          "min": 100,
+          "max": 3840,
+          "step": 1,
+          "description": "Scene coordinate width.",
+          "group": "style"
+        },
+        "height": {
+          "kind": "number",
+          "type": "number",
+          "default": 360,
+          "min": 100,
+          "max": 2160,
+          "step": 1,
+          "description": "Scene coordinate height.",
+          "group": "style"
+        },
+        "backColor": {
+          "kind": "color",
+          "type": "string",
+          "description": "Paper back colour.",
+          "group": "style"
+        }
+      },
+      "slug": "corner-peel",
+      "name": "Corner Peel",
+      "exportName": "CornerPeel",
+      "file": "CornerPeel.tsx",
+      "category": "transitions",
+      "kind": "wrapper",
+      "description": "The bottom-right corner folds diagonally across the entire page, revealing the scene underneath.",
+      "tags": [
+        "page",
+        "exit"
+      ],
+      "notes": [
+        "Exit effect: progress 1 means gone. Match width and height to the source scene."
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Content to animate.",
+          "group": "content",
+          "control": false,
+          "required": true
+        }
+      },
+      "slug": "split-slide",
+      "name": "Split Slide",
+      "exportName": "SplitSlide",
+      "file": "AdditionalEffects.tsx",
+      "category": "transitions",
+      "kind": "wrapper",
+      "description": "Top and bottom halves slide in from opposite sides.",
+      "tags": [
+        "split",
+        "slide"
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "left": {
+          "kind": "text",
+          "type": "string",
+          "default": "Make",
+          "description": "Left word.",
+          "group": "content",
+          "required": false
+        },
+        "right": {
+          "kind": "text",
+          "type": "string",
+          "default": "room.",
+          "description": "Right word.",
+          "group": "content",
+          "required": false
+        },
+        "gap": {
+          "kind": "number",
+          "type": "number",
+          "default": 100,
+          "min": 20,
+          "max": 240,
+          "step": 1,
+          "description": "Gap width in px.",
+          "group": "style"
+        },
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Object to insert (default: a star).",
+          "group": "content",
+          "control": false,
+          "required": false
+        }
+      },
+      "slug": "word-gap-insert",
+      "name": "Word Gap Insert",
+      "exportName": "WordGapInsert",
+      "file": "InventoryEffects.tsx",
+      "category": "text",
+      "kind": "scene",
+      "description": "A gap opens between two words and an object springs into it.",
+      "tags": [
+        "text",
+        "layout",
+        "insert"
+      ],
+      "notes": [
+        "Draws in a 600 × 260 viewBox and fills its parent box."
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "default": "CREATE",
+          "description": "Word to select.",
+          "group": "content",
+          "required": false
+        },
+        "glyphs": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Custom SVG glyphs instead of text.",
+          "group": "content",
+          "control": false,
+          "required": false
+        }
+      },
+      "slug": "glyph-selection",
+      "name": "Glyph Selection",
+      "exportName": "GlyphSelection",
+      "file": "InventoryEffects.tsx",
+      "category": "ui",
+      "kind": "scene",
+      "description": "A vector selection box turns filled glyphs into outlines.",
+      "tags": [
+        "selection",
+        "vector",
+        "design-tool"
+      ],
+      "notes": [
+        "Draws in a 600 × 260 viewBox and fills its parent box."
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "cards": {
+          "kind": "json",
+          "type": "{ value: string; label: string }[]",
+          "default": [
+            {
+              "value": "2B+",
+              "label": "Impressions"
+            },
+            {
+              "value": "50+",
+              "label": "Projects"
+            },
+            {
+              "value": "20",
+              "label": "New effects"
+            }
+          ],
+          "description": "Cards, top first.",
+          "group": "content",
+          "control": false
+        }
+      },
+      "slug": "proof-stack-tumble",
+      "name": "Proof Stack Tumble",
+      "exportName": "ProofStackTumble",
+      "file": "InventoryEffects.tsx",
+      "category": "numbers",
+      "kind": "scene",
+      "description": "Proof cards tumble off a stack one by one; the last one stays.",
+      "tags": [
+        "cards",
+        "stats",
+        "stack"
+      ],
+      "notes": [
+        "Draws in a 600 × 260 viewBox and fills its parent box."
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "items": {
+          "kind": "json",
+          "type": "string[]",
+          "default": [
+            "01 / Form",
+            "02 / Type",
+            "03 / Mark"
+          ],
+          "description": "Candidates.",
+          "group": "content",
+          "control": false
+        },
+        "selectedIndex": {
+          "kind": "number",
+          "type": "number",
+          "default": 2,
+          "min": 0,
+          "max": 9,
+          "step": 1,
+          "description": "Index that wins.",
+          "group": "content"
+        }
+      },
+      "slug": "selection-roulette",
+      "name": "Selection Roulette",
+      "exportName": "SelectionRoulette",
+      "file": "InventoryEffects.tsx",
+      "category": "ui",
+      "kind": "scene",
+      "description": "Drag a selection, cycle candidates, lock one and expand it.",
+      "tags": [
+        "selection",
+        "picker"
+      ],
+      "notes": [
+        "Draws in a 600 × 260 viewBox and fills its parent box."
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "items": {
+          "kind": "json",
+          "type": "string[]",
+          "default": [
+            "Studio A",
+            "Studio B",
+            "Studio C",
+            "Your studio"
+          ],
+          "description": "Rows, top first.",
+          "group": "content",
+          "control": false
+        },
+        "fromIndex": {
+          "kind": "number",
+          "type": "number",
+          "default": 3,
+          "min": 0,
+          "max": 9,
+          "step": 1,
+          "description": "Row that moves.",
+          "group": "content"
+        },
+        "toIndex": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 9,
+          "step": 1,
+          "description": "Where it lands.",
+          "group": "content"
+        }
+      },
+      "slug": "leaderboard-promotion",
+      "name": "Leaderboard Promotion",
+      "exportName": "LeaderboardPromotion",
+      "file": "InventoryEffects.tsx",
+      "category": "ui",
+      "kind": "scene",
+      "description": "A highlighted row lifts, overtakes the others and settles at the top.",
+      "tags": [
+        "ranking",
+        "list",
+        "leaderboard"
+      ],
+      "notes": [
+        "Draws in a 600 × 260 viewBox and fills its parent box."
+      ],
+      "flagship": true
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "sendLabel": {
+          "kind": "text",
+          "type": "string",
+          "default": "Send",
+          "description": "Button label.",
+          "group": "content",
+          "required": false
+        },
+        "sentLabel": {
+          "kind": "text",
+          "type": "string",
+          "default": "Sent",
+          "description": "Success label.",
+          "group": "content",
+          "required": false
+        },
+        "recipient": {
+          "kind": "text",
+          "type": "string",
+          "default": "hello@studio.co",
+          "description": "Recipient line.",
+          "group": "content",
+          "required": false
+        },
+        "message": {
+          "kind": "text",
+          "type": "string",
+          "default": "Let’s make something great.",
+          "description": "Body text.",
+          "group": "content",
+          "required": false
+        }
+      },
+      "slug": "form-send-flight",
+      "name": "Form Send Flight",
+      "exportName": "FormSendFlight",
+      "file": "InventoryEffects.tsx",
+      "category": "ui",
+      "kind": "scene",
+      "description": "The send button presses, the form contracts into an envelope, its flap closes, and the envelope flies away.",
+      "tags": [
+        "form",
+        "email",
+        "send"
+      ],
+      "notes": [
+        "Draws in a 600 × 260 viewBox and fills its parent box."
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "count": {
+          "kind": "number",
+          "type": "number",
+          "default": 5,
+          "min": 1,
+          "max": 24,
+          "step": 1,
+          "description": "Number of cards.",
+          "group": "content"
+        },
+        "label": {
+          "kind": "text",
+          "type": "string",
+          "default": "Inbox",
+          "description": "Folder label.",
+          "group": "content",
+          "required": false
+        }
+      },
+      "slug": "folder-catch",
+      "name": "Folder Catch",
+      "exportName": "FolderCatch",
+      "file": "InventoryEffects.tsx",
+      "category": "ui",
+      "kind": "scene",
+      "description": "Cards drop behind a folder rim, each landing with a pulse.",
+      "tags": [
+        "folder",
+        "inbox",
+        "drop"
+      ],
+      "notes": [
+        "Draws in a 600 × 260 viewBox and fills its parent box."
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "subject": {
+          "kind": "text",
+          "type": "string",
+          "default": "Your next project",
+          "description": "Subject line.",
+          "group": "content",
+          "required": false
+        },
+        "body": {
+          "kind": "json",
+          "type": "string[]",
+          "description": "Body lines.",
+          "group": "content",
+          "control": false
+        },
+        "labels": {
+          "kind": "json",
+          "type": "[string, string, string]",
+          "default": [
+            "Sent",
+            "Delivered",
+            "Seen"
+          ],
+          "description": "Status labels.",
+          "group": "content",
+          "control": false
+        }
+      },
+      "slug": "delivery-status",
+      "name": "Delivery Status",
+      "exportName": "DeliveryStatus",
+      "file": "InventoryEffects.tsx",
+      "category": "ui",
+      "kind": "scene",
+      "description": "Sent, delivered and seen checks, then the message body expands.",
+      "tags": [
+        "status",
+        "checks",
+        "mail"
+      ],
+      "notes": [
+        "Draws in a 600 × 260 viewBox and fills its parent box."
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "data": {
+          "kind": "json",
+          "type": "CandleDatum[]",
+          "description": "OHLC data (synthetic by default).",
+          "group": "content",
+          "control": false
+        }
+      },
+      "slug": "candlestick-hud",
+      "name": "Candlestick HUD",
+      "exportName": "CandlestickHUD",
+      "file": "InventoryEffects.tsx",
+      "category": "data",
+      "kind": "scene",
+      "description": "OHLC candles draw one by one with a live price and volume readout.",
+      "tags": [
+        "chart",
+        "finance",
+        "ohlc"
+      ],
+      "notes": [
+        "Draws in a 600 × 260 viewBox and fills its parent box."
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "values": {
+          "kind": "json",
+          "type": "number[]",
+          "description": "Series values (synthetic by default).",
+          "group": "content",
+          "control": false
+        },
+        "format": {
+          "kind": "json",
+          "type": "(value: number) => string",
+          "description": "Number formatter.",
+          "group": "content",
+          "control": false
+        }
+      },
+      "slug": "tracking-line-chart",
+      "name": "Tracking Line Chart",
+      "exportName": "TrackingLineChart",
+      "file": "InventoryEffects.tsx",
+      "category": "data",
+      "kind": "scene",
+      "description": "A live series draws with a tracking camera, a pulsing tip and a delta readout.",
+      "tags": [
+        "chart",
+        "line",
+        "live"
+      ],
+      "notes": [
+        "Draws in a 600 × 260 viewBox and fills its parent box."
+      ],
+      "flagship": true
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "amounts": {
+          "kind": "json",
+          "type": "number[]",
+          "default": [
+            10,
+            15,
+            10,
+            20,
+            15,
+            30
+          ],
+          "description": "Amount per token.",
+          "group": "content",
+          "control": false
+        },
+        "format": {
+          "kind": "json",
+          "type": "(value: number) => string",
+          "description": "Number formatter.",
+          "group": "content",
+          "control": false
+        }
+      },
+      "slug": "token-pot-fill",
+      "name": "Token Pot Fill",
+      "exportName": "TokenPotFill",
+      "file": "InventoryEffects.tsx",
+      "category": "data",
+      "kind": "scene",
+      "description": "Each arriving token bumps the counter and the pot fill together.",
+      "tags": [
+        "counter",
+        "fill",
+        "coins"
+      ],
+      "notes": [
+        "Draws in a 600 × 260 viewBox and fills its parent box."
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "labels": {
+          "kind": "json",
+          "type": "string[]",
+          "default": [
+            "Year 1",
+            "Year 2",
+            "Year 3",
+            "Year 4"
+          ],
+          "description": "Segment labels.",
+          "group": "content",
+          "control": false
+        },
+        "segments": {
+          "kind": "json",
+          "type": "TimelineSegment[]",
+          "description": "Segments with label and optional color; overrides labels.",
+          "group": "content",
+          "control": false
+        },
+        "fromValue": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": -1000,
+          "max": 1000,
+          "step": 1,
+          "description": "Starting value.",
+          "group": "content"
+        },
+        "toValue": {
+          "kind": "number",
+          "type": "number",
+          "min": -1000,
+          "max": 1000,
+          "step": 1,
+          "description": "Ending value; overrides increase.",
+          "group": "content"
+        },
+        "unit": {
+          "kind": "text",
+          "type": "string",
+          "default": "%",
+          "description": "Value suffix.",
+          "group": "content",
+          "required": false
+        },
+        "showSegments": {
+          "kind": "boolean",
+          "type": "boolean",
+          "default": true,
+          "description": "Show the timeline rail.",
+          "group": "style"
+        },
+        "showAxes": {
+          "kind": "boolean",
+          "type": "boolean",
+          "default": true,
+          "description": "Show axes.",
+          "group": "style"
+        },
+        "showArea": {
+          "kind": "boolean",
+          "type": "boolean",
+          "default": true,
+          "description": "Show the filled area.",
+          "group": "style"
+        },
+        "showValue": {
+          "kind": "boolean",
+          "type": "boolean",
+          "default": true,
+          "description": "Show the value.",
+          "group": "style"
+        },
+        "chartHeight": {
+          "kind": "number",
+          "type": "number",
+          "default": 100,
+          "min": 10,
+          "max": 165,
+          "step": 1,
+          "description": "Chart height in viewBox units.",
+          "group": "style"
+        },
+        "lineWidth": {
+          "kind": "number",
+          "type": "number",
+          "default": 4,
+          "min": 1,
+          "max": 12,
+          "step": 1,
+          "description": "Line width.",
+          "group": "style"
+        },
+        "riseStart": {
+          "kind": "number",
+          "type": "number",
+          "default": 0.48,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Growth starts.",
+          "group": "timing"
+        },
+        "riseEnd": {
+          "kind": "number",
+          "type": "number",
+          "default": 0.96,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Growth ends.",
+          "group": "timing"
+        },
+        "segmentEnd": {
+          "kind": "number",
+          "type": "number",
+          "default": 0.45,
+          "min": 0.01,
+          "max": 1,
+          "step": 0.01,
+          "description": "Rail finishes filling.",
+          "group": "timing"
+        },
+        "format": {
+          "kind": "json",
+          "type": "(value: number) => string",
+          "description": "Custom number formatter.",
+          "group": "content",
+          "control": false
+        },
+        "increase": {
+          "kind": "number",
+          "type": "number",
+          "default": 86,
+          "min": -100,
+          "max": 500,
+          "step": 1,
+          "description": "Percentage shown at the end.",
+          "group": "content"
+        }
+      },
+      "slug": "timeline-rise",
+      "name": "Timeline Rise",
+      "exportName": "TimelineRise",
+      "file": "InventoryEffects.tsx",
+      "category": "data",
+      "kind": "scene",
+      "description": "Time segments fill in sequence, then a two-point rise with a percentage.",
+      "tags": [
+        "timeline",
+        "growth"
+      ],
+      "notes": [
+        "Draws in a 600 × 260 viewBox and fills its parent box."
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Your mark (120 × 120).",
+          "group": "content",
+          "control": false,
+          "required": false
+        }
+      },
+      "slug": "logo-landing",
+      "name": "Logo Landing",
+      "exportName": "LogoLanding",
+      "file": "InventoryEffects.tsx",
+      "category": "paths",
+      "kind": "scene",
+      "description": "A mark falls, squashes on contact, rebounds and settles on its shadow.",
+      "tags": [
+        "logo",
+        "bounce",
+        "squash"
+      ],
+      "notes": [
+        "Draws in a 600 × 260 viewBox and fills its parent box."
+      ]
+    },
+    {
+      "sharedProps": true,
+      "props": {
+        "labels": {
+          "kind": "json",
+          "type": "string[]",
+          "default": [
+            "Dark mode",
+            "Slow network"
+          ],
+          "description": "Condition labels.",
+          "group": "content",
+          "control": false
+        },
+        "conditions": {
+          "kind": "json",
+          "type": "DeviceCondition[]",
+          "description": "Rows {label, at?, passed?}; overrides labels.",
+          "group": "content",
+          "control": false
+        },
+        "fromDevice": {
+          "kind": "json",
+          "type": "DeviceSize",
+          "default": {
+            "width": 390,
+            "height": 192,
+            "radius": 10
+          },
+          "description": "Starting {width, height, radius}.",
+          "group": "content",
+          "control": false
+        },
+        "toDevice": {
+          "kind": "json",
+          "type": "DeviceSize",
+          "default": {
+            "width": 140,
+            "height": 226,
+            "radius": 23
+          },
+          "description": "Ending {width, height, radius}.",
+          "group": "content",
+          "control": false
+        },
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Custom responsive screen content.",
+          "group": "content",
+          "control": false,
+          "required": false
+        },
+        "showConditions": {
+          "kind": "boolean",
+          "type": "boolean",
+          "default": true,
+          "description": "Show condition rows.",
+          "group": "style"
+        },
+        "darkScreen": {
+          "kind": "boolean",
+          "type": "boolean",
+          "default": true,
+          "description": "Switch to a dark screen at checksStart.",
+          "group": "style"
+        },
+        "morphStart": {
+          "kind": "number",
+          "type": "number",
+          "default": 0.24,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Device resize starts.",
+          "group": "timing"
+        },
+        "morphEnd": {
+          "kind": "number",
+          "type": "number",
+          "default": 0.58,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Device resize ends.",
+          "group": "timing"
+        },
+        "checksStart": {
+          "kind": "number",
+          "type": "number",
+          "default": 0.64,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Default checklist start.",
+          "group": "timing"
+        }
+      },
+      "slug": "device-conditions",
+      "name": "Device Conditions",
+      "exportName": "DeviceConditions",
+      "file": "InventoryEffects.tsx",
+      "category": "ui",
+      "kind": "scene",
+      "description": "A browser shell becomes a phone; dark-mode and network rows tick in.",
+      "tags": [
+        "device",
+        "responsive",
+        "checklist"
+      ],
+      "notes": [
+        "Draws in a 600 × 260 viewBox and fills its parent box."
+      ]
+    }
+  ]
+}

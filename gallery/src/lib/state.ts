@@ -105,6 +105,20 @@ export function useCustomize(meta: EffectMeta, siteTheme: "light" | "dark", init
   const [values, setValues] = useState<Values>(() => ({ ...defaults, ...decodeState(initial) }));
   const past = useRef<Values[]>([]);
   const future = useRef<Values[]>([]);
+  const currentValues = useRef(values);
+  currentValues.current=values;
+  const gesture=useRef<Values|null>(null);
+  const beginGesture=()=>{gesture.current=currentValues.current;};
+  const updateGesture=(key:string,value:unknown)=>{
+    const next={...currentValues.current,[key]:value};
+    currentValues.current=next;setValues(next);
+  };
+  const endGesture=()=>{
+    const before=gesture.current;gesture.current=null;
+    if(before&&JSON.stringify(before)!==JSON.stringify(currentValues.current)){
+      past.current.push(before);if(past.current.length>100)past.current.shift();future.current=[];bump(x=>x+1);
+    }
+  };
   const [, bump] = useState(0);
 
   // Reset when the effect changes.
@@ -183,6 +197,7 @@ export function useCustomize(meta: EffectMeta, siteTheme: "light" | "dark", init
     reset,
     canUndo: past.current.length > 0,
     canRedo: future.current.length > 0,
+    beginGesture, updateGesture, endGesture,
   };
 }
 

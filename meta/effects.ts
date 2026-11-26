@@ -1,3 +1,5 @@
+import { COMPLETION_EFFECTS } from "./completion";
+import { DITHER_ADDITIONS } from './dither-additions';
 import { FONTS, PALETTE_IDS, STYLE_PRESETS } from "../core/tokens";
 import type { Category, EffectMeta, EffectPreset, PropGroup, PropSpec } from "./schema";
 
@@ -560,39 +562,11 @@ export const EFFECTS: readonly EffectMeta[] = [
     amounts: json("number[]", "Amount per token.", [10, 15, 10, 20, 15, 30]),
     format: json("(value: number) => string", "Number formatter."),
   }),
-  inv("timeline-rise", "Timeline Rise", "TimelineRise", "data", "Time segments fill in sequence, then a two-point rise with a percentage.", ["timeline", "growth"], {
-    labels: json("string[]", "Segment labels.", ["Year 1", "Year 2", "Year 3", "Year 4"]),
-    segments: json("TimelineSegment[]", "Segments with label and optional color; overrides labels."),
-    fromValue: num(0, -1000, 1000, 1, "Starting value.", "content"),
-    toValue: { ...num(86, -1000, 1000, 1, "Ending value; overrides increase.", "content"), default: undefined },
-    unit: text("%", "Value suffix."),
-    showSegments: bool(true, "Show the timeline rail."),
-    showAxes: bool(true, "Show axes."),
-    showArea: bool(true, "Show the filled area."),
-    showValue: bool(true, "Show the value."),
-    chartHeight: num(100, 10, 165, 1, "Chart height in viewBox units."),
-    lineWidth: num(4, 1, 12, 1, "Line width."),
-    riseStart: num(.48, 0, .9, .01, "Growth starts.", "timing"),
-    riseEnd: num(.96, .1, 1, .01, "Growth ends.", "timing"),
-    segmentEnd: num(.45, .01, 1, .01, "Rail finishes filling.", "timing"),
-    format: json("(value: number) => string", "Custom number formatter."),
-    increase: num(86, -100, 500, 1, "Percentage shown at the end.", "content"),
-  }),
   inv("logo-landing", "Logo Landing", "LogoLanding", "paths", "A mark falls, squashes on contact, rebounds and settles on its shadow.", ["logo", "bounce", "squash"], {
     children: node("Your mark (120 × 120)."),
   }),
-  inv("device-conditions", "Device Conditions", "DeviceConditions", "ui", "A browser shell becomes a phone; dark-mode and network rows tick in.", ["device", "responsive", "checklist"], {
-    labels: json("string[]", "Condition labels.", ["Dark mode", "Slow network"]),
-    conditions: json("DeviceCondition[]", "Rows {label, at?, passed?}; overrides labels."),
-    fromDevice: json("DeviceSize", "Starting {width, height, radius}.", {width:390, height:192, radius:10}),
-    toDevice: json("DeviceSize", "Ending {width, height, radius}.", {width:140, height:226, radius:23}),
-    children: node("Custom responsive screen content."),
-    showConditions: bool(true, "Show condition rows."),
-    darkScreen: bool(true, "Switch to a dark screen at checksStart."),
-    morphStart: num(.24, 0, .9, .01, "Device resize starts.", "timing"),
-    morphEnd: num(.58, .1, 1, .01, "Device resize ends.", "timing"),
-    checksStart: num(.64, 0, .9, .01, "Default checklist start.", "timing"),
-  }),
+  ...COMPLETION_EFFECTS,
+  ...DITHER_ADDITIONS,
 ];
 
 export const EFFECTS_BY_SLUG: Readonly<Record<string, EffectMeta>> = Object.fromEntries(EFFECTS.map((m) => [m.slug, m]));

@@ -16,7 +16,7 @@ export function effectMarkdown(m: EffectMeta): string {
     `${m.description}`,
     "",
     `- Category: ${cat}. Kind: ${m.kind}. Source: \`shared-effects/${m.file}\`.`,
-    `- Import: \`import {${m.exportName}} from "./shared-effects";\``,
+    `- Import: \`import {${m.exportName}} from "./shared-effects${m.file === 'CompleteOptional.tsx' ? '/optional' : ''}";\``,
     m.requires?.length ? `- Requires: ${m.requires.join(", ")}` : "",
     m.sharedProps ? "- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens)." : "- Primitive: does not take the shared props.",
     ...(m.notes ?? []).map((n) => `- ${n}`),

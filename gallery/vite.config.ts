@@ -40,6 +40,8 @@ export default defineConfig({
       {find: /^react-dom\/(.*)$/, replacement: nm('react-dom') + '/$1'},
       {find: /^remotion$/, replacement: nm('remotion')},
       {find: /^ogl$/, replacement: nm('ogl')},
+      {find: /^three$/, replacement: nm('three')},
+      {find: /^@remotion\/motion-blur$/, replacement: nm('@remotion/motion-blur')},
     ],
     dedupe: ['react', 'react-dom', 'remotion'],
   },

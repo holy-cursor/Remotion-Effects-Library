@@ -1,6 +1,8 @@
 # Remotion Effects Library
 
-66 progress-driven effects for [Remotion](https://www.remotion.dev/) video. It is also an agent skill and comes with a live gallery.
+117 progress-driven effects for [Remotion](https://www.remotion.dev/) video. It is also an agent skill and comes with a live gallery.
+
+The remaining source inventory has been implemented: **80 additions cover 85 source entries**. md](COMPLETION.md) for the new modular APIs, variants and optional dependencies. Previously rejected effects remain excluded.
 
 - **For people:** the gallery gives every effect a live player with a scrubber, a customize panel (theme, palette, accent, font, timing, grain), style presets, copyable usage code and a typed props table.
 - **For agents:** [`SKILL.md`](SKILL.md) teaches a video agent how to pick, install, time and theme effects. [`llms-components.txt`](llms-components.txt) and [`components.json`](components.json) describe every effect and its props. The deployed gallery also serves both files at `/llms-components.txt` and `/components.json`.
@@ -80,13 +82,13 @@ Every effect except the primitives (Extrude, SolidExtrude, SurfaceExtrude, Shape
 
 `meta/effects.ts` describes every effect (category, props schema, presets). The gallery and the agent manifest are both built from it. See MIGRATION.md for behaviour changes.
 
-The active gallery contains 29 original effects, 23 AdditionalEffects variants and 14 InventoryEffects scenes. The current collection is defined by meta/effects.ts.
+The active gallery contains 117 effects. The current collection is defined by meta/effects.ts.
 
 ## New inventory batch
 
-Word Gap Insert, Glyph Selection, Proof Stack Tumble, Selection Roulette, Leaderboard Promotion, Form Send Flight, Folder Catch, Delivery Status, Candlestick HUD, Tracking Line Chart, Token Pot Fill, Timeline Rise, Logo Landing, and Device Conditions.
+Word Gap Insert, Glyph Selection, Proof Stack Tumble, Selection Roulette, Leaderboard Promotion, Form Send Flight, Folder Catch, Delivery Status, Candlestick HUD, Tracking Line Chart, Token Pot Fill, and Logo Landing.
 
-All 14 accept normalized progress and optional theme overrides. Numeric defaults are synthetic demo data. The complete four-second previews are in the gallery.
+All accept normalized progress and optional theme overrides. Numeric defaults are synthetic demo data.
 
 ## Revision: 2026-11-25
 
@@ -98,27 +100,6 @@ CornerPeel folds the whole scene from the bottom-right corner across a diagonal 
 
 FormSendFlight now contracts the form into an envelope, closes the flap and sends that same envelope away. Configure `recipient`, `message`, `sendLabel` and `sentLabel`.
 
-DeviceConditions accepts arbitrary condition rows (`label`, optional `at` and `passed`), source/target device dimensions, custom responsive screen children and independent resize/checklist timing. Set `showConditions={false}` for just the device. `DeviceFrame` and `ConditionChecklist` are also exported separately; the checklist is an SVG fragment.
-
-```tsx
-<DeviceConditions progress={progress}
-  fromDevice={{width: 420, height: 190, radius: 10}}
-  toDevice={{width: 160, height: 225, radius: 24}}
-  conditions={[{label: 'Touch input', at: .6}, {label: 'Offline', at: .8, passed: false}]}
-  morphStart={.1} morphEnd={.5} darkScreen={false}>
-  <YourResponsiveScreen />
-</DeviceConditions>
-```
-
-TimelineRise accepts custom segments/colors, starting/ending values, units or a formatter, separate rail/growth timing, chart height/line width and visibility toggles. Descending and flat values produce descending and flat plots. `TimelineSegments` and `RisePlot` are independently reusable SVG fragments.
-
-```tsx
-<TimelineRise progress={progress}
-  segments={[{label: 'Q1'}, {label: 'Q2', color: '#FB4001'}]}
-  fromValue={20} toValue={95} unit="k"
-  segmentEnd={.3} riseStart={.35} riseEnd={.9}
-  showArea={false} />
-```
 
 ## Gallery
 

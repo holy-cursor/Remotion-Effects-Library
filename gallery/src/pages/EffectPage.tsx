@@ -78,7 +78,7 @@ function PropsTable({ meta }: { meta: EffectMeta }) {
 
 export function EffectPage({ meta, siteTheme, state }: { meta: EffectMeta; siteTheme: "light" | "dark"; state?: string }) {
   const api = useCustomize(meta, siteTheme, state);
-  const [tab, setTab] = useState<"preview" | "code">("preview");
+  const [tab, setTab] = useState<"usage" | "props" | "source" | "notes">("usage");
   const src = useSource(meta.file);
   const i = EFFECTS.findIndex((m) => m.slug === meta.slug);
   const o = ORDER.findIndex((m) => m.slug === meta.slug);
@@ -101,84 +101,69 @@ export function EffectPage({ meta, siteTheme, state }: { meta: EffectMeta; siteT
     return () => window.removeEventListener("keydown", onKey);
   }, [api]);
 
+  type DocTab = "usage" | "props" | "source" | "notes";
+  const docTabs: { id: DocTab; label: string }[] = [
+    { id: "usage", label: "Usage" },
+    { id: "props", label: `Props · ${Object.keys(meta.props).length}` },
+    { id: "source", label: "Source" },
+    ...(meta.notes?.length ? [{ id: "notes" as const, label: "Notes" }] : []),
+  ];
+
   return (
     <div className="fx-page">
       <div style={{ minWidth: 0 }}>
-        <div className="crumbs mono">
-          <a href="#/">Effects</a>
-          <span>/</span>
-          <a href={`#/category/${meta.category}`}>{cat?.name}</a>
-        </div>
-        <div className="fx-head">
-          <h1>{meta.name}</h1>
-          <span className="no">N° {String(i + 1).padStart(2, "0")}</span>
-          {meta.flagship && <span className="badge" style={{ marginLeft: 0, alignSelf: "center" }}>reworked</span>}
-        </div>
-        <p className="fx-desc">{meta.description}</p>
-        <div className="fx-actions">
-          <button className="btn" onClick={() => copy(effectMarkdown(meta), "Page copied as markdown")}>
-            <Icon name="doc" /> Copy page
-          </button>
-          <button className="btn" onClick={() => copy(usage, "Usage copied")}>
-            <Icon name="copy" /> Copy code
-          </button>
-          <span className="mono faint">{meta.file}</span>
-          <div className="pager">
-            <button className="btn" onClick={() => go(`#/effects/${prev.slug}`)} title={`Previous: ${prev.name}`}>
-              <Icon name="left" /> {prev.name} <kbd>k</kbd>
+        <div className="fx-top">
+          <div>
+            <div className="crumbs">
+              <a href="#/effects">Effects</a>
+              <span>/</span>
+              <a href={`#/category/${meta.category}`}>{cat?.name}</a>
+            </div>
+            <h1 className="fx-title">{meta.name}</h1>
+            <p className="fx-desc">{meta.description}</p>
+          </div>
+          <div className="fx-tools">
+            <button className="btn primary" onClick={() => copy(usage, "Code copied")}>
+              <Icon name="copy" /> Copy code
             </button>
-            <button className="btn" onClick={() => go(`#/effects/${next.slug}`)} title={`Next: ${next.name}`}>
-              {next.name} <kbd>j</kbd> <Icon name="right" />
+            <button className="icon-btn" onClick={() => copy(effectMarkdown(meta), "Page copied as markdown")} title="Copy this page as markdown" aria-label="Copy page as markdown">
+              <Icon name="doc" />
             </button>
+            <span className="fx-pager">
+              <button className="icon-btn" onClick={() => go(`#/effects/${prev.slug}`)} title={`Previous: ${prev.name} (k)`} aria-label={`Previous effect: ${prev.name}`}>
+                <Icon name="left" />
+              </button>
+              <button className="icon-btn" onClick={() => go(`#/effects/${next.slug}`)} title={`Next: ${next.name} (j)`} aria-label={`Next effect: ${next.name}`}>
+                <Icon name="right" />
+              </button>
+            </span>
           </div>
         </div>
 
         <div className="plate">
-          <div className="plate-bar">
-            <div className="tabs" role="tablist">
-              <button role="tab" aria-selected={tab === "preview"} className={tab === "preview" ? "on" : ""} onClick={() => setTab("preview")}>
-                Preview
-              </button>
-              <button role="tab" aria-selected={tab === "code"} className={tab === "code" ? "on" : ""} onClick={() => setTab("code")}>
-                Code
-              </button>
-            </div>
-            <span className="spacer" style={{ flex: 1 }} />
-            <span className="mono faint">640 × 360 · 30 fps · 4 s</span>
-          </div>
-          {tab === "preview" ? (
-            <StagePlayer slug={meta.slug} values={api.values} />
-          ) : (
-            <div style={{ padding: 14 }}>
-              <CodeBlock tabs={[{ label: "Usage", code: usage }, { label: meta.file, code: src }]} />
-            </div>
-          )}
+          <StagePlayer slug={meta.slug} values={api.values} />
         </div>
 
-        <section className="doc">
-          <h2>Usage</h2>
-          <CodeBlock tabs={[{ label: "Scene.tsx", code: usage }, { label: "Root.tsx", code: compositionSnippet(meta) }, { label: "Install", code: installSnippet(meta) }]} />
-        </section>
-
-        <section className="doc">
-          <h2>Props</h2>
-          <PropsTable meta={meta} />
-        </section>
-
-        {meta.notes?.length ? (
-          <section className="doc">
-            <h2>Notes</h2>
-            <ul className="notes">
-              {meta.notes.map((n) => (
-                <li key={n}>{n}</li>
-              ))}
-            </ul>
-          </section>
-        ) : null}
-
-        <section className="doc">
-          <h2>Metadata</h2>
-          <CodeBlock tabs={[{ label: "meta.json", code: JSON.stringify(meta, null, 2) }]} />
+        <section className="doc-tabs">
+          <div className="tabs" role="tablist" aria-label="Details">
+            {docTabs.map((t) => (
+              <button key={t.id} role="tab" aria-selected={tab === t.id} className={tab === t.id ? "on" : ""} onClick={() => setTab(t.id)}>
+                {t.label}
+              </button>
+            ))}
+          </div>
+          <div className="doc-body" role="tabpanel">
+            {tab === "usage" && <CodeBlock tabs={[{ label: "Scene.tsx", code: usage }, { label: "Root.tsx", code: compositionSnippet(meta) }, { label: "Install", code: installSnippet(meta) }]} />}
+            {tab === "props" && <PropsTable meta={meta} />}
+            {tab === "source" && <CodeBlock tabs={[{ label: meta.file, code: src }, { label: "meta.json", code: JSON.stringify(meta, null, 2) }]} />}
+            {tab === "notes" && (
+              <ul className="notes">
+                {meta.notes?.map((n) => (
+                  <li key={n}>{n}</li>
+                ))}
+              </ul>
+            )}
+          </div>
         </section>
       </div>
       <Customize meta={meta} api={api} onCopyCode={() => copy(usage, "Usage copied")} />

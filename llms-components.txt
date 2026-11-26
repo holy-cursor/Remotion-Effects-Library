@@ -1089,35 +1089,6 @@ Each arriving token bumps the counter and the pot fill together.
 | `amounts` | `number[]` | [10,15,10,20,15,30] | Amount per token. |
 | `format` | `(value: number) => string` | — | Number formatter. |
 
-## Timeline Rise (`TimelineRise`)
-
-Time segments fill in sequence, then a two-point rise with a percentage.
-
-- Category: Data & Charts. Kind: scene. Source: `shared-effects/InventoryEffects.tsx`.
-- Import: `import {TimelineRise} from "./shared-effects";`
-
-- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
-- Draws in a 600 × 260 viewBox and fills its parent box.
-
-| Prop | Type | Default | Description |
-| --- | --- | --- | --- |
-| `labels` | `string[]` | ["Year 1","Year 2","Year 3","Year 4"] | Segment labels. |
-| `segments` | `TimelineSegment[]` | — | Segments with label and optional color; overrides labels. |
-| `fromValue` | `number` | 0 | Starting value. |
-| `toValue` | `number` | — | Ending value; overrides increase. |
-| `unit` | `string` | "%" | Value suffix. |
-| `showSegments` | `boolean` | true | Show the timeline rail. |
-| `showAxes` | `boolean` | true | Show axes. |
-| `showArea` | `boolean` | true | Show the filled area. |
-| `showValue` | `boolean` | true | Show the value. |
-| `chartHeight` | `number` | 100 | Chart height in viewBox units. |
-| `lineWidth` | `number` | 4 | Line width. |
-| `riseStart` | `number` | 0.48 | Growth starts. |
-| `riseEnd` | `number` | 0.96 | Growth ends. |
-| `segmentEnd` | `number` | 0.45 | Rail finishes filling. |
-| `format` | `(value: number) => string` | — | Custom number formatter. |
-| `increase` | `number` | 86 | Percentage shown at the end. |
-
 ## Logo Landing (`LogoLanding`)
 
 A mark falls, squashes on contact, rebounds and settles on its shadow.
@@ -1132,25 +1103,1080 @@ A mark falls, squashes on contact, rebounds and settles on its shadow.
 | --- | --- | --- | --- |
 | `children` | `React.ReactNode` | — | Your mark (120 × 120). |
 
-## Device Conditions (`DeviceConditions`)
+## Orbit Burst (`OrbitBurst`)
 
-A browser shell becomes a phone; dark-mode and network rows tick in.
+Orbit, entry blur, depth order, radius burst, scale and fade; expose card layout.
 
-- Category: UI Stories. Kind: scene. Source: `shared-effects/InventoryEffects.tsx`.
-- Import: `import {DeviceConditions} from "./shared-effects";`
+- Category: Depth & Camera. Kind: scene. Source: `shared-effects/CompleteDepth.tsx`.
+- Import: `import {OrbitBurst} from "./shared-effects";`
 
 - Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
-- Draws in a 600 × 260 viewBox and fills its parent box.
+- Source audit: E003, E034.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `labels` | `string[]` | ["Dark mode","Slow network"] | Condition labels. |
-| `conditions` | `DeviceCondition[]` | — | Rows {label, at?, passed?}; overrides labels. |
-| `fromDevice` | `DeviceSize` | {"width":390,"height":192,"radius":10} | Starting {width, height, radius}. |
-| `toDevice` | `DeviceSize` | {"width":140,"height":226,"radius":23} | Ending {width, height, radius}. |
-| `children` | `React.ReactNode` | — | Custom responsive screen content. |
-| `showConditions` | `boolean` | true | Show condition rows. |
-| `darkScreen` | `boolean` | true | Switch to a dark screen at checksStart. |
-| `morphStart` | `number` | 0.24 | Device resize starts. |
-| `morphEnd` | `number` | 0.58 | Device resize ends. |
-| `checksStart` | `number` | 0.64 | Default checklist start. |
+| `text` | `string` | "Orbit Burst" | Display text. Defaults to the effect name. |
+| `items` | `string[]` | — | Custom item labels; empty arrays are supported. |
+| `radius` | `number` | 165 | Orbit or token radius in viewBox units. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Stroke Fill (`StrokeFill`)
+
+Replace fixed branded paths with supplied paths and viewBox; retain draw/fill timing.
+
+- Category: Reveals & Masks. Kind: scene. Source: `shared-effects/CompleteTypography.tsx`.
+- Import: `import {StrokeFill} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E004.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Stroke Fill" | Display text. Defaults to the effect name. |
+| `paths` | `string[]` | — | SVG paths in the 640 × 360 viewBox. No client logo is embedded. |
+| `amount` | `number` | 3 | Effect magnitude; component-specific units are documented in source. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Sweep Grid (`SweepGrid`)
+
+Slow moving grid plus radial light sweep and center shade; no actual pointer needed.
+
+- Category: Light & Texture. Kind: scene. Source: `shared-effects/CompleteAtmosphere.tsx`.
+- Import: `import {SweepGrid} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E008.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Sweep Grid" | Display text. Defaults to the effect name. |
+| `amount` | `number` | 28 | Effect magnitude; component-specific units are documented in source. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Ambient Particles (`AmbientParticles`)
+
+Pulsing radial field and deterministic wrapped dots; expose density, seed and dimensions.
+
+- Category: Light & Texture. Kind: scene. Source: `shared-effects/CompleteAtmosphere.tsx`.
+- Import: `import {AmbientParticles} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E010.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Ambient Particles" | Display text. Defaults to the effect name. |
+| `count` | `number` | 40 | Element count (bounded internally). |
+| `seed` | `number` | 7 | Stable variation seed. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Whip Letters (`WhipLetters`)
+
+Letters swing before whole composition whips; expose pivot, anticipation and travel.
+
+- Category: Text. Kind: scene. Source: `shared-effects/CompleteTypography.tsx`.
+- Import: `import {WhipLetters} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E014.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Whip Letters" | Display text. Defaults to the effect name. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Word Icon Swap (`WordIconSwap`)
+
+Letter collapse, moneybag replacement, neighboring pushes/wobble, fall and spread, then logo compression; template needs supplied icons.
+
+- Category: Text. Kind: scene. Source: `shared-effects/CompleteTypography.tsx`.
+- Import: `import {WordIconSwap} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E017.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Word Icon Swap" | Display text. Defaults to the effect name. |
+| `children` | `React.ReactNode` | — | Your artwork or scene content. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Center Ripple (`CenterRipple`)
+
+Words enter with delays distributed around the center; expose origin and propagation delay.
+
+- Category: Text. Kind: scene. Source: `shared-effects/CompleteTypography.tsx`.
+- Import: `import {CenterRipple} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E020.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Center Ripple" | Display text. Defaults to the effect name. |
+| `amount` | `number` | 0.5 | Effect magnitude; component-specific units are documented in source. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Slice Glitch (`SliceGlitch`)
+
+Seeded strip offsets and channel shadows around impact; older scene source, not necessarily in current composition.
+
+- Category: Text. Kind: scene. Source: `shared-effects/CompleteTypography.tsx`.
+- Import: `import {SliceGlitch} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E022.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Slice Glitch" | Display text. Defaults to the effect name. |
+| `count` | `number` | 8 | Element count (bounded internally). |
+| `seed` | `number` | 7 | Stable variation seed. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Pixel Stroke (`PixelStroke`)
+
+Connected pixel strokes keep heading legible; separate raster/glyph construction from layout.
+
+- Category: Text. Kind: scene. Source: `shared-effects/CompleteTypography.tsx`.
+- Import: `import {PixelStroke} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E027.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Pixel Stroke" | Display text. Defaults to the effect name. |
+| `amount` | `number` | 7 | Effect magnitude; component-specific units are documented in source. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Scrolling Type (`ScrollingType`)
+
+Alternating-direction text rows, masked center text, bars and panel wipes; source is retained even where not mounted in latest film.
+
+- Category: Text. Kind: scene. Source: `shared-effects/CompleteTypography.tsx`.
+- Import: `import {ScrollingType} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E030.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Scrolling Type" | Display text. Defaults to the effect name. |
+| `amount` | `number` | 160 | Effect magnitude; component-specific units are documented in source. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Soft Text (`SoftText`)
+
+Gradient-edge reveal plus small lift; independent from metric content.
+
+- Category: Text. Kind: scene. Source: `shared-effects/CompleteTypography.tsx`.
+- Import: `import {SoftText} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E031.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Soft Text" | Display text. Defaults to the effect name. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Caption Cues (`CaptionCues`)
+
+Timed text chunks and cue captions; use explicit cue timings rather than claim word-level audio alignment.
+
+- Category: Text. Kind: scene. Source: `shared-effects/CompleteTypography.tsx`.
+- Import: `import {CaptionCues} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E032.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Caption Cues" | Display text. Defaults to the effect name. |
+| `cues` | `Cue[]` | — | Explicit normalized start/end and text. No automatic audio alignment. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Floating Token (`FloatingToken`)
+
+Sinusoidal drift, entry and glow; expose amplitude, phase and asset.
+
+- Category: Paths & Particles. Kind: scene. Source: `shared-effects/CompleteDepth.tsx`.
+- Import: `import {FloatingToken} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E033.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Floating Token" | Display text. Defaults to the effect name. |
+| `amount` | `number` | 16 | Effect magnitude; component-specific units are documented in source. |
+| `radius` | `number` | 56 | Orbit or token radius in viewBox units. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Card Rise (`CardRise`)
+
+Large card rises from below, settles tilted and sequentially highlights choices; sheen variant in Scene5.
+
+- Category: Depth & Camera. Kind: scene. Source: `shared-effects/CompleteDepth.tsx`.
+- Import: `import {CardRise} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E038.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Card Rise" | Display text. Defaults to the effect name. |
+| `items` | `string[]` | — | Custom item labels; empty arrays are supported. |
+| `selectedIndex` | `number` | 1 | Selected item index, clamped to available data. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Card Focus (`CardFocus`)
+
+Selected panel advances in Z with dimmed surroundings and a glare sweep.
+
+- Category: Depth & Camera. Kind: scene. Source: `shared-effects/CompleteDepth.tsx`.
+- Import: `import {CardFocus} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E040.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Card Focus" | Display text. Defaults to the effect name. |
+| `items` | `string[]` | — | Custom item labels; empty arrays are supported. |
+| `selectedIndex` | `number` | 1 | Selected item index, clamped to available data. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Depth Callouts (`DepthCallouts`)
+
+Rows approach in depth and highlight in sequence; separate content from timing.
+
+- Category: Depth & Camera. Kind: scene. Source: `shared-effects/CompleteDepth.tsx`.
+- Import: `import {DepthCallouts} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E041.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Depth Callouts" | Display text. Defaults to the effect name. |
+| `items` | `string[]` | — | Custom item labels; empty arrays are supported. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Depth Stream (`DepthStream`)
+
+Wrapped scrolling cards, speed-related blur and focused foreground card; feed supplied cards.
+
+- Category: Depth & Camera. Kind: scene. Source: `shared-effects/CompleteDepth.tsx`.
+- Import: `import {DepthStream} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E042, E044, E051, E085.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Depth Stream" | Display text. Defaults to the effect name. |
+| `items` | `string[]` | — | Custom item labels; empty arrays are supported. |
+| `variant` | `string` | "corridor" | Related source variant, using the same animation engine. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+Presets:
+- Corridor: Source variant: corridor `{"variant":"corridor"}`
+- Search: Source variant: search `{"variant":"search"}`
+- Mail: Source variant: mail `{"variant":"mail"}`
+
+## Phone Turn (`PhoneTurn`)
+
+Detailed phone mockup with metal frame, lenses, screen bezel and side buttons; perspective back-to-front turn.
+
+- Category: Depth & Camera. Kind: scene. Source: `shared-effects/CompleteDepth.tsx`.
+- Import: `import {PhoneTurn} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E045.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Phone Turn" | Display text. Defaults to the effect name. |
+| `children` | `React.ReactNode` | — | Your artwork or scene content. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Camera Move (`CameraMove`)
+
+Whole-scene camera move with surrounding landmarks that share its pan, rotation and zoom.
+
+- Category: Transitions. Kind: scene. Source: `shared-effects/CompleteTransitions.tsx`.
+- Import: `import {CameraMove} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E052.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Camera Move" | Display text. Defaults to the effect name. |
+| `children` | `React.ReactNode` | — | Your artwork or scene content. |
+| `from` | `Box` | — | Starting bounds {x,y,width,height,radius?}. CameraMove uses x/y offsets and width/height scale factors. |
+| `to` | `Box` | — | Ending bounds; replaceable independently of artwork. |
+| `amount` | `number` | 15 | Effect magnitude; component-specific units are documented in source. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Fade Envelope (`FadeEnvelope`)
+
+Basic reusable opacity envelope; consolidate duplicate inline fades.
+
+- Category: Transitions. Kind: scene. Source: `shared-effects/CompleteTransitions.tsx`.
+- Import: `import {FadeEnvelope} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E053.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Fade Envelope" | Display text. Defaults to the effect name. |
+| `children` | `React.ReactNode` | — | Your artwork or scene content. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## World Slide (`WorldSlide`)
+
+Scene travel with velocity-linked vertical smear; preserve both scene coordinates.
+
+- Category: Transitions. Kind: scene. Source: `shared-effects/CompleteTransitions.tsx`.
+- Import: `import {WorldSlide} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E054.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "World Slide" | Display text. Defaults to the effect name. |
+| `children` | `React.ReactNode` | — | Your artwork or scene content. |
+| `secondary` | `React.ReactNode` | — | Incoming scene or second mark. |
+| `orientation` | `"horizontal" \| "vertical"` | "vertical" | Shared-world travel direction. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Glyph Zoom (`GlyphZoom`)
+
+Extreme text zoom becomes full-screen background; expose target glyph and anchor.
+
+- Category: Transitions. Kind: scene. Source: `shared-effects/CompleteTransitions.tsx`.
+- Import: `import {GlyphZoom} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E056.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Glyph Zoom" | Display text. Defaults to the effect name. |
+| `children` | `React.ReactNode` | — | Your artwork or scene content. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Card Expand (`CardExpand`)
+
+Scale/rotate a foreground card until it replaces the scene; preserve transform anchor.
+
+- Category: Transitions. Kind: scene. Source: `shared-effects/CompleteTransitions.tsx`.
+- Import: `import {CardExpand} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E057.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Card Expand" | Display text. Defaults to the effect name. |
+| `children` | `React.ReactNode` | — | Your artwork or scene content. |
+| `from` | `Box` | — | Starting bounds {x,y,width,height,radius?}. CameraMove uses x/y offsets and width/height scale factors. |
+| `to` | `Box` | — | Ending bounds; replaceable independently of artwork. |
+| `amount` | `number` | -9 | Effect magnitude; component-specific units are documented in source. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Form Flip (`FormFlip`)
+
+UI tilts in, focuses fields, flips 180 degrees and replaces contents with sheen/wipe.
+
+- Category: Transitions. Kind: scene. Source: `shared-effects/CompleteTransitions.tsx`.
+- Import: `import {FormFlip} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E059.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Form Flip" | Display text. Defaults to the effect name. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Projector Reveal (`ProjectorReveal`)
+
+Candle collapses into slit; feathered light cone grows, reveals type, flickers to replacement, then iris/dissolve.
+
+- Category: Reveals & Masks. Kind: scene. Source: `shared-effects/CompleteTransitions.tsx`.
+- Import: `import {ProjectorReveal} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E060.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Projector Reveal" | Display text. Defaults to the effect name. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Chart Tip Zoom (`ChartTipZoom`)
+
+Camera follows chart, pulls back to giant candle and zooms toward its tip; includes motion streaks.
+
+- Category: Transitions. Kind: scene. Source: `shared-effects/CompleteTransitions.tsx`.
+- Import: `import {ChartTipZoom} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E061.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Chart Tip Zoom" | Display text. Defaults to the effect name. |
+| `values` | `number[]` | — | Values in display order; see source for the component-specific units. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Pixel Field (`PixelField`)
+
+Raster-sampled glyph/object silhouette becomes cells, then fills outward using distance and deterministic noise.
+
+- Category: Transitions. Kind: scene. Source: `shared-effects/CompleteAtmosphere.tsx`.
+- Import: `import {PixelField} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E063.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Pixel Field" | Display text. Defaults to the effect name. |
+| `paths` | `string[]` | — | SVG paths in the 640 × 360 viewBox. No client logo is embedded. |
+| `seed` | `number` | 7 | Stable variation seed. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Television Reveal (`TelevisionReveal`)
+
+Camera pulls back from a thin-bezel television, revealing its feet, floor and surrounding room landmarks.
+
+- Category: Transitions. Kind: scene. Source: `shared-effects/CompleteTransitions.tsx`.
+- Import: `import {TelevisionReveal} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E066.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Television Reveal" | Display text. Defaults to the effect name. |
+| `children` | `React.ReactNode` | — | Your artwork or scene content. |
+| `variant` | `string` | "hold" | Related source variant, using the same animation engine. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+Presets:
+- Hold: Source variant: hold `{"variant":"hold"}`
+- Continue: Source variant: continue `{"variant":"continue"}`
+
+## Line Match Cut (`LineMatchCut`)
+
+Zigzag line reaches the bottom edge, cuts to a new scene and enters from the top at the same horizontal position and uninterrupted speed.
+
+- Category: Transitions. Kind: scene. Source: `shared-effects/CompleteTransitions.tsx`.
+- Import: `import {LineMatchCut} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E067.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Line Match Cut" | Display text. Defaults to the effect name. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Grid Press (`GridPress`)
+
+Original vertical guides press inward while horizontal guides stay fixed; text shrinks and holds before the card reveal.
+
+- Category: Transitions. Kind: scene. Source: `shared-effects/CompleteTransitions.tsx`.
+- Import: `import {GridPress} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E071.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Grid Press" | Display text. Defaults to the effect name. |
+| `children` | `React.ReactNode` | — | Your artwork or scene content. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Badge Handoff (`BadgeHandoff`)
+
+Logo becomes verification badge and docks into profile; artwork crossfade with geometry changes.
+
+- Category: Transitions. Kind: scene. Source: `shared-effects/CompleteTransitions.tsx`.
+- Import: `import {BadgeHandoff} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E072.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Badge Handoff" | Display text. Defaults to the effect name. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Cursor Click (`CursorClick`)
+
+Generic cursor path/timing and press; variants elsewhere should share this foundation.
+
+- Category: UI Stories. Kind: scene. Source: `shared-effects/CompleteInterface.tsx`.
+- Import: `import {CursorClick} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E073.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Cursor Click" | Display text. Defaults to the effect name. |
+| `items` | `string[]` | — | Custom item labels; empty arrays are supported. |
+| `points` | `Point[]` | — | Coordinates in the 640 × 360 viewBox, with optional labels. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Button Press (`ButtonPress`)
+
+Raised pill, moving shine, press into Z, fill response and cursor-led whip camera.
+
+- Category: UI Stories. Kind: scene. Source: `shared-effects/CompleteInterface.tsx`.
+- Import: `import {ButtonPress} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E075.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Button Press" | Display text. Defaults to the effect name. |
+| `variant` | `string` | "press" | Related source variant, using the same animation engine. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+Presets:
+- Press: Source variant: press `{"variant":"press"}`
+- Whip: Source variant: whip `{"variant":"whip"}`
+
+## Lower Third (`LowerThird`)
+
+Backdrop blur, translucent border, fade and vertical lift; separate from founder name/artwork.
+
+- Category: UI Stories. Kind: scene. Source: `shared-effects/CompleteInterface.tsx`.
+- Import: `import {LowerThird} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E081.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Lower Third" | Display text. Defaults to the effect name. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Bubble Expand (`BubbleExpand`)
+
+Phone conversation bubble enlarges into an isolated composition; shared-object bounds matter.
+
+- Category: Transitions. Kind: scene. Source: `shared-effects/CompleteTransitions.tsx`.
+- Import: `import {BubbleExpand} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E083.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Bubble Expand" | Display text. Defaults to the effect name. |
+| `children` | `React.ReactNode` | — | Your artwork or scene content. |
+| `from` | `Box` | — | Starting bounds {x,y,width,height,radius?}. CameraMove uses x/y offsets and width/height scale factors. |
+| `to` | `Box` | — | Ending bounds; replaceable independently of artwork. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Ink Stamp (`InkStamp`)
+
+Ink texture, stamp landing and unfolding label; isolate typography/art from texture and timing.
+
+- Category: UI Stories. Kind: scene. Source: `shared-effects/CompleteInterface.tsx`.
+- Import: `import {InkStamp} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E087.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Ink Stamp" | Display text. Defaults to the effect name. |
+| `seed` | `number` | 7 | Stable variation seed. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Search Journey (`SearchJourney`)
+
+Browser search page with typed query, result titles, site icons, snippets, pointer selection and page-load progress.
+
+- Category: UI Stories. Kind: scene. Source: `shared-effects/CompleteInterface.tsx`.
+- Import: `import {SearchJourney} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E093.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Search Journey" | Display text. Defaults to the effect name. |
+| `items` | `string[]` | — | Custom item labels; empty arrays are supported. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Split Logo (`SplitLogo`)
+
+Outline draws, halves separate and symbol settles before supplied logo crossfade; parameterize SVG data.
+
+- Category: Reveals & Masks. Kind: scene. Source: `shared-effects/CompleteInterface.tsx`.
+- Import: `import {SplitLogo} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E135.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Split Logo" | Display text. Defaults to the effect name. |
+| `children` | `React.ReactNode` | — | Your artwork or scene content. |
+| `paths` | `string[]` | — | SVG paths in the 640 × 360 viewBox. No client logo is embedded. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Candle Geometry (`CandleGeometry`)
+
+Three-dimensional candlestick bodies and wicks with an oblique camera, ground grid, directional lighting and data-aware framing.
+
+- Category: Data & Charts. Kind: scene. Source: `shared-effects/CompleteOptional.tsx`.
+- Import: `import {CandleGeometry} from "./shared-effects/optional";`
+- Requires: three
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E096.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+- Import from shared-effects/optional. True Three.js geometry; optional WebGL dependency.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Candle Geometry" | Display text. Defaults to the effect name. |
+| `data` | `GeometryCandle[]` | — | OHLC data {open,close,high,low}. Demonstration data is synthetic. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Metric Pills (`MetricPills`)
+
+Number progression, side entries and vertical text reveal inside pills; expose values and units.
+
+- Category: Numbers & Progress. Kind: scene. Source: `shared-effects/CompleteData.tsx`.
+- Import: `import {MetricPills} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E102.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Metric Pills" | Display text. Defaults to the effect name. |
+| `items` | `string[]` | — | Custom item labels; empty arrays are supported. |
+| `values` | `number[]` | — | Values in display order; see source for the component-specific units. |
+| `format` | `(value: number) => string` | — | Formatter for numerical output. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Coin Drop (`CoinDrop`)
+
+Percent becomes coin, front/back flip, quadratic fall, tumble, damped landing and following camera.
+
+- Category: Paths & Particles. Kind: scene. Source: `shared-effects/CompleteDepth.tsx`.
+- Import: `import {CoinDrop} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E106.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Coin Drop" | Display text. Defaults to the effect name. |
+| `amount` | `number` | 360 | Effect magnitude; component-specific units are documented in source. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Logo Pair (`LogoPair`)
+
+Opposing logo entry/merge plus staggered icon convergence, scale and exit.
+
+- Category: Paths & Particles. Kind: scene. Source: `shared-effects/CompleteDepth.tsx`.
+- Import: `import {LogoPair} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E110.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Logo Pair" | Display text. Defaults to the effect name. |
+| `items` | `string[]` | — | Custom item labels; empty arrays are supported. |
+| `children` | `React.ReactNode` | — | Your artwork or scene content. |
+| `secondary` | `React.ReactNode` | — | Incoming scene or second mark. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Rising Mist (`RisingMist`)
+
+Moving gradient mist and colored light/reflection treatments; no physical volumetric simulation.
+
+- Category: Light & Texture. Kind: scene. Source: `shared-effects/CompleteAtmosphere.tsx`.
+- Import: `import {RisingMist} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E111.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Rising Mist" | Display text. Defaults to the effect name. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Warp Dots (`WarpDots`)
+
+Texture/warped pattern around typography, with Canvas implementation variants.
+
+- Category: Light & Texture. Kind: scene. Source: `shared-effects/CompleteAtmosphere.tsx`.
+- Import: `import {WarpDots} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E112.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Warp Dots" | Display text. Defaults to the effect name. |
+| `amount` | `number` | 16 | Effect magnitude; component-specific units are documented in source. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Perspective Grid (`PerspectiveGrid`)
+
+Technical background plus pixel glyph reveal and social-card entrance; page-specific source.
+
+- Category: Light & Texture. Kind: scene. Source: `shared-effects/CompleteAtmosphere.tsx`.
+- Import: `import {PerspectiveGrid} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E113.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Perspective Grid" | Display text. Defaults to the effect name. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Halftone Arc (`HalftoneArc`)
+
+Blue curved graphics grow through a circular mask then slide; expose geometry and dot field.
+
+- Category: Reveals & Masks. Kind: scene. Source: `shared-effects/CompleteAtmosphere.tsx`.
+- Import: `import {HalftoneArc} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E116.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Halftone Arc" | Display text. Defaults to the effect name. |
+| `amount` | `number` | 2.8 | Effect magnitude; component-specific units are documented in source. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Grain Field (`GrainField`)
+
+Grain, dot size variation and framing marks; independent texture helpers.
+
+- Category: Light & Texture. Kind: scene. Source: `shared-effects/CompleteAtmosphere.tsx`.
+- Import: `import {GrainField} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E117.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Grain Field" | Display text. Defaults to the effect name. |
+| `count` | `number` | 400 | Element count (bounded internally). |
+| `seed` | `number` | 7 | Stable variation seed. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Failure Route (`FailureRoute`)
+
+Chosen failure is emphasized while others dim; card flattens into red route.
+
+- Category: UI Stories. Kind: scene. Source: `shared-effects/CompleteWorkflow.tsx`.
+- Import: `import {FailureRoute} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E126.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Failure Route" | Display text. Defaults to the effect name. |
+| `items` | `string[]` | — | Custom item labels; empty arrays are supported. |
+| `selectedIndex` | `number` | 1 | Selected item index, clamped to available data. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Pixel Logo (`PixelLogo`)
+
+Four blocks approach from alternating sides; distinguish animated assembly from static mark variants.
+
+- Category: Reveals & Masks. Kind: scene. Source: `shared-effects/CompleteAtmosphere.tsx`.
+- Import: `import {PixelLogo} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E129.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Pixel Logo" | Display text. Defaults to the effect name. |
+| `amount` | `number` | 5 | Effect magnitude; component-specific units are documented in source. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Camera Motion Blur (`CameraMotionBlur`)
+
+Temporal motion blur on a falling rounded rectangle with gravity, diminishing rebounds and contact squash. Accepts custom frame-driven children.
+
+- Category: Transitions. Kind: scene. Source: `shared-effects/CompleteOptional.tsx`.
+- Import: `import {CameraMotionBlur} from "./shared-effects/optional";`
+- Requires: @remotion/motion-blur
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Source audit: E133.
+- New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.
+- Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.
+- Import from shared-effects/optional. Uses the maintained Remotion temporal sampler.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Camera Motion Blur" | Display text. Defaults to the effect name. |
+| `children` | `React.ReactNode` | — | Your complete frame-driven scene; children read useCurrentFrame inside the temporal sampler. |
+| `samples` | `number` | 8 | Temporal samples from @remotion/motion-blur. |
+| `shutterAngle` | `number` | 180 | Remotion shutter angle in degrees. |
+| `start` | `number` | 0 | Start within the normalized timeline. |
+| `end` | `number` | 1 | Finish within the normalized timeline. |
+
+## Text Light Sweep (`TextLightSweep`)
+
+A per-letter blue-white light sweep: a bright front, colored wake, return to white and a retained final word. No camera motion.
+
+- Category: Text. Kind: scene. Source: `shared-effects/TextLightSweep.tsx`.
+- Import: `import {TextLightSweep} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Text only: pair it with your own camera move or letter entrance.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | "Text Light Sweep" | Text to illuminate. |
+| `background` | `string` | "#081622" | Dark backdrop for the original white and cyan treatment. |
+| `baseColor` | `string` | "#ffffff" | Resting letter color. |
+| `highlightColor` | `string` | "#C2F1FF" | Leading highlight colour. |
+| `trailColor` | `string` | "#0095C2" | Original cyan wake. |
+| `retainLastWord` | `boolean` | true | Keep the last word colored after the wave. |
+| `sweepStart` | `number` | 0.18 | Progress where the source sweep begins. |
+| `sweepEnd` | `number` | 0.8 | Progress where the sweep ends. |
+
+Presets:
+- Cool sweep: White letters with a cyan wake. `{"text":"Light moves through every letter","baseColor":"#ffffff","highlightColor":"#C2F1FF","trailColor":"#0095C2","fontFamily":"Inter, sans-serif"}`
+- Saint orange: Same motion in the collection palette. `{"baseColor":"#FFFFFE","highlightColor":"#FAD889","trailColor":"#FB7501"}`
+
+## Dither Aurora (`DitherAurora`)
+
+Layered aurora curtains with folding edges, vertical rays, shimmer and ordered dithering. Original dithercn field adapted for frame-driven playback.
+
+- Category: Light & Texture. Kind: scene. Source: `shared-effects/DitherAurora.tsx`.
+- Import: `import {DitherAurora} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Adapted from https://github.com/opencoredev/dithercn (MIT); license in dither/LICENSE.
+- Deterministic WebGL shader; no requestAnimationFrame or wall clock. Copy the dither folder with this component.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `cell` | `number` | 2 | Dither cell size in 640 × 360 design pixels. |
+| `matrix` | `string` | "bayer8" | Ordered threshold pattern. |
+| `animate` | `boolean` | true | Animate from progress; disable for a still. |
+| `seconds` | `number` | 16 | Seconds of procedural motion covered by progress 0–1. |
+| `color` | `string` | "#FB7501" | Bright curtain edge. |
+| `tipColor` | `string` | "#FAD889" | Color towards the ray tips. |
+| `curtains` | `number` | 3 | Number of depth layers. |
+| `height` | `number` | 0.42 | Lowest edge height; 0 bottom, 1 top. |
+| `spread` | `number` | 0.11 | Separation between curtains. |
+| `sway` | `number` | 1 | Broad folds. |
+| `turbulence` | `number` | 0.6 | Fine ripples. |
+| `rays` | `number` | 8 | Density of vertical rays. |
+| `length` | `number` | 0.45 | Ray length. |
+| `glow` | `number` | 0.9 | Edge brightness. |
+| `tilt` | `number` | -8 | Curtain tilt in degrees. |
+| `drift` | `number` | 0.5 | Horizontal travel. |
+| `direction` | `string` | "up" | Ray direction. |
+| `mask` | `string` | "edges" | Fade to background. |
+| `intensity` | `number` | 0.95 | Overall light intensity. |
+| `shimmer` | `number` | 0.2 | Brightness ripple. |
+| `foldScale` | `number` | 1 | Horizontal fold frequency. |
+| `stillTime` | `number` | 4 | Moment used when animation is disabled. |
+
+Presets:
+- Night curtains: Warm dithered curtains against a dark sky. `{"skyColor":"#100B06","color":"#FB7501","tipColor":"#FAD889","tokens":{"ink":"#FFFFFE"}}`
+- Coarse poster: Broader rays and large Bayer cells. `{"cell":4,"rays":4,"matrix":"bayer4","curtains":2}`
+
+## Dither Globe (`DitherGlobe`)
+
+Rotating Earth with real land outlines, shaded terminator, dithered atmosphere, pulsing geographic markers and lifted great-circle routes.
+
+- Category: Depth & Camera. Kind: scene. Source: `shared-effects/DitherGlobe.tsx`.
+- Import: `import {DitherGlobe} from "./shared-effects";`
+
+- Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
+- Adapted from dithercn (MIT); bundled Natural Earth land mask is public domain. See dither/LICENSE.
+- No runtime map fetches. Rotation and route pulses are driven by progress; no drag state or wall-clock loop. Copy the dither folder with this component.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `cell` | `number` | 2 | Dither cell size in 640 × 360 design pixels. |
+| `matrix` | `string` | "bayer4" | Ordered threshold pattern. |
+| `animate` | `boolean` | true | Animate from progress; disable for a still. |
+| `seconds` | `number` | 12 | Seconds of motion covered by progress. |
+| `rotationSpeed` | `number` | 6 | Degrees of longitude per second. Shared speed multiplies the timeline. |
+| `startLongitude` | `number` | 10 | Longitude facing the camera at the start. |
+| `tilt` | `number` | 18 | North pole tilt in degrees. |
+| `light` | `number` | 300 | Lighting angle. |
+| `ocean` | `number` | 0.18 | Ocean brightness. |
+| `atmosphere` | `boolean` | true | Dithered glow at the lit rim. |
+| `showArcs` | `boolean` | true | Display great-circle routes. |
+| `markers` | `GlobeMarker[]` | — | Locations {at:[latitude,longitude], color?}. Empty array hides all markers. |
+| `arcs` | `GlobeArc[]` | — | Routes {from:[lat,lon],to:[lat,lon],color?}. Empty array hides routes. |

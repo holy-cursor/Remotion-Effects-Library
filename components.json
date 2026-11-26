@@ -3633,167 +3633,6 @@
     {
       "sharedProps": true,
       "props": {
-        "labels": {
-          "kind": "json",
-          "type": "string[]",
-          "default": [
-            "Year 1",
-            "Year 2",
-            "Year 3",
-            "Year 4"
-          ],
-          "description": "Segment labels.",
-          "group": "content",
-          "control": false
-        },
-        "segments": {
-          "kind": "json",
-          "type": "TimelineSegment[]",
-          "description": "Segments with label and optional color; overrides labels.",
-          "group": "content",
-          "control": false
-        },
-        "fromValue": {
-          "kind": "number",
-          "type": "number",
-          "default": 0,
-          "min": -1000,
-          "max": 1000,
-          "step": 1,
-          "description": "Starting value.",
-          "group": "content"
-        },
-        "toValue": {
-          "kind": "number",
-          "type": "number",
-          "min": -1000,
-          "max": 1000,
-          "step": 1,
-          "description": "Ending value; overrides increase.",
-          "group": "content"
-        },
-        "unit": {
-          "kind": "text",
-          "type": "string",
-          "default": "%",
-          "description": "Value suffix.",
-          "group": "content",
-          "required": false
-        },
-        "showSegments": {
-          "kind": "boolean",
-          "type": "boolean",
-          "default": true,
-          "description": "Show the timeline rail.",
-          "group": "style"
-        },
-        "showAxes": {
-          "kind": "boolean",
-          "type": "boolean",
-          "default": true,
-          "description": "Show axes.",
-          "group": "style"
-        },
-        "showArea": {
-          "kind": "boolean",
-          "type": "boolean",
-          "default": true,
-          "description": "Show the filled area.",
-          "group": "style"
-        },
-        "showValue": {
-          "kind": "boolean",
-          "type": "boolean",
-          "default": true,
-          "description": "Show the value.",
-          "group": "style"
-        },
-        "chartHeight": {
-          "kind": "number",
-          "type": "number",
-          "default": 100,
-          "min": 10,
-          "max": 165,
-          "step": 1,
-          "description": "Chart height in viewBox units.",
-          "group": "style"
-        },
-        "lineWidth": {
-          "kind": "number",
-          "type": "number",
-          "default": 4,
-          "min": 1,
-          "max": 12,
-          "step": 1,
-          "description": "Line width.",
-          "group": "style"
-        },
-        "riseStart": {
-          "kind": "number",
-          "type": "number",
-          "default": 0.48,
-          "min": 0,
-          "max": 0.9,
-          "step": 0.01,
-          "description": "Growth starts.",
-          "group": "timing"
-        },
-        "riseEnd": {
-          "kind": "number",
-          "type": "number",
-          "default": 0.96,
-          "min": 0.1,
-          "max": 1,
-          "step": 0.01,
-          "description": "Growth ends.",
-          "group": "timing"
-        },
-        "segmentEnd": {
-          "kind": "number",
-          "type": "number",
-          "default": 0.45,
-          "min": 0.01,
-          "max": 1,
-          "step": 0.01,
-          "description": "Rail finishes filling.",
-          "group": "timing"
-        },
-        "format": {
-          "kind": "json",
-          "type": "(value: number) => string",
-          "description": "Custom number formatter.",
-          "group": "content",
-          "control": false
-        },
-        "increase": {
-          "kind": "number",
-          "type": "number",
-          "default": 86,
-          "min": -100,
-          "max": 500,
-          "step": 1,
-          "description": "Percentage shown at the end.",
-          "group": "content"
-        }
-      },
-      "slug": "timeline-rise",
-      "name": "Timeline Rise",
-      "exportName": "TimelineRise",
-      "file": "InventoryEffects.tsx",
-      "category": "data",
-      "kind": "scene",
-      "description": "Time segments fill in sequence, then a two-point rise with a percentage.",
-      "tags": [
-        "timeline",
-        "growth"
-      ],
-      "notes": [
-        "Draws in a 600 × 260 viewBox and fills its parent box."
-      ]
-    },
-    {
-      "sharedProps": true,
-      "props": {
         "children": {
           "kind": "node",
           "type": "React.ReactNode",
@@ -3820,117 +3659,3637 @@
       ]
     },
     {
+      "slug": "orbit-burst",
+      "name": "Orbit Burst",
+      "exportName": "OrbitBurst",
+      "file": "CompleteDepth.tsx",
+      "category": "depth",
+      "kind": "scene",
       "sharedProps": true,
+      "isNew": true,
+      "description": "Orbit, entry blur, depth order, radius burst, scale and fade; expose card layout.",
+      "tags": [
+        "depth",
+        "e003",
+        "e034"
+      ],
       "props": {
-        "labels": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Orbit Burst"
+        },
+        "items": {
           "kind": "json",
           "type": "string[]",
-          "default": [
-            "Dark mode",
-            "Slow network"
+          "description": "Custom item labels; empty arrays are supported.",
+          "group": "content",
+          "control": false
+        },
+        "radius": {
+          "kind": "number",
+          "type": "number",
+          "default": 165,
+          "min": 10,
+          "max": 260,
+          "step": 1,
+          "description": "Orbit or token radius in viewBox units.",
+          "group": "style"
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E003, E034.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ]
+    },
+    {
+      "slug": "stroke-fill",
+      "name": "Stroke Fill",
+      "exportName": "StrokeFill",
+      "file": "CompleteTypography.tsx",
+      "category": "reveals",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Replace fixed branded paths with supplied paths and viewBox; retain draw/fill timing.",
+      "tags": [
+        "reveals",
+        "e004"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Stroke Fill"
+        },
+        "paths": {
+          "kind": "json",
+          "type": "string[]",
+          "description": "SVG paths in the 640 × 360 viewBox. No client logo is embedded.",
+          "group": "content",
+          "control": false
+        },
+        "amount": {
+          "kind": "number",
+          "type": "number",
+          "default": 3,
+          "min": 0,
+          "max": 1000,
+          "step": 1,
+          "description": "Effect magnitude; component-specific units are documented in source.",
+          "group": "style"
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E004.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ]
+    },
+    {
+      "slug": "sweep-grid",
+      "name": "Sweep Grid",
+      "exportName": "SweepGrid",
+      "file": "CompleteAtmosphere.tsx",
+      "category": "texture",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Slow moving grid plus radial light sweep and center shade; no actual pointer needed.",
+      "tags": [
+        "texture",
+        "e008"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Sweep Grid"
+        },
+        "amount": {
+          "kind": "number",
+          "type": "number",
+          "default": 28,
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "description": "Effect magnitude; component-specific units are documented in source.",
+          "group": "style"
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E008.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ]
+    },
+    {
+      "slug": "ambient-particles",
+      "name": "Ambient Particles",
+      "exportName": "AmbientParticles",
+      "file": "CompleteAtmosphere.tsx",
+      "category": "texture",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Pulsing radial field and deterministic wrapped dots; expose density, seed and dimensions.",
+      "tags": [
+        "texture",
+        "e010"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Ambient Particles"
+        },
+        "count": {
+          "kind": "number",
+          "type": "number",
+          "default": 40,
+          "min": 1,
+          "max": 120,
+          "step": 1,
+          "description": "Element count (bounded internally).",
+          "group": "content"
+        },
+        "seed": {
+          "kind": "number",
+          "type": "number",
+          "default": 7,
+          "min": 0,
+          "max": 1000,
+          "step": 1,
+          "description": "Stable variation seed.",
+          "group": "style"
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E010.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ]
+    },
+    {
+      "slug": "whip-letters",
+      "name": "Whip Letters",
+      "exportName": "WhipLetters",
+      "file": "CompleteTypography.tsx",
+      "category": "text",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Letters swing before whole composition whips; expose pivot, anticipation and travel.",
+      "tags": [
+        "text",
+        "e014"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Whip Letters"
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E014.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ]
+    },
+    {
+      "slug": "word-icon-swap",
+      "name": "Word Icon Swap",
+      "exportName": "WordIconSwap",
+      "file": "CompleteTypography.tsx",
+      "category": "text",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Letter collapse, moneybag replacement, neighboring pushes/wobble, fall and spread, then logo compression; template needs supplied icons.",
+      "tags": [
+        "text",
+        "e017"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Word Icon Swap"
+        },
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Your artwork or scene content.",
+          "group": "content",
+          "control": false
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E017.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ]
+    },
+    {
+      "slug": "center-ripple",
+      "name": "Center Ripple",
+      "exportName": "CenterRipple",
+      "file": "CompleteTypography.tsx",
+      "category": "text",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Words enter with delays distributed around the center; expose origin and propagation delay.",
+      "tags": [
+        "text",
+        "e020"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Center Ripple"
+        },
+        "amount": {
+          "kind": "number",
+          "type": "number",
+          "default": 0.5,
+          "min": 0,
+          "max": 1,
+          "step": 0.01,
+          "description": "Effect magnitude; component-specific units are documented in source.",
+          "group": "style"
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E020.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ]
+    },
+    {
+      "slug": "slice-glitch",
+      "name": "Slice Glitch",
+      "exportName": "SliceGlitch",
+      "file": "CompleteTypography.tsx",
+      "category": "text",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Seeded strip offsets and channel shadows around impact; older scene source, not necessarily in current composition.",
+      "tags": [
+        "text",
+        "e022"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Slice Glitch"
+        },
+        "count": {
+          "kind": "number",
+          "type": "number",
+          "default": 8,
+          "min": 1,
+          "max": 120,
+          "step": 1,
+          "description": "Element count (bounded internally).",
+          "group": "content"
+        },
+        "seed": {
+          "kind": "number",
+          "type": "number",
+          "default": 7,
+          "min": 0,
+          "max": 1000,
+          "step": 1,
+          "description": "Stable variation seed.",
+          "group": "style"
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E022.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ]
+    },
+    {
+      "slug": "pixel-stroke",
+      "name": "Pixel Stroke",
+      "exportName": "PixelStroke",
+      "file": "CompleteTypography.tsx",
+      "category": "text",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Connected pixel strokes keep heading legible; separate raster/glyph construction from layout.",
+      "tags": [
+        "text",
+        "e027"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Pixel Stroke"
+        },
+        "amount": {
+          "kind": "number",
+          "type": "number",
+          "default": 7,
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "description": "Effect magnitude; component-specific units are documented in source.",
+          "group": "style"
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E027.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ]
+    },
+    {
+      "slug": "scrolling-type",
+      "name": "Scrolling Type",
+      "exportName": "ScrollingType",
+      "file": "CompleteTypography.tsx",
+      "category": "text",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Alternating-direction text rows, masked center text, bars and panel wipes; source is retained even where not mounted in latest film.",
+      "tags": [
+        "text",
+        "e030"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Scrolling Type"
+        },
+        "amount": {
+          "kind": "number",
+          "type": "number",
+          "default": 160,
+          "min": 0,
+          "max": 1000,
+          "step": 1,
+          "description": "Effect magnitude; component-specific units are documented in source.",
+          "group": "style"
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E030.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ]
+    },
+    {
+      "slug": "soft-text",
+      "name": "Soft Text",
+      "exportName": "SoftText",
+      "file": "CompleteTypography.tsx",
+      "category": "text",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Gradient-edge reveal plus small lift; independent from metric content.",
+      "tags": [
+        "text",
+        "e031"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Soft Text"
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E031.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ]
+    },
+    {
+      "slug": "caption-cues",
+      "name": "Caption Cues",
+      "exportName": "CaptionCues",
+      "file": "CompleteTypography.tsx",
+      "category": "text",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Timed text chunks and cue captions; use explicit cue timings rather than claim word-level audio alignment.",
+      "tags": [
+        "text",
+        "e032"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Caption Cues"
+        },
+        "cues": {
+          "kind": "json",
+          "type": "Cue[]",
+          "description": "Explicit normalized start/end and text. No automatic audio alignment.",
+          "group": "content",
+          "control": false
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E032.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ]
+    },
+    {
+      "slug": "floating-token",
+      "name": "Floating Token",
+      "exportName": "FloatingToken",
+      "file": "CompleteDepth.tsx",
+      "category": "paths",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Sinusoidal drift, entry and glow; expose amplitude, phase and asset.",
+      "tags": [
+        "paths",
+        "e033"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Floating Token"
+        },
+        "amount": {
+          "kind": "number",
+          "type": "number",
+          "default": 16,
+          "min": 0,
+          "max": 1000,
+          "step": 1,
+          "description": "Effect magnitude; component-specific units are documented in source.",
+          "group": "style"
+        },
+        "radius": {
+          "kind": "number",
+          "type": "number",
+          "default": 56,
+          "min": 10,
+          "max": 260,
+          "step": 1,
+          "description": "Orbit or token radius in viewBox units.",
+          "group": "style"
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E033.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ]
+    },
+    {
+      "slug": "card-rise",
+      "name": "Card Rise",
+      "exportName": "CardRise",
+      "file": "CompleteDepth.tsx",
+      "category": "depth",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Large card rises from below, settles tilted and sequentially highlights choices; sheen variant in Scene5.",
+      "tags": [
+        "depth",
+        "e038"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Card Rise"
+        },
+        "items": {
+          "kind": "json",
+          "type": "string[]",
+          "description": "Custom item labels; empty arrays are supported.",
+          "group": "content",
+          "control": false
+        },
+        "selectedIndex": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0,
+          "max": 20,
+          "step": 1,
+          "description": "Selected item index, clamped to available data.",
+          "group": "content"
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E038.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ]
+    },
+    {
+      "slug": "card-focus",
+      "name": "Card Focus",
+      "exportName": "CardFocus",
+      "file": "CompleteDepth.tsx",
+      "category": "depth",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Selected panel advances in Z with dimmed surroundings and a glare sweep.",
+      "tags": [
+        "depth",
+        "e040"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Card Focus"
+        },
+        "items": {
+          "kind": "json",
+          "type": "string[]",
+          "description": "Custom item labels; empty arrays are supported.",
+          "group": "content",
+          "control": false
+        },
+        "selectedIndex": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0,
+          "max": 20,
+          "step": 1,
+          "description": "Selected item index, clamped to available data.",
+          "group": "content"
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E040.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ]
+    },
+    {
+      "slug": "depth-callouts",
+      "name": "Depth Callouts",
+      "exportName": "DepthCallouts",
+      "file": "CompleteDepth.tsx",
+      "category": "depth",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Rows approach in depth and highlight in sequence; separate content from timing.",
+      "tags": [
+        "depth",
+        "e041"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Depth Callouts"
+        },
+        "items": {
+          "kind": "json",
+          "type": "string[]",
+          "description": "Custom item labels; empty arrays are supported.",
+          "group": "content",
+          "control": false
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E041.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ]
+    },
+    {
+      "slug": "depth-stream",
+      "name": "Depth Stream",
+      "exportName": "DepthStream",
+      "file": "CompleteDepth.tsx",
+      "category": "depth",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Wrapped scrolling cards, speed-related blur and focused foreground card; feed supplied cards.",
+      "tags": [
+        "depth",
+        "e042",
+        "e044",
+        "e051",
+        "e085"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Depth Stream"
+        },
+        "items": {
+          "kind": "json",
+          "type": "string[]",
+          "description": "Custom item labels; empty arrays are supported.",
+          "group": "content",
+          "control": false
+        },
+        "variant": {
+          "kind": "select",
+          "type": "string",
+          "default": "corridor",
+          "options": [
+            "corridor",
+            "search",
+            "mail"
           ],
-          "description": "Condition labels.",
+          "group": "style",
+          "description": "Related source variant, using the same animation engine."
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E042, E044, E051, E085.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ],
+      "presets": [
+        {
+          "id": "corridor",
+          "name": "Corridor",
+          "description": "Source variant: corridor",
+          "values": {
+            "variant": "corridor"
+          }
+        },
+        {
+          "id": "search",
+          "name": "Search",
+          "description": "Source variant: search",
+          "values": {
+            "variant": "search"
+          }
+        },
+        {
+          "id": "mail",
+          "name": "Mail",
+          "description": "Source variant: mail",
+          "values": {
+            "variant": "mail"
+          }
+        }
+      ]
+    },
+    {
+      "slug": "phone-turn",
+      "name": "Phone Turn",
+      "exportName": "PhoneTurn",
+      "file": "CompleteDepth.tsx",
+      "category": "depth",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Detailed phone mockup with metal frame, lenses, screen bezel and side buttons; perspective back-to-front turn.",
+      "tags": [
+        "depth",
+        "e045"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Phone Turn"
+        },
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Your artwork or scene content.",
           "group": "content",
           "control": false
         },
-        "conditions": {
-          "kind": "json",
-          "type": "DeviceCondition[]",
-          "description": "Rows {label, at?, passed?}; overrides labels.",
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E045.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ]
+    },
+    {
+      "slug": "camera-move",
+      "name": "Camera Move",
+      "exportName": "CameraMove",
+      "file": "CompleteTransitions.tsx",
+      "category": "transitions",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Whole-scene camera move with surrounding landmarks that share its pan, rotation and zoom.",
+      "tags": [
+        "transitions",
+        "e052"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Camera Move"
+        },
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Your artwork or scene content.",
           "group": "content",
           "control": false
         },
-        "fromDevice": {
+        "from": {
           "kind": "json",
-          "type": "DeviceSize",
-          "default": {
-            "width": 390,
-            "height": 192,
-            "radius": 10
-          },
-          "description": "Starting {width, height, radius}.",
+          "type": "Box",
+          "description": "Starting bounds {x,y,width,height,radius?}. CameraMove uses x/y offsets and width/height scale factors.",
           "group": "content",
           "control": false
         },
-        "toDevice": {
+        "to": {
           "kind": "json",
-          "type": "DeviceSize",
-          "default": {
-            "width": 140,
-            "height": 226,
-            "radius": 23
-          },
-          "description": "Ending {width, height, radius}.",
+          "type": "Box",
+          "description": "Ending bounds; replaceable independently of artwork.",
+          "group": "content",
+          "control": false
+        },
+        "amount": {
+          "kind": "number",
+          "type": "number",
+          "default": 15,
+          "min": 0,
+          "max": 1000,
+          "step": 1,
+          "description": "Effect magnitude; component-specific units are documented in source.",
+          "group": "style"
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E052.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ]
+    },
+    {
+      "slug": "fade-envelope",
+      "name": "Fade Envelope",
+      "exportName": "FadeEnvelope",
+      "file": "CompleteTransitions.tsx",
+      "category": "transitions",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Basic reusable opacity envelope; consolidate duplicate inline fades.",
+      "tags": [
+        "transitions",
+        "e053"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Fade Envelope"
+        },
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Your artwork or scene content.",
+          "group": "content",
+          "control": false
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E053.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ]
+    },
+    {
+      "slug": "world-slide",
+      "name": "World Slide",
+      "exportName": "WorldSlide",
+      "file": "CompleteTransitions.tsx",
+      "category": "transitions",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Scene travel with velocity-linked vertical smear; preserve both scene coordinates.",
+      "tags": [
+        "transitions",
+        "e054"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "World Slide"
+        },
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Your artwork or scene content.",
+          "group": "content",
+          "control": false
+        },
+        "secondary": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Incoming scene or second mark.",
+          "group": "content",
+          "control": false
+        },
+        "orientation": {
+          "kind": "select",
+          "type": "\"horizontal\" | \"vertical\"",
+          "default": "vertical",
+          "options": [
+            "vertical",
+            "horizontal"
+          ],
+          "group": "style",
+          "description": "Shared-world travel direction."
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E054.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ]
+    },
+    {
+      "slug": "glyph-zoom",
+      "name": "Glyph Zoom",
+      "exportName": "GlyphZoom",
+      "file": "CompleteTransitions.tsx",
+      "category": "transitions",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Extreme text zoom becomes full-screen background; expose target glyph and anchor.",
+      "tags": [
+        "transitions",
+        "e056"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Glyph Zoom"
+        },
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Your artwork or scene content.",
+          "group": "content",
+          "control": false
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E056.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ]
+    },
+    {
+      "slug": "card-expand",
+      "name": "Card Expand",
+      "exportName": "CardExpand",
+      "file": "CompleteTransitions.tsx",
+      "category": "transitions",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Scale/rotate a foreground card until it replaces the scene; preserve transform anchor.",
+      "tags": [
+        "transitions",
+        "e057"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Card Expand"
+        },
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Your artwork or scene content.",
+          "group": "content",
+          "control": false
+        },
+        "from": {
+          "kind": "json",
+          "type": "Box",
+          "description": "Starting bounds {x,y,width,height,radius?}. CameraMove uses x/y offsets and width/height scale factors.",
+          "group": "content",
+          "control": false
+        },
+        "to": {
+          "kind": "json",
+          "type": "Box",
+          "description": "Ending bounds; replaceable independently of artwork.",
+          "group": "content",
+          "control": false
+        },
+        "amount": {
+          "kind": "number",
+          "type": "number",
+          "default": -9,
+          "min": -90,
+          "max": 1000,
+          "step": 1,
+          "description": "Effect magnitude; component-specific units are documented in source.",
+          "group": "style"
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E057.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ]
+    },
+    {
+      "slug": "form-flip",
+      "name": "Form Flip",
+      "exportName": "FormFlip",
+      "file": "CompleteTransitions.tsx",
+      "category": "transitions",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "UI tilts in, focuses fields, flips 180 degrees and replaces contents with sheen/wipe.",
+      "tags": [
+        "transitions",
+        "e059"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Form Flip"
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E059.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ]
+    },
+    {
+      "slug": "projector-reveal",
+      "name": "Projector Reveal",
+      "exportName": "ProjectorReveal",
+      "file": "CompleteTransitions.tsx",
+      "category": "reveals",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Candle collapses into slit; feathered light cone grows, reveals type, flickers to replacement, then iris/dissolve.",
+      "tags": [
+        "reveals",
+        "e060"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Projector Reveal"
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E060.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ]
+    },
+    {
+      "slug": "chart-tip-zoom",
+      "name": "Chart Tip Zoom",
+      "exportName": "ChartTipZoom",
+      "file": "CompleteTransitions.tsx",
+      "category": "transitions",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Camera follows chart, pulls back to giant candle and zooms toward its tip; includes motion streaks.",
+      "tags": [
+        "transitions",
+        "e061"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Chart Tip Zoom"
+        },
+        "values": {
+          "kind": "json",
+          "type": "number[]",
+          "description": "Values in display order; see source for the component-specific units.",
+          "group": "content",
+          "control": false
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E061.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ]
+    },
+    {
+      "slug": "pixel-field",
+      "name": "Pixel Field",
+      "exportName": "PixelField",
+      "file": "CompleteAtmosphere.tsx",
+      "category": "transitions",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Raster-sampled glyph/object silhouette becomes cells, then fills outward using distance and deterministic noise.",
+      "tags": [
+        "transitions",
+        "e063"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Pixel Field"
+        },
+        "paths": {
+          "kind": "json",
+          "type": "string[]",
+          "description": "SVG paths in the 640 × 360 viewBox. No client logo is embedded.",
+          "group": "content",
+          "control": false
+        },
+        "seed": {
+          "kind": "number",
+          "type": "number",
+          "default": 7,
+          "min": 0,
+          "max": 1000,
+          "step": 1,
+          "description": "Stable variation seed.",
+          "group": "style"
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E063.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ]
+    },
+    {
+      "slug": "television-reveal",
+      "name": "Television Reveal",
+      "exportName": "TelevisionReveal",
+      "file": "CompleteTransitions.tsx",
+      "category": "transitions",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Camera pulls back from a thin-bezel television, revealing its feet, floor and surrounding room landmarks.",
+      "tags": [
+        "transitions",
+        "e066"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Television Reveal"
+        },
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Your artwork or scene content.",
+          "group": "content",
+          "control": false
+        },
+        "variant": {
+          "kind": "select",
+          "type": "string",
+          "default": "hold",
+          "options": [
+            "hold",
+            "continue"
+          ],
+          "group": "style",
+          "description": "Related source variant, using the same animation engine."
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E066.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ],
+      "presets": [
+        {
+          "id": "hold",
+          "name": "Hold",
+          "description": "Source variant: hold",
+          "values": {
+            "variant": "hold"
+          }
+        },
+        {
+          "id": "continue",
+          "name": "Continue",
+          "description": "Source variant: continue",
+          "values": {
+            "variant": "continue"
+          }
+        }
+      ]
+    },
+    {
+      "slug": "line-match-cut",
+      "name": "Line Match Cut",
+      "exportName": "LineMatchCut",
+      "file": "CompleteTransitions.tsx",
+      "category": "transitions",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Zigzag line reaches the bottom edge, cuts to a new scene and enters from the top at the same horizontal position and uninterrupted speed.",
+      "tags": [
+        "transitions",
+        "e067"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Line Match Cut"
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E067.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ]
+    },
+    {
+      "slug": "grid-press",
+      "name": "Grid Press",
+      "exportName": "GridPress",
+      "file": "CompleteTransitions.tsx",
+      "category": "transitions",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Original vertical guides press inward while horizontal guides stay fixed; text shrinks and holds before the card reveal.",
+      "tags": [
+        "transitions",
+        "e071"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Grid Press"
+        },
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Your artwork or scene content.",
+          "group": "content",
+          "control": false
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E071.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ]
+    },
+    {
+      "slug": "badge-handoff",
+      "name": "Badge Handoff",
+      "exportName": "BadgeHandoff",
+      "file": "CompleteTransitions.tsx",
+      "category": "transitions",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Logo becomes verification badge and docks into profile; artwork crossfade with geometry changes.",
+      "tags": [
+        "transitions",
+        "e072"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Badge Handoff"
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E072.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ]
+    },
+    {
+      "slug": "cursor-click",
+      "name": "Cursor Click",
+      "exportName": "CursorClick",
+      "file": "CompleteInterface.tsx",
+      "category": "ui",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Generic cursor path/timing and press; variants elsewhere should share this foundation.",
+      "tags": [
+        "ui",
+        "e073"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Cursor Click"
+        },
+        "items": {
+          "kind": "json",
+          "type": "string[]",
+          "description": "Custom item labels; empty arrays are supported.",
+          "group": "content",
+          "control": false
+        },
+        "points": {
+          "kind": "json",
+          "type": "Point[]",
+          "description": "Coordinates in the 640 × 360 viewBox, with optional labels.",
+          "group": "content",
+          "control": false
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E073.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ]
+    },
+    {
+      "slug": "button-press",
+      "name": "Button Press",
+      "exportName": "ButtonPress",
+      "file": "CompleteInterface.tsx",
+      "category": "ui",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Raised pill, moving shine, press into Z, fill response and cursor-led whip camera.",
+      "tags": [
+        "ui",
+        "e075"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Button Press"
+        },
+        "variant": {
+          "kind": "select",
+          "type": "string",
+          "default": "press",
+          "options": [
+            "press",
+            "whip"
+          ],
+          "group": "style",
+          "description": "Related source variant, using the same animation engine."
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E075.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ],
+      "presets": [
+        {
+          "id": "press",
+          "name": "Press",
+          "description": "Source variant: press",
+          "values": {
+            "variant": "press"
+          }
+        },
+        {
+          "id": "whip",
+          "name": "Whip",
+          "description": "Source variant: whip",
+          "values": {
+            "variant": "whip"
+          }
+        }
+      ]
+    },
+    {
+      "slug": "lower-third",
+      "name": "Lower Third",
+      "exportName": "LowerThird",
+      "file": "CompleteInterface.tsx",
+      "category": "ui",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Backdrop blur, translucent border, fade and vertical lift; separate from founder name/artwork.",
+      "tags": [
+        "ui",
+        "e081"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Lower Third"
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E081.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ]
+    },
+    {
+      "slug": "bubble-expand",
+      "name": "Bubble Expand",
+      "exportName": "BubbleExpand",
+      "file": "CompleteTransitions.tsx",
+      "category": "transitions",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Phone conversation bubble enlarges into an isolated composition; shared-object bounds matter.",
+      "tags": [
+        "transitions",
+        "e083"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Bubble Expand"
+        },
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Your artwork or scene content.",
+          "group": "content",
+          "control": false
+        },
+        "from": {
+          "kind": "json",
+          "type": "Box",
+          "description": "Starting bounds {x,y,width,height,radius?}. CameraMove uses x/y offsets and width/height scale factors.",
+          "group": "content",
+          "control": false
+        },
+        "to": {
+          "kind": "json",
+          "type": "Box",
+          "description": "Ending bounds; replaceable independently of artwork.",
+          "group": "content",
+          "control": false
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E083.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ]
+    },
+    {
+      "slug": "ink-stamp",
+      "name": "Ink Stamp",
+      "exportName": "InkStamp",
+      "file": "CompleteInterface.tsx",
+      "category": "ui",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Ink texture, stamp landing and unfolding label; isolate typography/art from texture and timing.",
+      "tags": [
+        "ui",
+        "e087"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Ink Stamp"
+        },
+        "seed": {
+          "kind": "number",
+          "type": "number",
+          "default": 7,
+          "min": 0,
+          "max": 1000,
+          "step": 1,
+          "description": "Stable variation seed.",
+          "group": "style"
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E087.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ]
+    },
+    {
+      "slug": "search-journey",
+      "name": "Search Journey",
+      "exportName": "SearchJourney",
+      "file": "CompleteInterface.tsx",
+      "category": "ui",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Browser search page with typed query, result titles, site icons, snippets, pointer selection and page-load progress.",
+      "tags": [
+        "ui",
+        "e093"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Search Journey"
+        },
+        "items": {
+          "kind": "json",
+          "type": "string[]",
+          "description": "Custom item labels; empty arrays are supported.",
+          "group": "content",
+          "control": false
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E093.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ]
+    },
+    {
+      "slug": "split-logo",
+      "name": "Split Logo",
+      "exportName": "SplitLogo",
+      "file": "CompleteInterface.tsx",
+      "category": "reveals",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Outline draws, halves separate and symbol settles before supplied logo crossfade; parameterize SVG data.",
+      "tags": [
+        "reveals",
+        "e135"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Split Logo"
+        },
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Your artwork or scene content.",
+          "group": "content",
+          "control": false
+        },
+        "paths": {
+          "kind": "json",
+          "type": "string[]",
+          "description": "SVG paths in the 640 × 360 viewBox. No client logo is embedded.",
+          "group": "content",
+          "control": false
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E135.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ]
+    },
+    {
+      "slug": "candle-geometry",
+      "name": "Candle Geometry",
+      "exportName": "CandleGeometry",
+      "file": "CompleteOptional.tsx",
+      "category": "data",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Three-dimensional candlestick bodies and wicks with an oblique camera, ground grid, directional lighting and data-aware framing.",
+      "tags": [
+        "data",
+        "e096"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Candle Geometry"
+        },
+        "data": {
+          "kind": "json",
+          "type": "GeometryCandle[]",
+          "description": "OHLC data {open,close,high,low}. Demonstration data is synthetic.",
+          "group": "content",
+          "control": false
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E096.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.",
+        "Import from shared-effects/optional. True Three.js geometry; optional WebGL dependency."
+      ],
+      "requires": [
+        "three"
+      ]
+    },
+    {
+      "slug": "metric-pills",
+      "name": "Metric Pills",
+      "exportName": "MetricPills",
+      "file": "CompleteData.tsx",
+      "category": "numbers",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Number progression, side entries and vertical text reveal inside pills; expose values and units.",
+      "tags": [
+        "numbers",
+        "e102"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Metric Pills"
+        },
+        "items": {
+          "kind": "json",
+          "type": "string[]",
+          "description": "Custom item labels; empty arrays are supported.",
+          "group": "content",
+          "control": false
+        },
+        "values": {
+          "kind": "json",
+          "type": "number[]",
+          "description": "Values in display order; see source for the component-specific units.",
+          "group": "content",
+          "control": false
+        },
+        "format": {
+          "kind": "json",
+          "type": "(value: number) => string",
+          "description": "Formatter for numerical output.",
+          "group": "content",
+          "control": false
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E102.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ]
+    },
+    {
+      "slug": "coin-drop",
+      "name": "Coin Drop",
+      "exportName": "CoinDrop",
+      "file": "CompleteDepth.tsx",
+      "category": "paths",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Percent becomes coin, front/back flip, quadratic fall, tumble, damped landing and following camera.",
+      "tags": [
+        "paths",
+        "e106"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Coin Drop"
+        },
+        "amount": {
+          "kind": "number",
+          "type": "number",
+          "default": 360,
+          "min": 0,
+          "max": 1000,
+          "step": 1,
+          "description": "Effect magnitude; component-specific units are documented in source.",
+          "group": "style"
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E106.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ]
+    },
+    {
+      "slug": "logo-pair",
+      "name": "Logo Pair",
+      "exportName": "LogoPair",
+      "file": "CompleteDepth.tsx",
+      "category": "paths",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Opposing logo entry/merge plus staggered icon convergence, scale and exit.",
+      "tags": [
+        "paths",
+        "e110"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Logo Pair"
+        },
+        "items": {
+          "kind": "json",
+          "type": "string[]",
+          "description": "Custom item labels; empty arrays are supported.",
           "group": "content",
           "control": false
         },
         "children": {
           "kind": "node",
           "type": "React.ReactNode",
-          "description": "Custom responsive screen content.",
+          "description": "Your artwork or scene content.",
           "group": "content",
-          "control": false,
-          "required": false
+          "control": false
         },
-        "showConditions": {
-          "kind": "boolean",
-          "type": "boolean",
-          "default": true,
-          "description": "Show condition rows.",
-          "group": "style"
+        "secondary": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Incoming scene or second mark.",
+          "group": "content",
+          "control": false
         },
-        "darkScreen": {
-          "kind": "boolean",
-          "type": "boolean",
-          "default": true,
-          "description": "Switch to a dark screen at checksStart.",
-          "group": "style"
-        },
-        "morphStart": {
+        "start": {
           "kind": "number",
           "type": "number",
-          "default": 0.24,
+          "default": 0,
           "min": 0,
           "max": 0.9,
           "step": 0.01,
-          "description": "Device resize starts.",
+          "description": "Start within the normalized timeline.",
           "group": "timing"
         },
-        "morphEnd": {
+        "end": {
           "kind": "number",
           "type": "number",
-          "default": 0.58,
+          "default": 1,
           "min": 0.1,
           "max": 1,
           "step": 0.01,
-          "description": "Device resize ends.",
-          "group": "timing"
-        },
-        "checksStart": {
-          "kind": "number",
-          "type": "number",
-          "default": 0.64,
-          "min": 0,
-          "max": 0.9,
-          "step": 0.01,
-          "description": "Default checklist start.",
+          "description": "Finish within the normalized timeline.",
           "group": "timing"
         }
       },
-      "slug": "device-conditions",
-      "name": "Device Conditions",
-      "exportName": "DeviceConditions",
-      "file": "InventoryEffects.tsx",
+      "notes": [
+        "Source audit: E110.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ]
+    },
+    {
+      "slug": "rising-mist",
+      "name": "Rising Mist",
+      "exportName": "RisingMist",
+      "file": "CompleteAtmosphere.tsx",
+      "category": "texture",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Moving gradient mist and colored light/reflection treatments; no physical volumetric simulation.",
+      "tags": [
+        "texture",
+        "e111"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Rising Mist"
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E111.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ]
+    },
+    {
+      "slug": "warp-dots",
+      "name": "Warp Dots",
+      "exportName": "WarpDots",
+      "file": "CompleteAtmosphere.tsx",
+      "category": "texture",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Texture/warped pattern around typography, with Canvas implementation variants.",
+      "tags": [
+        "texture",
+        "e112"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Warp Dots"
+        },
+        "amount": {
+          "kind": "number",
+          "type": "number",
+          "default": 16,
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "description": "Effect magnitude; component-specific units are documented in source.",
+          "group": "style"
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E112.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ]
+    },
+    {
+      "slug": "perspective-grid",
+      "name": "Perspective Grid",
+      "exportName": "PerspectiveGrid",
+      "file": "CompleteAtmosphere.tsx",
+      "category": "texture",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Technical background plus pixel glyph reveal and social-card entrance; page-specific source.",
+      "tags": [
+        "texture",
+        "e113"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Perspective Grid"
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E113.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ]
+    },
+    {
+      "slug": "halftone-arc",
+      "name": "Halftone Arc",
+      "exportName": "HalftoneArc",
+      "file": "CompleteAtmosphere.tsx",
+      "category": "reveals",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Blue curved graphics grow through a circular mask then slide; expose geometry and dot field.",
+      "tags": [
+        "reveals",
+        "e116"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Halftone Arc"
+        },
+        "amount": {
+          "kind": "number",
+          "type": "number",
+          "default": 2.8,
+          "min": 0,
+          "max": 50,
+          "step": 0.1,
+          "description": "Effect magnitude; component-specific units are documented in source.",
+          "group": "style"
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E116.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ]
+    },
+    {
+      "slug": "grain-field",
+      "name": "Grain Field",
+      "exportName": "GrainField",
+      "file": "CompleteAtmosphere.tsx",
+      "category": "texture",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Grain, dot size variation and framing marks; independent texture helpers.",
+      "tags": [
+        "texture",
+        "e117"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Grain Field"
+        },
+        "count": {
+          "kind": "number",
+          "type": "number",
+          "default": 400,
+          "min": 1,
+          "max": 900,
+          "step": 1,
+          "description": "Element count (bounded internally).",
+          "group": "content"
+        },
+        "seed": {
+          "kind": "number",
+          "type": "number",
+          "default": 7,
+          "min": 0,
+          "max": 1000,
+          "step": 1,
+          "description": "Stable variation seed.",
+          "group": "style"
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E117.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ]
+    },
+    {
+      "slug": "failure-route",
+      "name": "Failure Route",
+      "exportName": "FailureRoute",
+      "file": "CompleteWorkflow.tsx",
       "category": "ui",
       "kind": "scene",
-      "description": "A browser shell becomes a phone; dark-mode and network rows tick in.",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Chosen failure is emphasized while others dim; card flattens into red route.",
       "tags": [
-        "device",
-        "responsive",
-        "checklist"
+        "ui",
+        "e126"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Failure Route"
+        },
+        "items": {
+          "kind": "json",
+          "type": "string[]",
+          "description": "Custom item labels; empty arrays are supported.",
+          "group": "content",
+          "control": false
+        },
+        "selectedIndex": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0,
+          "max": 20,
+          "step": 1,
+          "description": "Selected item index, clamped to available data.",
+          "group": "content"
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E126.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ]
+    },
+    {
+      "slug": "pixel-logo",
+      "name": "Pixel Logo",
+      "exportName": "PixelLogo",
+      "file": "CompleteAtmosphere.tsx",
+      "category": "reveals",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Four blocks approach from alternating sides; distinguish animated assembly from static mark variants.",
+      "tags": [
+        "reveals",
+        "e129"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Pixel Logo"
+        },
+        "amount": {
+          "kind": "number",
+          "type": "number",
+          "default": 5,
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "description": "Effect magnitude; component-specific units are documented in source.",
+          "group": "style"
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E129.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs."
+      ]
+    },
+    {
+      "slug": "camera-motion-blur",
+      "name": "Camera Motion Blur",
+      "exportName": "CameraMotionBlur",
+      "file": "CompleteOptional.tsx",
+      "category": "transitions",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Temporal motion blur on a falling rounded rectangle with gravity, diminishing rebounds and contact squash. Accepts custom frame-driven children.",
+      "tags": [
+        "transitions",
+        "e133"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "description": "Display text. Defaults to the effect name.",
+          "group": "content",
+          "default": "Camera Motion Blur"
+        },
+        "children": {
+          "kind": "node",
+          "type": "React.ReactNode",
+          "description": "Your complete frame-driven scene; children read useCurrentFrame inside the temporal sampler.",
+          "group": "content",
+          "control": false
+        },
+        "samples": {
+          "kind": "number",
+          "type": "number",
+          "default": 8,
+          "min": 1,
+          "max": 24,
+          "step": 1,
+          "description": "Temporal samples from @remotion/motion-blur.",
+          "group": "style"
+        },
+        "shutterAngle": {
+          "kind": "number",
+          "type": "number",
+          "default": 180,
+          "min": 0,
+          "max": 360,
+          "step": 1,
+          "description": "Remotion shutter angle in degrees.",
+          "group": "style"
+        },
+        "start": {
+          "kind": "number",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 0.9,
+          "step": 0.01,
+          "description": "Start within the normalized timeline.",
+          "group": "timing"
+        },
+        "end": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.01,
+          "description": "Finish within the normalized timeline.",
+          "group": "timing"
+        }
+      },
+      "notes": [
+        "Source audit: E133.",
+        "New reusable adaptation of the recorded behavior. Original client scenes and artwork are not bundled.",
+        "Uses a 640 × 360 coordinate system. See the props table for content and geometry inputs.",
+        "Import from shared-effects/optional. Uses the maintained Remotion temporal sampler."
+      ],
+      "requires": [
+        "@remotion/motion-blur"
+      ]
+    },
+    {
+      "slug": "text-light-sweep",
+      "name": "Text Light Sweep",
+      "exportName": "TextLightSweep",
+      "file": "TextLightSweep.tsx",
+      "category": "text",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "A per-letter blue-white light sweep: a bright front, colored wake, return to white and a retained final word. No camera motion.",
+      "tags": [
+        "text",
+        "light",
+        "color"
+      ],
+      "props": {
+        "text": {
+          "kind": "text",
+          "type": "string",
+          "default": "Text Light Sweep",
+          "description": "Text to illuminate.",
+          "group": "content"
+        },
+        "background": {
+          "kind": "color",
+          "type": "string",
+          "default": "#081622",
+          "description": "Dark backdrop for the original white and cyan treatment.",
+          "group": "style"
+        },
+        "baseColor": {
+          "kind": "color",
+          "type": "string",
+          "default": "#ffffff",
+          "description": "Resting letter color.",
+          "group": "style"
+        },
+        "highlightColor": {
+          "kind": "color",
+          "type": "string",
+          "default": "#C2F1FF",
+          "description": "Leading highlight colour.",
+          "group": "style"
+        },
+        "trailColor": {
+          "kind": "color",
+          "type": "string",
+          "default": "#0095C2",
+          "description": "Original cyan wake.",
+          "group": "style"
+        },
+        "retainLastWord": {
+          "kind": "boolean",
+          "type": "boolean",
+          "default": true,
+          "description": "Keep the last word colored after the wave.",
+          "group": "style"
+        },
+        "sweepStart": {
+          "kind": "number",
+          "type": "number",
+          "default": 0.18,
+          "min": 0,
+          "max": 0.8,
+          "step": 0.01,
+          "description": "Progress where the source sweep begins.",
+          "group": "style"
+        },
+        "sweepEnd": {
+          "kind": "number",
+          "type": "number",
+          "default": 0.8,
+          "min": 0.2,
+          "max": 1,
+          "step": 0.01,
+          "description": "Progress where the sweep ends.",
+          "group": "style"
+        }
+      },
+      "presets": [
+        {
+          "id": "cool-sweep",
+          "name": "Cool sweep",
+          "description": "White letters with a cyan wake.",
+          "values": {
+            "text": "Light moves through every letter",
+            "baseColor": "#ffffff",
+            "highlightColor": "#C2F1FF",
+            "trailColor": "#0095C2",
+            "fontFamily": "Inter, sans-serif"
+          }
+        },
+        {
+          "id": "saint-orange",
+          "name": "Saint orange",
+          "description": "Same motion in the collection palette.",
+          "values": {
+            "baseColor": "#FFFFFE",
+            "highlightColor": "#FAD889",
+            "trailColor": "#FB7501"
+          }
+        }
       ],
       "notes": [
-        "Draws in a 600 × 260 viewBox and fills its parent box."
+        "Text only: pair it with your own camera move or letter entrance."
+      ]
+    },
+    {
+      "slug": "dither-aurora",
+      "name": "Dither Aurora",
+      "exportName": "DitherAurora",
+      "file": "DitherAurora.tsx",
+      "category": "texture",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Layered aurora curtains with folding edges, vertical rays, shimmer and ordered dithering. Original dithercn field adapted for frame-driven playback.",
+      "tags": [
+        "dither",
+        "background",
+        "aurora",
+        "shader"
+      ],
+      "props": {
+        "cell": {
+          "kind": "number",
+          "type": "number",
+          "default": 2,
+          "min": 1,
+          "max": 8,
+          "step": 0.5,
+          "description": "Dither cell size in 640 × 360 design pixels.",
+          "group": "style"
+        },
+        "matrix": {
+          "kind": "select",
+          "type": "string",
+          "default": "bayer8",
+          "options": [
+            "bayer2",
+            "bayer4",
+            "bayer8",
+            "blue-noise"
+          ],
+          "description": "Ordered threshold pattern.",
+          "group": "style"
+        },
+        "animate": {
+          "kind": "boolean",
+          "type": "boolean",
+          "default": true,
+          "description": "Animate from progress; disable for a still.",
+          "group": "style"
+        },
+        "seconds": {
+          "kind": "number",
+          "type": "number",
+          "default": 16,
+          "min": 1,
+          "max": 60,
+          "step": 1,
+          "description": "Seconds of procedural motion covered by progress 0–1.",
+          "group": "style"
+        },
+        "color": {
+          "kind": "color",
+          "type": "string",
+          "default": "#FB7501",
+          "description": "Bright curtain edge.",
+          "group": "style"
+        },
+        "tipColor": {
+          "kind": "color",
+          "type": "string",
+          "default": "#FAD889",
+          "description": "Color towards the ray tips.",
+          "group": "style"
+        },
+        "curtains": {
+          "kind": "number",
+          "type": "number",
+          "default": 3,
+          "min": 1,
+          "max": 6,
+          "step": 1,
+          "description": "Number of depth layers.",
+          "group": "style"
+        },
+        "height": {
+          "kind": "number",
+          "type": "number",
+          "default": 0.42,
+          "min": 0,
+          "max": 1,
+          "step": 0.01,
+          "description": "Lowest edge height; 0 bottom, 1 top.",
+          "group": "style"
+        },
+        "spread": {
+          "kind": "number",
+          "type": "number",
+          "default": 0.11,
+          "min": 0,
+          "max": 0.3,
+          "step": 0.01,
+          "description": "Separation between curtains.",
+          "group": "style"
+        },
+        "sway": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0,
+          "max": 3,
+          "step": 0.05,
+          "description": "Broad folds.",
+          "group": "style"
+        },
+        "turbulence": {
+          "kind": "number",
+          "type": "number",
+          "default": 0.6,
+          "min": 0,
+          "max": 2,
+          "step": 0.05,
+          "description": "Fine ripples.",
+          "group": "style"
+        },
+        "rays": {
+          "kind": "number",
+          "type": "number",
+          "default": 8,
+          "min": 2,
+          "max": 20,
+          "step": 1,
+          "description": "Density of vertical rays.",
+          "group": "style"
+        },
+        "length": {
+          "kind": "number",
+          "type": "number",
+          "default": 0.45,
+          "min": 0,
+          "max": 1,
+          "step": 0.01,
+          "description": "Ray length.",
+          "group": "style"
+        },
+        "glow": {
+          "kind": "number",
+          "type": "number",
+          "default": 0.9,
+          "min": 0,
+          "max": 2,
+          "step": 0.05,
+          "description": "Edge brightness.",
+          "group": "style"
+        },
+        "tilt": {
+          "kind": "number",
+          "type": "number",
+          "default": -8,
+          "min": -45,
+          "max": 45,
+          "step": 1,
+          "description": "Curtain tilt in degrees.",
+          "group": "style"
+        },
+        "drift": {
+          "kind": "number",
+          "type": "number",
+          "default": 0.5,
+          "min": -2,
+          "max": 2,
+          "step": 0.1,
+          "description": "Horizontal travel.",
+          "group": "style"
+        },
+        "direction": {
+          "kind": "select",
+          "type": "string",
+          "default": "up",
+          "options": [
+            "up",
+            "down"
+          ],
+          "description": "Ray direction.",
+          "group": "style"
+        },
+        "mask": {
+          "kind": "select",
+          "type": "string",
+          "default": "edges",
+          "options": [
+            "none",
+            "top",
+            "bottom",
+            "edges"
+          ],
+          "description": "Fade to background.",
+          "group": "style"
+        },
+        "intensity": {
+          "kind": "number",
+          "type": "number",
+          "default": 0.95,
+          "min": 0,
+          "max": 1,
+          "step": 0.01,
+          "description": "Overall light intensity.",
+          "group": "style"
+        },
+        "shimmer": {
+          "kind": "number",
+          "type": "number",
+          "default": 0.2,
+          "min": 0,
+          "max": 1,
+          "step": 0.05,
+          "description": "Brightness ripple.",
+          "group": "style"
+        },
+        "foldScale": {
+          "kind": "number",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 5,
+          "step": 0.1,
+          "description": "Horizontal fold frequency.",
+          "group": "style"
+        },
+        "stillTime": {
+          "kind": "number",
+          "type": "number",
+          "default": 4,
+          "min": 0,
+          "max": 60,
+          "step": 1,
+          "description": "Moment used when animation is disabled.",
+          "group": "style"
+        }
+      },
+      "presets": [
+        {
+          "id": "night",
+          "name": "Night curtains",
+          "description": "Warm dithered curtains against a dark sky.",
+          "values": {
+            "skyColor": "#100B06",
+            "color": "#FB7501",
+            "tipColor": "#FAD889",
+            "tokens": {
+              "ink": "#FFFFFE"
+            }
+          }
+        },
+        {
+          "id": "coarse",
+          "name": "Coarse poster",
+          "description": "Broader rays and large Bayer cells.",
+          "values": {
+            "cell": 4,
+            "rays": 4,
+            "matrix": "bayer4",
+            "curtains": 2
+          }
+        }
+      ],
+      "notes": [
+        "Adapted from https://github.com/opencoredev/dithercn (MIT); license in dither/LICENSE.",
+        "Deterministic WebGL shader; no requestAnimationFrame or wall clock. Copy the dither folder with this component."
+      ]
+    },
+    {
+      "slug": "dither-globe",
+      "name": "Dither Globe",
+      "exportName": "DitherGlobe",
+      "file": "DitherGlobe.tsx",
+      "category": "depth",
+      "kind": "scene",
+      "sharedProps": true,
+      "isNew": true,
+      "description": "Rotating Earth with real land outlines, shaded terminator, dithered atmosphere, pulsing geographic markers and lifted great-circle routes.",
+      "tags": [
+        "globe",
+        "earth",
+        "dither",
+        "routes"
+      ],
+      "props": {
+        "cell": {
+          "kind": "number",
+          "type": "number",
+          "default": 2,
+          "min": 1,
+          "max": 8,
+          "step": 0.5,
+          "description": "Dither cell size in 640 × 360 design pixels.",
+          "group": "style"
+        },
+        "matrix": {
+          "kind": "select",
+          "type": "string",
+          "default": "bayer4",
+          "options": [
+            "bayer2",
+            "bayer4",
+            "bayer8",
+            "blue-noise"
+          ],
+          "description": "Ordered threshold pattern.",
+          "group": "style"
+        },
+        "animate": {
+          "kind": "boolean",
+          "type": "boolean",
+          "default": true,
+          "description": "Animate from progress; disable for a still.",
+          "group": "style"
+        },
+        "seconds": {
+          "kind": "number",
+          "type": "number",
+          "default": 12,
+          "min": 1,
+          "max": 60,
+          "step": 1,
+          "description": "Seconds of motion covered by progress.",
+          "group": "style"
+        },
+        "rotationSpeed": {
+          "kind": "number",
+          "type": "number",
+          "default": 6,
+          "min": -60,
+          "max": 60,
+          "step": 1,
+          "description": "Degrees of longitude per second. Shared speed multiplies the timeline.",
+          "group": "style"
+        },
+        "startLongitude": {
+          "kind": "number",
+          "type": "number",
+          "default": 10,
+          "min": -180,
+          "max": 180,
+          "step": 1,
+          "description": "Longitude facing the camera at the start.",
+          "group": "style"
+        },
+        "tilt": {
+          "kind": "number",
+          "type": "number",
+          "default": 18,
+          "min": -60,
+          "max": 60,
+          "step": 1,
+          "description": "North pole tilt in degrees.",
+          "group": "style"
+        },
+        "light": {
+          "kind": "number",
+          "type": "number",
+          "default": 300,
+          "min": 0,
+          "max": 360,
+          "step": 1,
+          "description": "Lighting angle.",
+          "group": "style"
+        },
+        "ocean": {
+          "kind": "number",
+          "type": "number",
+          "default": 0.18,
+          "min": 0,
+          "max": 1,
+          "step": 0.01,
+          "description": "Ocean brightness.",
+          "group": "style"
+        },
+        "atmosphere": {
+          "kind": "boolean",
+          "type": "boolean",
+          "default": true,
+          "description": "Dithered glow at the lit rim.",
+          "group": "style"
+        },
+        "showArcs": {
+          "kind": "boolean",
+          "type": "boolean",
+          "default": true,
+          "description": "Display great-circle routes.",
+          "group": "style"
+        },
+        "markers": {
+          "kind": "json",
+          "type": "GlobeMarker[]",
+          "description": "Locations {at:[latitude,longitude], color?}. Empty array hides all markers.",
+          "group": "content",
+          "control": false
+        },
+        "arcs": {
+          "kind": "json",
+          "type": "GlobeArc[]",
+          "description": "Routes {from:[lat,lon],to:[lat,lon],color?}. Empty array hides routes.",
+          "group": "content",
+          "control": false
+        }
+      },
+      "notes": [
+        "Adapted from dithercn (MIT); bundled Natural Earth land mask is public domain. See dither/LICENSE.",
+        "No runtime map fetches. Rotation and route pulses are driven by progress; no drag state or wall-clock loop. Copy the dither folder with this component."
       ]
     }
   ]

@@ -1,16 +1,13 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { Player } from "@remotion/player";
-import { useCurrentFrame } from "remotion";
 import { CATEGORIES, EFFECTS, EFFECTS_BY_SLUG } from "../../meta/effects";
 import type { EffectMeta } from "../../meta/schema";
-import { EffectScene, DURATION, FPS, frameToProgress } from "./preview/Preview";
-import { MISSING_EXPORTS, type Values } from "./preview/bindings";
+import { MISSING_EXPORTS } from "./preview/bindings";
 import { defaultsFor, go, ORDER, useRoute, useSiteTheme, type SiteTheme } from "./lib/state";
 import { EffectPage } from "./pages/EffectPage";
+import { Landing } from "./pages/Landing";
 import { Icon, Toaster } from "./ui/bits";
-import { LiveCard, W, H } from "./ui/Stage";
+import { LiveCard } from "./ui/Stage";
 
-const FLAGSHIP = EFFECTS.filter((m) => m.flagship);
 const byCat = (id: string) => EFFECTS.filter((m) => m.category === id);
 const match = (m: EffectMeta, q: string) => {
   const s = q.trim().toLowerCase();
@@ -43,7 +40,7 @@ function SearchPalette({ open, onClose }: { open: boolean; onClose: () => void }
         <input
           ref={input}
           value={q}
-          placeholder="Search 66 effects by name, tag or category…"
+          placeholder={`Search ${EFFECTS.length} effects by name, tag or category…`}
           onChange={(e) => {
             setQ(e.target.value);
             setI(0);
@@ -110,9 +107,7 @@ function Sidebar({ current }: { current?: string }) {
               {items.map((m) => (
                 <li key={m.slug}>
                   <a href={`#/effects/${m.slug}`} className={current === m.slug ? "on" : ""}>
-                    <span className="num">{String(EFFECTS.indexOf(m) + 1).padStart(2, "0")}</span>
                     {m.name}
-                    {m.flagship && <span className="badge">new</span>}
                   </a>
                 </li>
               ))}
@@ -120,109 +115,6 @@ function Sidebar({ current }: { current?: string }) {
           </div>
         );
       })}
-    </div>
-  );
-}
-
-/* -------------------------------------------------------------------- home */
-function Reel({ theme }: { theme: SiteTheme }) {
-  const frame = useCurrentFrame();
-  const k = Math.floor(frame / DURATION) % FLAGSHIP.length;
-  const m = FLAGSHIP[k];
-  const values: Values = { ...defaultsFor(m, theme), grain: theme === "dark" ? 0.3 : 0.1 };
-  return <EffectScene slug={m.slug} values={values} progress={frameToProgress(frame % DURATION)} />;
-}
-
-function Home({ theme }: { theme: SiteTheme }) {
-  const names = EFFECTS.map((m) => m.name);
-  return (
-    <div className="home">
-      <div className="hero">
-        <div>
-          <span className="mono faint">Local library · 66 effects · Remotion 4</span>
-          <h1>
-            Motion effects, <em>tuned by hand</em>, driven by one number.
-          </h1>
-          <p>
-            Every component here is a pure function of <code>progress</code>. Scrub it, theme it, restyle it with a preset, then copy the exact code into a
-            scene. Same props everywhere: theme, accent, font, speed, delay, grain.
-          </p>
-          <div className="cta">
-            <a className="btn primary" href={`#/effects/${FLAGSHIP[0]?.slug ?? EFFECTS[0].slug}`}>
-              Open the first effect <Icon name="right" />
-            </a>
-            <a className="btn" href="#/effects">
-              Browse all 66
-            </a>
-          </div>
-          <div className="term">
-            <b>$</b> git clone https://github.com/holy-cursor/Remotion-Effects-Library
-          </div>
-        </div>
-        <div>
-          <div className="hero-stage">
-            <Player component={Reel} inputProps={{ theme }} durationInFrames={DURATION * FLAGSHIP.length} fps={FPS} compositionWidth={W} compositionHeight={H} style={{ width: "100%", height: "100%" }} autoPlay loop controls={false} acknowledgeRemotionLicense />
-          </div>
-          <div className="hero-cap mono">
-            <span>Reworked set · {FLAGSHIP.length} effects</span>
-            <span>Saint Orange</span>
-          </div>
-        </div>
-      </div>
-      <div className="marquee" aria-hidden>
-        <div className="row">
-          {[...names, ...names].map((n, i) => (
-            <span key={i}>{n}</span>
-          ))}
-        </div>
-      </div>
-      <div className="block">
-        <div className="block-head">
-          <h2>Categories</h2>
-          <span className="serif">ten drawers</span>
-        </div>
-        <div className="cats">
-          {CATEGORIES.map((c) => (
-            <a key={c.id} href={`#/category/${c.id}`}>
-              <b>
-                {c.name} <span>{String(byCat(c.id).length).padStart(2, "0")}</span>
-              </b>
-              <p>{c.blurb}</p>
-            </a>
-          ))}
-        </div>
-      </div>
-      <div className="block">
-        <div className="block-head">
-          <h2>Reworked</h2>
-          <span className="serif">hover to play</span>
-          <a href="#/effects">All effects →</a>
-        </div>
-        <Cards items={FLAGSHIP} theme={theme} />
-      </div>
-      <div className="block">
-        <div className="block-head">
-          <h2>One API</h2>
-          <span className="serif">for all seventy-five</span>
-        </div>
-        <div className="api">
-          <div>
-            <span className="mono faint">01 · Timing</span>
-            <h3>progress, speed, delay</h3>
-            <p>Drive any effect from your own frame math. Speed and delay retime it without touching the scene.</p>
-          </div>
-          <div>
-            <span className="mono faint">02 · Tokens</span>
-            <h3>theme, palette, accent</h3>
-            <p>Colours come from roles (canvas, ink, accent, onAccent…). Saint Orange is the default palette, so old scenes look the same.</p>
-          </div>
-          <div>
-            <span className="mono faint">03 · Stage</span>
-            <h3>background, grid, grain, scale</h3>
-            <p>Transparent by default. Ask for a stage and get a themed backdrop, a dotted grid and film grain.</p>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }
@@ -305,38 +197,57 @@ export function App() {
     body = c ? <IndexPage title={c.name} blurb={c.blurb} items={byCat(c.id)} theme={theme} /> : <div className="page-pad">Unknown category.</div>;
   } else if (route.page === "all") {
     body = <IndexPage title="All effects" blurb="Every effect in the library. Hover a card to play it." items={EFFECTS} theme={theme} />;
-  } else body = <Home theme={theme} />;
+  } else body = <Landing theme={theme} />;
+  const home = route.page === "home";
 
   return (
     <>
-      <header className="top">
-        <a className="brand" href="#/">
-          <span className="mark" />
-          <b>Remotion Effects</b>
-          <i>library</i>
-        </a>
-        <nav>
-          <a href="#/" className={route.page === "home" ? "on" : ""}>
-            Home
+      <header className={"top" + (home ? " floating" : "")}>
+        <div className="top-left">
+          <a className="brand" href="#/">
+            <span className="mark" />
+            <b>Remotion Effects</b>
           </a>
-          <a href="#/effects" className={route.page !== "home" ? "on" : ""}>
-            Effects
-          </a>
-        </nav>
+          <nav>
+            <a href="#/effects" className={route.page === "all" || route.page === "effect" ? "on" : ""}>
+              Effects
+            </a>
+            <a href={`#/category/${CATEGORIES[0].id}`} className={route.page === "category" ? "on" : ""}>
+              Families
+            </a>
+            <a href="/llms-components.txt" target="_blank" rel="noopener noreferrer">
+              For agents
+            </a>
+          </nav>
+        </div>
         <span className="spacer" />
-        <button className="search-btn" onClick={() => setSearchOpen(true)}>
-          <Icon name="search" />
-          <span>Search effects</span>
-          <kbd>Ctrl K</kbd>
-        </button>
-        <button className="icon-btn" onClick={() => setTheme(theme === "dark" ? "light" : "dark")} title="Toggle light/dark (t)" aria-label="Toggle theme">
-          <Icon name={theme === "dark" ? "sun" : "moon"} />
-        </button>
+        <div className="top-right">
+          <button className="search-btn" onClick={() => setSearchOpen(true)}>
+            <Icon name="search" />
+            <span>Search</span>
+            <kbd>Ctrl K</kbd>
+          </button>
+          <a className="icon-btn" href="https://github.com/holy-cursor/Remotion-Effects-Library" target="_blank" rel="noopener noreferrer" title="GitHub" aria-label="GitHub">
+            <Icon name="github" />
+          </a>
+          <button className="icon-btn" onClick={() => setTheme(theme === "dark" ? "light" : "dark")} title="Toggle light/dark (t)" aria-label="Toggle theme">
+            <Icon name={theme === "dark" ? "sun" : "moon"} />
+          </button>
+          {home && (
+            <a className="pill-btn light sm" href="#/effects">
+              Browse effects
+            </a>
+          )}
+        </div>
       </header>
-      <div className="layout">
-        <Sidebar current={current} />
-        <main className="main">{body}</main>
-      </div>
+      {home ? (
+        <main className="main landing-main">{body}</main>
+      ) : (
+        <div className="layout">
+          <Sidebar current={current} />
+          <main className="main">{body}</main>
+        </div>
+      )}
       <SearchPalette open={searchOpen} onClose={() => setSearchOpen(false)} />
       <Toaster />
       {MISSING_EXPORTS.length > 0 && <div className="toast">Missing exports: {MISSING_EXPORTS.join(", ")}</div>}

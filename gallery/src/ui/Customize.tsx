@@ -5,6 +5,8 @@ import { FONTS, PALETTES, PALETTE_IDS, STYLE_PRESETS, type PaletteId } from "../
 import { isControl, presetValues } from "../lib/state";
 import type { Values } from "../preview/bindings";
 import { copy, Icon } from "./bits";
+import {EasingEditor} from './EasingEditor';
+import {supportsEasing} from '../lib/easing';
 
 type Api = {
   values: Values;
@@ -15,6 +17,9 @@ type Api = {
   reset: () => void;
   canUndo: boolean;
   canRedo: boolean;
+  beginGesture:()=>void;
+  updateGesture:(key:string,value:unknown)=>void;
+  endGesture:()=>void;
 };
 
 const fontLabel: Record<string, string> = {
@@ -167,27 +172,33 @@ export function Customize({ meta, api, onCopyCode }: { meta: EffectMeta; api: Ap
         {STYLE_PRESETS.map((p) => {
           const pal = PALETTES[p.palette][p.theme];
           return (
-            <button key={p.id} className={"chip" + (activePreset?.id === p.id ? " on" : "")} onMouseEnter={() => setHover(p.description)} onFocus={() => setHover(p.description)} onClick={() => api.apply(presetValues(p))}>
-              <span className="dot" style={{ background: `linear-gradient(135deg, ${pal.canvas} 50%, ${pal.accent} 50%)`, boxShadow: "0 0 0 1px #0002" }} />
+            <button key={p.id} className={"preset" + (activePreset?.id === p.id ? " on" : "")} onMouseEnter={() => setHover(p.description)} onFocus={() => setHover(p.description)} onClick={() => api.apply(presetValues(p))}>
+              <span className="preset-sw" style={{ background: `linear-gradient(135deg, ${pal.canvas} 0 50%, ${pal.accent} 50% 100%)` }} />
               {p.name}
             </button>
           );
         })}
-        {meta.presets?.map((p) => (
-          <button key={p.id} className="chip" onMouseEnter={() => setHover(p.description)} onClick={() => api.apply(p.values)}>
-            <span className="dot" style={{ background: "var(--ink)" }} />
-            {p.name}
-          </button>
-        ))}
       </div>
+      {meta.presets?.length ? (
+        <div className="presets own" onMouseLeave={() => setHover(null)}>
+          <span className="presets-label">For this effect</span>
+          {meta.presets.map((p) => (
+            <button key={p.id} className="preset" onMouseEnter={() => setHover(p.description)} onFocus={() => setHover(p.description)} onClick={() => api.apply(p.values)}>
+              <span className="preset-sw own" />
+              {p.name}
+            </button>
+          ))}
+        </div>
+      ) : null}
       <div className="preset-desc">{presetNote}</div>
+      {supportsEasing(meta)&&<EasingEditor value={values.easingCurve} set={set} beginGesture={api.beginGesture} updateGesture={api.updateGesture} endGesture={api.endGesture}/>}
 
       {(["content", "timing", "style"] as const).map((g) => {
         const items = grouped[g];
         const sharedTiming = g === "timing" && meta.sharedProps;
         if (!items.length && !sharedTiming) return null;
         return (
-          <details key={g} className="group" open>
+          <details key={g} className="group" open={g !== "style"}>
             <summary>{g}</summary>
             {sharedTiming && (
               <>
@@ -203,7 +214,7 @@ export function Customize({ meta, api, onCopyCode }: { meta: EffectMeta; api: Ap
       })}
 
       {shared && (
-        <details className="group" open>
+        <details className="group">
           <summary>Theme</summary>
           <div className="ctl">
             <label>

@@ -134,6 +134,10 @@ function renderMotion(i: number, fx: ResolvedEffect, item: React.ReactNode): Rea
     case 13: // Camera Push: exponential pull-back with lateral drift
       return (
         <div style={{ ...base, transformOrigin: "50% 50%", transform: `translateX(${115 * (1 - q)}px) scale(${Math.exp(Math.log(5) * (1 - ease.inOutCubic(p)))})` }}>
+          <svg viewBox="0 0 640 360" style={{position:"absolute",inset:0,width:"100%",height:"100%",overflow:"visible"}}>
+            <path d="M-640 40H1280M-640 320H1280M45 -360V720M595 -360V720" fill="none" stroke="currentColor" strokeOpacity={.2}/>
+            {[65,490].map((x,i)=><g key={x}><rect x={x} y={65+i*150} width={85} height={65} rx={9} fill="none" stroke="currentColor" strokeOpacity={.4} strokeWidth={2}/><circle cx={x+42} cy={97+i*150} r={12} fill="currentColor" opacity={.2}/></g>)}
+          </svg>
           {item}
         </div>
       );

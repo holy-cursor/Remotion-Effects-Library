@@ -15,3 +15,15 @@ export type { EffectMeta, PropSpec, Category, CategoryId, EffectKind, EffectPres
 
 export { CornerPeel } from "./CornerPeel";
 export type { CornerPeelProps } from "./CornerPeel";
+
+export * from "./CompleteAtmosphere";
+export * from "./CompleteData";
+export * from "./CompleteDepth";
+export * from "./CompleteInterface";
+export * from "./CompleteTransitions";
+export * from "./CompleteTypography";
+export * from "./CompleteWorkflow";
+export type {CompletionProps, Box, Point, Cue} from "./CompletionCore";
+export * from './TextLightSweep';
+export * from './DitherAurora';
+export * from './DitherGlobe';

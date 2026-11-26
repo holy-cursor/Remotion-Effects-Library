@@ -10,8 +10,10 @@ fs.mkdirSync(out, { recursive: true });
 const exe = process.env.CHROME ?? "C:/Program Files/Google/Chrome/Application/chrome.exe";
 const browser = await puppeteer.launch({ executablePath: exe, headless: true, args: ["--no-sandbox", "--disable-crash-reporter", "--use-angle=swiftshader", "--enable-unsafe-swiftshader"] });
 const report = { at: new Date().toISOString(), sheets: [], errors: [], consoleErrors: [] };
+const manifest = await (await fetch('http://127.0.0.1:4198/components.json')).json();
+const pages = Array.from({length: Math.ceil(manifest.effects.length / 25)}, (_,i) => i);
 for (const theme of ["light", "dark"]) {
-  for (const pg of [0, 1, 2]) {
+  for (const pg of pages) {
     const page = await browser.newPage();
     page.on("pageerror", (e) => report.consoleErrors.push({ theme, pg, msg: String(e) }));
     page.on("console", (m) => m.type() === "error" && report.consoleErrors.push({ theme, pg, msg: m.text() }));

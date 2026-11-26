@@ -2,6 +2,8 @@ import React from "react";
 import { AbsoluteFill, useCurrentFrame, useVideoConfig } from "remotion";
 import { EFFECTS_BY_SLUG } from "../../../meta/effects";
 import { renderDemo, rolesOf, ThemedStage, type Values } from "./bindings";
+import {applyEasing} from '../../../core/easing';
+import {supportsEasing} from '../lib/easing';
 
 export const FPS = 30;
 export const DURATION = 120; // 4 s
@@ -19,7 +21,7 @@ export function EffectScene({ slug, values, progress }: PreviewProps) {
   const roles = rolesOf(values);
   if (!meta) return <AbsoluteFill style={{ background: "#300", color: "#fff" }}>Unknown effect {slug}</AbsoluteFill>;
   const p = progress ?? 0;
-  const demo = renderDemo(meta, values, p);
+  const demo = renderDemo(meta, values, supportsEasing(meta)?applyEasing(p,values.easingCurve):p);
   return (
     <AbsoluteFill style={{ background: roles.canvas, overflow: "hidden" }}>
       {meta.sharedProps ? demo : <ThemedStage values={values} align="stretch">{demo}</ThemedStage>}

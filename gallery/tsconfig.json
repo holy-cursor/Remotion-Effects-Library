@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "lib": [
+      "ES2022",
+      "DOM",
+      "DOM.Iterable"
+    ],
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "jsx": "react-jsx",
@@ -17,17 +21,53 @@
     "noEmit": true,
     "allowImportingTsExtensions": false,
     "resolveJsonModule": true,
-    "types": ["node"],
+    "types": [
+      "node"
+    ],
     "baseUrl": ".",
     "paths": {
-      "react": ["./node_modules/@types/react"],
-      "react/*": ["./node_modules/@types/react/*"],
-      "react-dom": ["./node_modules/@types/react-dom"],
-      "react-dom/*": ["./node_modules/@types/react-dom/*"],
-      "remotion": ["./node_modules/remotion"],
-      "ogl": ["./node_modules/ogl"]
+      "react": [
+        "./node_modules/@types/react"
+      ],
+      "react/*": [
+        "./node_modules/@types/react/*"
+      ],
+      "react-dom": [
+        "./node_modules/@types/react-dom"
+      ],
+      "react-dom/*": [
+        "./node_modules/@types/react-dom/*"
+      ],
+      "remotion": [
+        "./node_modules/remotion"
+      ],
+      "ogl": [
+        "./node_modules/ogl"
+      ],
+      "three": [
+        "./node_modules/@types/three"
+      ],
+      "@remotion/motion-blur": [
+        "./node_modules/@remotion/motion-blur"
+      ]
     }
   },
-  "include": ["src", "scripts/*.ts", "vite.config.ts", "../*.ts", "../*.tsx", "../core", "../meta"],
-  "exclude": ["node_modules", "dist", "src/before.tsx", "../RotatingCarousel.tsx", "../TextReveal.tsx", "../TypingEffect.tsx", "../StonkLogoTrace.tsx", "../MotionExamples.tsx"]
+  "include": [
+    "src",
+    "scripts/*.ts",
+    "vite.config.ts",
+    "../*.ts",
+    "../*.tsx",
+    "../core",
+    "../meta"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "src/before.tsx",
+    "../RotatingCarousel.tsx",
+    "../TextReveal.tsx",
+    "../TypingEffect.tsx",
+    "../MotionExamples.tsx"
+  ]
 }

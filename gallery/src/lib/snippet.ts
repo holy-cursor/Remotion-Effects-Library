@@ -1,6 +1,8 @@
 import type { EffectMeta } from "../../../meta/schema";
 import { SHARED_PROPS } from "../../../meta/effects";
 import type { Values } from "../preview/bindings";
+import {normalizeEasing} from '../../../core/easing';
+import {supportsEasing} from './easing';
 
 const literal = (v: unknown): string => {
   if (typeof v === "string") return JSON.stringify(v);
@@ -46,15 +48,19 @@ export function usageSnippet(meta: EffectMeta, values: Values, defaults: Values)
     body = `${open(progressLine ? ["progress={progress}"] : [])}/>`;
   }
   const req = meta.requires?.length ? `// npm i ${meta.requires.join(" ")}\n` : "";
+  const eased=supportsEasing(meta)&&values.easingCurve!==undefined;
+  const curve=normalizeEasing(values.easingCurve);
   return `${req}import {AbsoluteFill, interpolate, useCurrentFrame} from "remotion";
-import {${meta.exportName}} from "./effects";
+import {${meta.exportName}} from "./effects${meta.file === 'CompleteOptional.tsx' ? '/optional' : ''}";
+${eased?'import {applyEasing} from "./effects";\n':''}
 
 export const Scene: React.FC = () => {
   const frame = useCurrentFrame();
-  const progress = interpolate(frame, [6, 102], [0, 1], {
+  const ${eased?'rawProgress':'progress'} = interpolate(frame, [6, 102], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
+${eased?`  const progress = applyEasing(rawProgress, [${curve.join(', ')}]);\n`:''}
   return (
     <AbsoluteFill>
       ${body}
@@ -74,7 +80,7 @@ export const installSnippet = (meta: EffectMeta) =>
   [
     "# Copy the library files (not gallery/) into your Remotion project",
     "git clone --depth 1 https://github.com/holy-cursor/Remotion-Effects-Library",
-    "mkdir -p src/effects && cp -r Remotion-Effects-Library/*.ts Remotion-Effects-Library/*.tsx Remotion-Effects-Library/core Remotion-Effects-Library/meta src/effects/",
+    "mkdir -p src/effects && cp -r Remotion-Effects-Library/*.ts Remotion-Effects-Library/*.tsx Remotion-Effects-Library/core Remotion-Effects-Library/meta Remotion-Effects-Library/dither src/effects/",
     ...(meta.requires?.length ? [`npm i ${meta.requires.join(" ")}`] : []),
     "# Uses the remotion and react versions already in your project",
   ].join("\n");

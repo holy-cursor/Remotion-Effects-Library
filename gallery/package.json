@@ -14,11 +14,14 @@
     "start": "vite --port 4198 --strictPort --open"
   },
   "dependencies": {
+    "@remotion/motion-blur": "4.0.534",
     "@remotion/player": "4.0.534",
+    "@types/three": "^0.187.0",
     "ogl": "1.0.11",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "remotion": "4.0.534"
+    "remotion": "4.0.534",
+    "three": "0.187.0"
   },
   "devDependencies": {
     "@fontsource-variable/fraunces": "5.3.0",

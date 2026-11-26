@@ -1153,19 +1153,6 @@ export function RisePlot({ progress, fromValue = 0, toValue = 86, x = 70, y = 21
     <circle cx={tipX} cy={tipY} r={5} fill={ink} />
   </g>;
 }
-export function TimelineRise({ labels = ["Year 1", "Year 2", "Year 3", "Year 4"], segments, increase = 86,
-  fromValue = 0, toValue, unit = "%", showSegments = true, showAxes = true, showArea = true, showValue = true,
-  riseStart = .48, riseEnd = .96, segmentEnd = .45, chartHeight = 100, lineWidth = 4, format, style, ...props
-}: TimelineRiseProps) {
-  const fx = useInv(props), t = fx.c, end = toValue ?? increase;
-  const q = phase(fx.t, riseStart, Math.max(riseStart + .001, riseEnd));
-  const value = lerp(fromValue, end, smooth(q));
-  return <Canvas fx={fx} style={style} label="Timeline rise">
-    {showSegments && <TimelineSegments progress={clamp(fx.t / Math.max(.001, segmentEnd))} segments={segments ?? labels.map(label => ({label}))} color={t.accent} muted={t.muted} ink={t.ink} />}
-    <RisePlot progress={q} fromValue={fromValue} toValue={end} height={Math.max(10, Math.min(showSegments ? 110 : 165, chartHeight))} color={t.accent} muted={t.muted} ink={t.ink} lineWidth={lineWidth} showAxes={showAxes} showArea={showArea} />
-    {showValue && <text x={530} y={showSegments ? 100 : 45} textAnchor="end" fill={t.ink} fontSize={30} fontWeight={600}>{format ? format(value) : `${value >= 0 ? "+" : ""}${Math.round(value)}${unit}`}</text>}
-  </Canvas>;
-}
 
 
 /** E109: accelerated fall, contact squash, rebound and settle, anchored at the floor. */
@@ -1305,29 +1292,6 @@ export function ConditionChecklist({ progress, conditions, x = 325, y = 100, col
     </g>;
   })}</g>;
 }
-export function DeviceConditions({ labels = ["Dark mode", "Slow network"], conditions,
-  fromDevice = {width:390, height:192, radius:10}, toDevice = {width:140, height:226, radius:23},
-  morphStart = .24, morphEnd = .58, checksStart = .64, showConditions = true, darkScreen = true, children, style, ...props
-}: DeviceConditionsProps) {
-  const fx = useInv(props), t = fx.c;
-  const q = smooth(phase(fx.t, morphStart, Math.max(morphStart+.001, morphEnd)));
-  const rows = conditions ?? labels.map(label => ({label}));
-  const checks = showConditions && rows.length > 0;
-  const shift = checks ? smooth(phase(fx.t, morphStart, Math.max(morphStart+.001, morphEnd))) : 0;
-  const w = Math.max(60, Math.min(550-270*shift, lerp(fromDevice.width, toDevice.width, q)));
-  const h = Math.max(80, Math.min(240, lerp(fromDevice.height, toDevice.height, q)));
-  const center = lerp(300, 170, shift);
-  const dark = darkScreen ? smooth(phase(fx.t, checksStart, checksStart + .12)) : 0;
-  const surface = mix(t.paper, rolesFor(fx.palette, "dark").surface, dark);
-  return <Canvas fx={fx} style={style} label="Device conditions">
-    <foreignObject x={center-w/2} y={130-h/2} width={w} height={h}>
-      <DeviceFrame width={w} height={h} radius={lerp(fromDevice.radius ?? 10, toDevice.radius ?? 23, q)} color={t.accent} surface={surface}>
-        {children ?? <div style={{display: "flex", flexDirection: "column", gap: 12}}><div style={{height: 52, borderRadius: 6, background: t.accent}} />{[1,1,.6].map((v,i) => <div key={i} style={{width: `${v*100}%`, height: 6, borderRadius: 3, background: t.muted}} />)}</div>}
-      </DeviceFrame>
-    </foreignObject>
-    {checks && <ConditionChecklist progress={fx.t} conditions={rows} start={checksStart} y={130 - Math.min(46,160/rows.length)*(rows.length-1)/2} color={t.accent} ink={t.ink} onAccent={t.onAccent} />}
-  </Canvas>;
-}
 
 export const INVENTORY_ADDITIONS = [
   { id: "E021", name: "Word Gap Insert", component: WordGapInsert },
@@ -1345,7 +1309,5 @@ export const INVENTORY_ADDITIONS = [
   { id: "E095", name: "Candlestick HUD", component: CandlestickHUD },
   { id: "E097", name: "Tracking Line Chart", component: TrackingLineChart },
   { id: "E099", name: "Token Pot Fill", component: TokenPotFill },
-  { id: "E103", name: "Timeline Rise", component: TimelineRise },
   { id: "E109", name: "Logo Landing", component: LogoLanding },
-  { id: "E123", name: "Device Conditions", component: DeviceConditions },
 ] as const;

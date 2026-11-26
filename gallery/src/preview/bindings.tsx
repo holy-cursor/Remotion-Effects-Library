@@ -1,3 +1,4 @@
+import * as Optional from "../../../optional";
 /**
  * Binds each metadata entry to its component and a demo scene.
  * Effects receive their props directly, so the gallery exercises the real API.
@@ -15,7 +16,7 @@ type Ctx = { values: Values; roles: Roles; progress: number; meta: EffectMeta };
 type Render = (c: Ctx) => React.ReactNode;
 
 // The barrel's named exports, typed loosely for dynamic lookup by metadata.
-const lib = FX as unknown as Record<string, React.ComponentType<Record<string, unknown>>>;
+const lib = {...FX, ...Optional} as unknown as Record<string, React.ComponentType<Record<string, unknown>>>;
 
 const fill: React.CSSProperties = { position: "absolute", inset: 0 };
 
@@ -92,7 +93,7 @@ function Ball({ c, s }: { c: string; s: number }) {
 export function effectProps(meta: EffectMeta, values: Values, progress: number): Values {
   const out: Values = { progress };
   for (const [k, v] of Object.entries(values)) {
-    if (v === undefined || v === "" || k === "progress") continue;
+    if (v === undefined || v === "" || k === "progress" || k === "easingCurve") continue;
     if (!meta.sharedProps && !(k in meta.props)) continue;
     if (k in meta.props || meta.sharedProps) out[k] = v;
   }

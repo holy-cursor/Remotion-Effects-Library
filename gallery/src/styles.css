@@ -517,3 +517,65 @@ a.icon-btn { text-decoration: none; }
 @media (prefers-reduced-motion: reduce) {
   .ix-list a, .ix-blurb, .sc-reel button, .btn.lg svg { transition: none; }
 }
+
+/* ================================================================ small screens */
+/* One column: preview, then the controls, then the code (the panel used to come after all the docs). */
+@media (max-width: 1180px) {
+  .fx-page { display: flex; flex-direction: column; gap: 20px; }
+  .fx-main { display: contents; }
+  .fx-top { order: 1; margin-bottom: 0; }
+  .plate { order: 2; }
+  .panel { order: 3; width: 100%; max-width: none; }
+  .doc-tabs { order: 4; margin-top: 4px; }
+}
+@media (max-width: 720px) {
+  /* header fits the screen: brand, Effects, search, theme */
+  .top { gap: 8px; padding: 0 12px; }
+  .top-left { gap: 6px; min-width: 0; }
+  .top-left nav { margin-left: 0; }
+  .top-left nav a:not(:first-child) { display: none; }
+  .top nav a { padding: 6px 8px; }
+  .brand b { font-size: 14px; white-space: nowrap; }
+  .top-right { gap: 6px; }
+  .top-right a.icon-btn { display: none; }
+  .search-btn { width: 34px; height: 34px; padding: 0; justify-content: center; border-radius: 9px; }
+  .search-btn kbd, .search-btn span { display: none; }
+
+  /* effect page */
+  .fx-page { padding: 18px 14px 56px; gap: 16px; }
+  .fx-title { font-size: 34px; }
+  .fx-desc { font-size: 15px; }
+  .fx-tools { flex-wrap: wrap; }
+  .stage-wrap { padding: 10px; }
+  .transport { grid-template-columns: auto auto minmax(0, 1fr); row-gap: 6px; padding: 10px 12px 12px; }
+  .transport .scrub { grid-column: 1 / -1; grid-row: 2; }
+  .readout { grid-column: 3; grid-row: 1; min-width: 0; }
+  .ruler span:nth-child(even) { display: none; }
+  .doc-tabs > .tabs { display: flex; overflow-x: auto; max-width: 100%; }
+  .code pre { font-size: 11.5px; }
+  .panel { border-radius: 14px; }
+  .presets { grid-template-columns: 1fr 1fr; }
+
+  /* landing */
+  .lp-hero { padding: 36px 0 56px; gap: 28px; }
+  .lp-intro h1 { font-size: clamp(48px, 15vw, 72px); }
+  .lp-sub { font-size: 16px; }
+  .lp-cta .btn.lg { flex: 1 1 auto; justify-content: center; }
+  .sc-reel { gap: 2px 14px; }
+  .lp-h { grid-template-columns: 40px minmax(0, 1fr); gap: 12px; margin-bottom: 28px; }
+  .lp-no { width: 32px; height: 32px; font-size: 12px; }
+  .lp-h h2 { font-size: 40px; }
+  .ix { gap: 20px; }
+  .ix-list a { grid-template-columns: 30px minmax(0, 1fr) 36px; padding: 14px 8px; }
+  .ix-list a.on { padding-left: 12px; }
+  .ix-name { font-size: 18px; }
+  .mf pre { max-height: 300px; font-size: 11.5px; }
+  .mf-l i { width: 32px; padding-right: 10px; }
+  .lp-big { font-size: 22vw; letter-spacing: -0.08em; }
+  .lp-end { padding: 56px 0 40px; }
+  .lp-end-row .btn.lg { width: 100%; justify-content: center; }
+  .lp-foot { flex-direction: column; gap: 8px; }
+
+  /* index pages */
+  .page-pad { padding-left: 14px; padding-right: 14px; }
+}

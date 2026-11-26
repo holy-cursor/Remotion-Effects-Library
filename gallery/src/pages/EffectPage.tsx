@@ -111,7 +111,7 @@ export function EffectPage({ meta, siteTheme, state }: { meta: EffectMeta; siteT
 
   return (
     <div className="fx-page">
-      <div style={{ minWidth: 0 }}>
+      <div className="fx-main" style={{ minWidth: 0 }}>
         <div className="fx-top">
           <div>
             <div className="crumbs">

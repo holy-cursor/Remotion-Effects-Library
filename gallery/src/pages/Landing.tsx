@@ -1,33 +1,89 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Player } from "@remotion/player";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { Player, type PlayerRef } from "@remotion/player";
 import { CATEGORIES, EFFECTS, EFFECTS_BY_SLUG } from "../../../meta/effects";
 import type { EffectMeta } from "../../../meta/schema";
-import { DURATION, FPS, PreviewComposition } from "../preview/Preview";
+import { DURATION, FPS, PreviewComposition, frameToProgress, progressToFrame } from "../preview/Preview";
 import { defaultsFor, type SiteTheme } from "../lib/state";
 import { Icon } from "../ui/bits";
 import { W, H } from "../ui/Stage";
 
 const REPO = "https://github.com/holy-cursor/Remotion-Effects-Library";
 const FLAGSHIP = EFFECTS.filter((m) => m.flagship);
-const pick = (...slugs: string[]) => slugs.map((s) => EFFECTS_BY_SLUG[s]).find(Boolean) ?? FLAGSHIP[0] ?? EFFECTS[0];
+const bySlug = (...slugs: string[]) => slugs.map((s) => EFFECTS_BY_SLUG[s]).find(Boolean);
 const lead = (cat: string) => EFFECTS.find((m) => m.category === cat && m.flagship) ?? EFFECTS.find((m) => m.category === cat);
 const count = (cat: string) => EFFECTS.filter((m) => m.category === cat).length;
+const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-/** A looping, muted preview that only mounts its player once it scrolls near the screen. */
-function Loop({ meta, theme, className }: { meta: EffectMeta; theme: SiteTheme; className?: string }) {
-  const el = useRef<HTMLDivElement>(null);
-  const [on, setOn] = useState(false);
+/* A reel of effects for the hero; falls back to the reworked set. */
+const REEL: EffectMeta[] = (() => {
+  const picked = [bySlug("liquid-wipe"), bySlug("character-flip"), bySlug("tracking-line-chart"), bySlug("corner-peel"), bySlug("roll-counter")].filter(Boolean) as EffectMeta[];
+  return picked.length >= 3 ? picked : FLAGSHIP.slice(0, 5);
+})();
+
+/* ------------------------------------------------------------------ hero: you hold the number */
+function Scrubber({ theme }: { theme: SiteTheme }) {
+  const ref = useRef<PlayerRef>(null);
+  const [k, setK] = useState(0);
+  const [frame, setFrame] = useState(progressToFrame(0.5));
+  const [held, setHeld] = useState(false);
+  const last = useRef(0);
+  const meta = REEL[k % REEL.length];
+
   useEffect(() => {
-    const node = el.current;
-    if (!node) return;
-    const io = new IntersectionObserver(([e]) => setOn(e.isIntersecting), { rootMargin: "240px" });
-    io.observe(node);
-    return () => io.disconnect();
+    const p = ref.current;
+    if (!p) return;
+    const onFrame = (e: { detail: { frame: number } }) => {
+      const f = e.detail.frame;
+      // when the loop wraps, move on to the next effect in the reel
+      if (f < last.current - 20 && !held) setK((x) => x + 1);
+      last.current = f;
+      setFrame(f);
+    };
+    p.addEventListener("frameupdate", onFrame);
+    return () => p.removeEventListener("frameupdate", onFrame);
+  }, [held, k]);
+
+  useEffect(() => {
+    const p = ref.current;
+    if (!p) return;
+    p.seekTo(reduced() ? progressToFrame(0.7) : 0);
+    last.current = 0;
+    if (!reduced() && !held) p.play();
+  }, [k]);
+
+  const seek = useCallback((progress: number) => {
+    const p = ref.current;
+    if (!p) return;
+    p.pause();
+    setHeld(true);
+    const f = progressToFrame(Math.max(0, Math.min(1, progress)));
+    p.seekTo(f);
+    setFrame(f);
   }, []);
+  const togglePlay = () => {
+    const p = ref.current;
+    if (!p) return;
+    if (held || !p.isPlaying()) {
+      setHeld(false);
+      if (frameToProgress(p.getCurrentFrame()) >= 1) p.seekTo(0);
+      p.play();
+    } else {
+      p.pause();
+      setHeld(true);
+    }
+  };
+  const choose = (i: number) => {
+    setHeld(false);
+    setK(i);
+  };
+  const progress = frameToProgress(frame);
+
   return (
-    <div ref={el} className={"loop " + (className ?? "")}>
-      {on && (
+    <div className="sc">
+      <div className="sc-stage">
         <Player
+          key={meta.slug}
+          ref={ref}
           component={PreviewComposition}
           inputProps={{ slug: meta.slug, values: { ...defaultsFor(meta, theme), background: "canvas" } }}
           durationInFrames={DURATION}
@@ -35,218 +91,240 @@ function Loop({ meta, theme, className }: { meta: EffectMeta; theme: SiteTheme; 
           compositionWidth={W}
           compositionHeight={H}
           style={{ width: "100%", height: "100%" }}
-          initialFrame={Math.round(DURATION * 0.45)}
-          autoPlay
+          autoPlay={!reduced()}
           loop
           controls={false}
+          clickToPlay={false}
           acknowledgeRemotionLicense
         />
-      )}
+        <a className="sc-tag" href={`#/effects/${meta.slug}`}>
+          {meta.name} <Icon name="right" />
+        </a>
+      </div>
+      <div className="sc-rail">
+        <button className="sc-play" onClick={togglePlay} aria-label={held ? "Play" : "Pause"} title={held ? "Play" : "Pause"}>
+          <Icon name={held ? "play" : "pause"} fill />
+        </button>
+        <span className="sc-label">progress</span>
+        <div className="sc-track" style={{ ["--p" as string]: progress }}>
+          <span className="sc-fill" />
+          <span className="sc-knob" />
+          <input
+            type="range"
+            min={0}
+            max={1}
+            step={0.001}
+            value={progress}
+            aria-label="Progress: drag to drive the effect"
+            onChange={(e) => seek(Number(e.target.value))}
+          />
+        </div>
+        <span className="sc-num">{progress.toFixed(2)}</span>
+      </div>
+      <div className="sc-reel" role="tablist" aria-label="Effects in the reel">
+        {REEL.map((m, i) => (
+          <button key={m.slug} role="tab" aria-selected={i === k % REEL.length} className={i === k % REEL.length ? "on" : ""} onClick={() => choose(i)}>
+            <span>{String(i + 1).padStart(2, "0")}</span>
+            {m.name}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }
 
-function TwoTone({ lead: first, rest, id }: { lead: string; rest: string; id?: string }) {
+/* ------------------------------------------------------------------ index: hover a family, it plays */
+function FamilyIndex({ theme }: { theme: SiteTheme }) {
+  const rows = CATEGORIES.map((c, i) => ({ c, i, m: lead(c.id), n: count(c.id) })).filter((r) => r.m);
+  const [on, setOn] = useState(0);
+  const cur = rows[on] ?? rows[0];
   return (
-    <h2 className="tt" id={id}>
-      {first}
-      <span>{rest}</span>
-    </h2>
+    <div className="ix">
+      <ol className="ix-list">
+        {rows.map((r, i) => (
+          <li key={r.c.id}>
+            <a href={`#/category/${r.c.id}`} className={i === on ? "on" : ""} onMouseEnter={() => setOn(i)} onFocus={() => setOn(i)}>
+              <span className="ix-n">{String(i + 1).padStart(2, "0")}</span>
+              <span className="ix-name">{r.c.name}</span>
+              <span className="ix-blurb">{r.c.blurb}</span>
+              <span className="ix-count">{r.n}</span>
+            </a>
+          </li>
+        ))}
+      </ol>
+      <div className="ix-preview" aria-hidden="true">
+        <div className="ix-frame">
+          <Player
+            key={cur.m!.slug}
+            component={PreviewComposition}
+            inputProps={{ slug: cur.m!.slug, values: { ...defaultsFor(cur.m!, theme), background: "canvas" } }}
+            durationInFrames={DURATION}
+            fps={FPS}
+            compositionWidth={W}
+            compositionHeight={H}
+            style={{ width: "100%", height: "100%" }}
+            initialFrame={reduced() ? progressToFrame(0.7) : 0}
+            autoPlay={!reduced()}
+            loop
+            controls={false}
+            acknowledgeRemotionLicense
+          />
+        </div>
+        <p className="ix-cap">
+          <b>{cur.m!.name}</b> · {cur.c.name}
+        </p>
+      </div>
+    </div>
   );
 }
 
-const STEPS = [
-  { n: "01", t: "Pick", d: `Search ${EFFECTS.length} effects by name, tag or family. Every card plays on hover.` },
-  { n: "02", t: "Tune", d: "Scrub the timeline, swap palettes and fonts, retime the easing curve. Undo anything." },
-  { n: "03", t: "Copy", d: "Take the exact scene code, a ready Composition, or a share link with your settings." },
-];
-
-const AGENT_FILES = [
-  { n: "01", t: "SKILL.md", d: "How to pick, time and theme effects", s: "ready" },
-  { n: "02", t: "llms-components.txt", d: "Every effect, prop and preset in plain text", s: "ready" },
-  { n: "03", t: "components.json", d: "The same catalogue for tools", s: "ready" },
-  { n: "04", t: "Shared theme API", d: "One set of props across every effect", s: "ready" },
-  { n: "05", t: "Your scene", d: "The agent drops effects on your timeline", s: "you" },
-];
-
-const WHY = [
-  { t: "One number", d: "Every effect is a pure function of progress, so it fits any frame math you already have." },
-  { t: "One theme API", d: "Theme, palette, accent, font, speed, delay and grain work the same everywhere." },
-  { t: "Copy, don't install", d: "Plain files you own. Copy them into your Remotion project and edit freely." },
-  { t: "Agent-ready", d: "A skill file and machine-readable catalogue ship with the library." },
-];
-
-export function Landing({ theme }: { theme: SiteTheme }) {
-  const tileA = pick("iris", "liquid-wipe");
-  const tileB = pick("dither-aurora", "dither-globe", "pixel-field");
-  const floats = [pick("glowing-trace", "orbit"), pick("character-flip", "masked-rise"), pick("liquid-wipe", "sheen"), pick("leaderboard-promotion", "tracking-line-chart")];
-  const toAgents = () => document.getElementById("agents")?.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
-  const cats = CATEGORIES.map((c) => ({ c, m: lead(c.id), n: count(c.id) })).filter((x) => x.m);
-
+/* ------------------------------------------------------------------ agents: the real manifest */
+const FALLBACK = `# Remotion Effects Library: progress-driven Remotion effects\n\n## How to use\n- Every effect is a pure function of \`progress\` (0..1).\n- Wrapper effects animate their \`children\`. Text effects take \`text\`.`;
+function Manifest() {
+  const [text, setText] = useState(FALLBACK);
+  useEffect(() => {
+    fetch("/llms-components.txt")
+      .then((r) => (r.ok ? r.text() : FALLBACK))
+      .then((t) => setText(t.startsWith("#") ? t : FALLBACK))
+      .catch(() => setText(FALLBACK));
+  }, []);
+  const lines = text.split("\n").filter((l, i, a) => !(l === "" && a[i - 1] === "")).slice(0, 16);
   return (
-    <div className="landing">
-      <section className="l-hero">
-        <a className="announce" href="#/effects">
-          <span className="announce-dot" />
-          <b>{EFFECTS.length} effects</b>
-          <span className="announce-sub">free, open source, built for agents too</span>
-          <span className="announce-go">
-            Browse <Icon name="right" />
-          </span>
+    <figure className="mf">
+      <figcaption>
+        <span>llms-components.txt</span>
+        <a href="/llms-components.txt" target="_blank" rel="noopener noreferrer">
+          Open the full file <Icon name="right" />
         </a>
-        <h1 className="l-title">
-          <span className="l-line">
-            Effects <Loop meta={tileA} theme={theme} className="inline-tile" /> tuned by hand,
+      </figcaption>
+      <pre>
+        {lines.map((l, i) => (
+          <span key={i} className={"mf-l" + (l.startsWith("#") ? " h" : l.startsWith(">") ? " q" : "")}>
+            <i>{i + 1}</i>
+            {l || " "}
           </span>
-          <span className="l-line dim">
-            driven by <Loop meta={tileB} theme={theme} className="inline-tile alt" /> one number
-          </span>
-        </h1>
-        <p className="l-sub">
-          A library of Remotion effects that all take one <code>progress</code> value from 0 to 1. Play with any of them live, copy the code, or hand the
-          whole set to your AI agent.
-        </p>
-        <div className="l-cta">
-          <a className="pill-btn light" href="#/effects">
-            Browse the effects <Icon name="right" />
-          </a>
-          <button className="pill-btn dark" onClick={toAgents}>
-            Use it with an agent
-          </button>
-        </div>
-      </section>
-
-      <section className="l-stage" aria-label="Example">
-        {floats.map((m, i) => (
-          <a key={m.slug + i} href={`#/effects/${m.slug}`} className={`float f${i}`} aria-label={`Open ${m.name}`}>
-            <Loop meta={m} theme={theme} />
-            <span>{m.name}</span>
-          </a>
         ))}
-        <div className="prompt">
-          <div className="prompt-head">
-            <span className="prompt-file">Scene.tsx</span>
-            <span className="prompt-path">~/launch-video</span>
-          </div>
-          <pre className="prompt-code">
-            <span className="k">const</span> p = <span className="f">interpolate</span>(frame, [<span className="n">12</span>, <span className="n">60</span>], [<span className="n">0</span>, <span className="n">1</span>]);{"\n"}
-            {"\n"}
-            <span className="t">&lt;{tileA.exportName}</span> <span className="a">progress</span>={"{"}p{"}"} <span className="a">palette</span>=<span className="s">"saint-orange"</span> <span className="t">/&gt;</span>
-            <span className="caret" />
-          </pre>
-          <div className="prompt-foot">
-            <span className="faint">{EFFECTS.length} effects · one theme API</span>
-            <a className="pill-btn light sm" href={`#/effects/${tileA.slug}`}>
-              Open in the playground <Icon name="right" />
-            </a>
-          </div>
-          <div className="picked">
-            <span className="faint">Picked</span>
-            {[tileA, tileB, ...floats.slice(0, 2)].map((m, i) => (
-              <a key={m.slug + i} href={`#/effects/${m.slug}`}>
-                {m.name}
-              </a>
-            ))}
-          </div>
-        </div>
-      </section>
+      </pre>
+    </figure>
+  );
+}
 
-      <section className="l-sec">
-        <div className="l-head">
-          <TwoTone lead="How it works" rest="Three steps, one session." />
-        </div>
-        <div className="steps">
-          {STEPS.map((s) => (
-            <div key={s.n} className="step">
-              <span className="step-n">{s.n}</span>
-              <h3>{s.t}</h3>
-              <p>{s.d}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="l-sec">
-        <div className="l-head split">
-          <TwoTone lead={`${cats.length} families of motion.`} rest="Every one plays live below." />
-          <p className="l-aside">
-            Reveals, type, numbers, depth, transitions, paths, texture, interface stories, charts and primitives. {EFFECTS.length} effects in all, each with
-            presets and a typed props table.
+/* ------------------------------------------------------------------ page */
+export function Landing({ theme }: { theme: SiteTheme }) {
+  return (
+    <div className="lp">
+      <section className="lp-hero">
+        <div className="lp-intro">
+          <p className="lp-kicker">Remotion Effects Library · {EFFECTS.length} effects</p>
+          <h1>
+            Every effect,
+            <br />
+            <em>one number.</em>
+          </h1>
+          <p className="lp-sub">
+            Each effect in this library takes a single <code>progress</code> value from 0 to 1. Drag the rail and you are the timeline. Theme it, retime it,
+            copy the code, or hand the whole set to your agent.
           </p>
-        </div>
-        <div className="bento">
-          {cats.map(({ c, m, n }, i) => (
-            <a key={c.id} href={`#/category/${c.id}`} className={"tile" + (i < 2 ? " big" : "")}>
-              <Loop meta={m!} theme={theme} className="tile-media" />
-              <div className="tile-meta">
-                <span className="tile-count">{n} effects</span>
-                <h3>{c.name}</h3>
-                <p>{c.blurb}</p>
-              </div>
+          <div className="lp-cta">
+            <a className="btn primary lg" href="#/effects">
+              Browse all {EFFECTS.length} <Icon name="right" />
             </a>
-          ))}
-        </div>
-      </section>
-
-      <section className="l-sec agents" id="agents">
-        <div className="agents-grid">
-          <div>
-            <TwoTone lead="Built for your agent." rest="It reads the library the way you do." />
-            <p className="l-aside">
-              Point Claude Code, Codex or any coding agent at the repo. The skill tells it how to choose an effect for a beat, time it to the edit and theme
-              it to the brand.
-            </p>
-            <div className="l-cta left">
-              <a className="pill-btn light" href={REPO} target="_blank" rel="noopener noreferrer">
-                <Icon name="github" /> Get it on GitHub
-              </a>
-              <a className="pill-btn dark" href="/llms-components.txt" target="_blank" rel="noopener noreferrer">
-                Read the agent manifest
-              </a>
-            </div>
+            <a className="btn lg" href={REPO} target="_blank" rel="noopener noreferrer">
+              <Icon name="github" /> Source
+            </a>
           </div>
-          <ol className="stages">
-            {AGENT_FILES.map((f) => (
-              <li key={f.n} className={f.s === "you" ? "next" : ""}>
-                <span className="st-n">{f.n}</span>
-                <b>{f.t}</b>
-                <span className="st-d">{f.d}</span>
-                <span className="st-s">{f.s === "you" ? "next" : "included"}</span>
-              </li>
-            ))}
-          </ol>
+        </div>
+        <Scrubber theme={theme} />
+      </section>
+
+      <section className="lp-sec">
+        <header className="lp-h">
+          <span className="lp-no">A</span>
+          <h2>Index</h2>
+          <p>{CATEGORIES.length} families. Hover one to watch it; click to open every effect inside.</p>
+        </header>
+        <FamilyIndex theme={theme} />
+      </section>
+
+      <section className="lp-sec">
+        <header className="lp-h">
+          <span className="lp-no">B</span>
+          <h2>The contract</h2>
+          <p>Every effect in the library speaks the same small language.</p>
+        </header>
+        <dl className="contract">
+          <div>
+            <dt>
+              <code>progress</code>
+            </dt>
+            <dd>0 to 1. Compute it from the frame however you like; the effect is a pure function of it.</dd>
+          </div>
+          <div>
+            <dt>
+              <code>theme · palette · accent</code>
+            </dt>
+            <dd>Colours come from named roles, so one palette swap restyles a whole scene.</dd>
+          </div>
+          <div>
+            <dt>
+              <code>speed · delay · easing</code>
+            </dt>
+            <dd>Retime anything without touching its code. The playground has a curve editor.</dd>
+          </div>
+          <div>
+            <dt>
+              <code>background · grid · grain</code>
+            </dt>
+            <dd>Transparent by default. Ask for a stage and it brings its own backdrop and film grain.</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section className="lp-sec">
+        <header className="lp-h">
+          <span className="lp-no">C</span>
+          <h2>For agents</h2>
+          <p>The library describes itself. A skill file tells an agent how to choose, time and theme effects; this manifest lists every prop.</p>
+        </header>
+        <div className="ag">
+          <Manifest />
+          <ul className="ag-files">
+            <li>
+              <b>SKILL.md</b>
+              <span>How an agent picks an effect for a beat, times it to the edit and themes it to the brand.</span>
+            </li>
+            <li>
+              <b>llms-components.txt</b>
+              <span>Every effect, prop, default and preset in plain text.</span>
+            </li>
+            <li>
+              <b>components.json</b>
+              <span>The same catalogue for tools.</span>
+            </li>
+            <li>
+              <a className="btn lg" href={REPO} target="_blank" rel="noopener noreferrer">
+                Point your agent at the repo <Icon name="right" />
+              </a>
+            </li>
+          </ul>
         </div>
       </section>
 
-      <section className="l-sec">
-        <div className="l-head center">
-          <TwoTone lead="Why this library" rest="Less setup, more motion." />
-        </div>
-        <div className="why">
-          {WHY.map((w) => (
-            <div key={w.t}>
-              <h3>{w.t}</h3>
-              <p>{w.d}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="l-final">
-        <h2>Your next edit deserves better than a fade.</h2>
-        <div className="l-cta">
-          <a className="pill-btn light" href="#/effects">
-            Browse all {EFFECTS.length} effects <Icon name="right" />
+      <section className="lp-end">
+        <p className="lp-big" aria-hidden="true">
+          p = 1.00
+        </p>
+        <div className="lp-end-row">
+          <p>Copy the files into your Remotion project. They are yours to edit.</p>
+          <a className="btn primary lg" href="#/effects">
+            Start browsing <Icon name="right" />
           </a>
-          <a className="pill-btn dark" href={REPO} target="_blank" rel="noopener noreferrer">
-            View the source
-          </a>
         </div>
       </section>
 
-      <footer className="l-foot">
+      <footer className="lp-foot">
         <span>Remotion Effects Library</span>
-        <span className="faint">Built by Saint · Remotion 4 · React 19</span>
+        <span className="faint">By Saint · Remotion 4 · React 19</span>
         <a href={REPO} target="_blank" rel="noopener noreferrer">
           GitHub
         </a>

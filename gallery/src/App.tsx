@@ -202,7 +202,7 @@ export function App() {
 
   return (
     <>
-      <header className={"top" + (home ? " floating" : "")}>
+      <header className="top">
         <div className="top-left">
           <a className="brand" href="#/">
             <span className="mark" />
@@ -233,11 +233,6 @@ export function App() {
           <button className="icon-btn" onClick={() => setTheme(theme === "dark" ? "light" : "dark")} title="Toggle light/dark (t)" aria-label="Toggle theme">
             <Icon name={theme === "dark" ? "sun" : "moon"} />
           </button>
-          {home && (
-            <a className="pill-btn light sm" href="#/effects">
-              Browse effects
-            </a>
-          )}
         </div>
       </header>
       {home ? (

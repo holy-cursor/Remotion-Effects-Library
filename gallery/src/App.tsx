@@ -185,7 +185,7 @@ export function App() {
   useEffect(() => {
     window.scrollTo({ top: 0 });
     const m = current ? EFFECTS_BY_SLUG[current] : undefined;
-    document.title = m ? `${m.name} · Remotion Effects Library` : "Remotion Effects Library";
+    document.title = m ? `${m.name} · Motion Effects` : "Motion Effects";
   }, [current, route.page]);
 
   let body: React.ReactNode;
@@ -206,7 +206,7 @@ export function App() {
         <div className="top-left">
           <a className="brand" href="#/">
             <span className="mark" />
-            <b>Remotion Effects</b>
+            <b>Motion Effects</b>
           </a>
           <nav>
             <a href="#/effects" className={route.page === "all" || route.page === "effect" ? "on" : ""}>

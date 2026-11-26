@@ -35,7 +35,7 @@ export function effectMarkdown(m: EffectMeta): string {
 /** Whole-library manifest in the style of an llms.txt. */
 export function libraryManifest(): string {
   const head = [
-    "# Remotion Effects Library: progress-driven Remotion effects",
+    "# Motion Effects: progress-driven Remotion effects",
     "",
     "> Source: https://github.com/holy-cursor/Remotion-Effects-Library. Copy the library files (not gallery/) into a Remotion 4 project and import from them. Agents: see SKILL.md.",
     "> No license file yet: all rights reserved until one is added.",

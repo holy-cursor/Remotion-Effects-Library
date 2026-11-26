@@ -1,4 +1,4 @@
-# Remotion Effects Library
+# Motion Effects
 
 117 progress-driven effects for [Remotion](https://www.remotion.dev/) video. It is also an agent skill and comes with a live gallery.
 

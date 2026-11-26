@@ -179,7 +179,7 @@ function FamilyIndex({ theme }: { theme: SiteTheme }) {
 }
 
 /* ------------------------------------------------------------------ agents: the real manifest */
-const FALLBACK = `# Remotion Effects Library: progress-driven Remotion effects\n\n## How to use\n- Every effect is a pure function of \`progress\` (0..1).\n- Wrapper effects animate their \`children\`. Text effects take \`text\`.`;
+const FALLBACK = `# Motion Effects: progress-driven Remotion effects\n\n## How to use\n- Every effect is a pure function of \`progress\` (0..1).\n- Wrapper effects animate their \`children\`. Text effects take \`text\`.`;
 function Manifest() {
   const [text, setText] = useState(FALLBACK);
   useEffect(() => {
@@ -210,124 +210,168 @@ function Manifest() {
 }
 
 /* ------------------------------------------------------------------ page */
+const X_URL = "https://x.com/0xsaint_";
+const SKILL_URL = `${REPO}/blob/main/SKILL.md`;
+
+function SecHead({ no, label, title, children }: { no: string; label: string; title: string; children?: React.ReactNode }) {
+  return (
+    <header className="lp-h">
+      <div className="lp-h-t">
+        <p className="lp-label">
+          {no} / {label}
+        </p>
+        <h2>{title}</h2>
+      </div>
+      {children ? <p>{children}</p> : null}
+    </header>
+  );
+}
+
+const STEPS = [
+  { t: "Explore.", d: "Preview effects in real time and discover new creative possibilities." },
+  { t: "Customize.", d: "Adjust animation curves, colors, typography and timing to match your creative direction." },
+  { t: "Build.", d: "Copy the component into your Remotion project and compose it with other effects." },
+];
+
+const SYSTEM = ["Frame-driven animation", "Custom easing and timing", "Shared design tokens", "Customizable themes and palettes", "Composable React components"];
+
 export function Landing({ theme }: { theme: SiteTheme }) {
   return (
     <div className="lp">
       <section className="lp-hero">
         <div className="lp-intro">
-          <p className="lp-kicker">Remotion Effects Library · {EFFECTS.length} effects</p>
+          <p className="lp-kicker">Motion Effects · {EFFECTS.length} components</p>
           <h1>
-            Every effect,
+            Good motion shouldn't
             <br />
-            <em>one number.</em>
+            <em>start from scratch.</em>
           </h1>
           <p className="lp-sub">
-            Each effect in this library takes a single <code>progress</code> value from 0 to 1. Drag the rail and you are the timeline. Theme it, retime it,
-            copy the code, or hand the whole set to your agent.
+            A collection of reusable motion graphics, animations and visual effects for video built with code. Designed for creatives, developers and AI agents
+            working with Remotion.
           </p>
           <div className="lp-cta">
             <a className="btn primary lg" href="#/effects">
-              Browse all {EFFECTS.length} <Icon name="right" />
+              Explore effects <Icon name="right" />
             </a>
             <a className="btn lg" href={REPO} target="_blank" rel="noopener noreferrer">
-              <Icon name="github" /> Source
+              <Icon name="github" /> View on GitHub
             </a>
           </div>
+          <ul className="lp-stats" aria-label="Library at a glance">
+            <li>
+              <b>{EFFECTS.length}</b> effects
+            </li>
+            <li>
+              <b>{CATEGORIES.length}</b> categories
+            </li>
+            <li>Fully customizable</li>
+          </ul>
         </div>
         <Scrubber theme={theme} />
       </section>
 
       <section className="lp-sec">
-        <header className="lp-h">
-          <span className="lp-no">A</span>
-          <h2>Index</h2>
-          <p>{CATEGORIES.length} families. Hover one to watch it; click to open every effect inside.</p>
-        </header>
+        <SecHead no="01" label="The collection" title="A library of motion.">
+          From the smallest text animation to full-scene transitions. Explore, experiment and find the right movement for your next video.
+        </SecHead>
         <FamilyIndex theme={theme} />
       </section>
 
       <section className="lp-sec">
-        <header className="lp-h">
-          <span className="lp-no">B</span>
-          <h2>The contract</h2>
-          <p>Every effect in the library speaks the same small language.</p>
-        </header>
-        <dl className="contract">
-          <div>
-            <dt>
-              <code>progress</code>
-            </dt>
-            <dd>0 to 1. Compute it from the frame however you like; the effect is a pure function of it.</dd>
-          </div>
-          <div>
-            <dt>
-              <code>theme · palette · accent</code>
-            </dt>
-            <dd>Colours come from named roles, so one palette swap restyles a whole scene.</dd>
-          </div>
-          <div>
-            <dt>
-              <code>speed · delay · easing</code>
-            </dt>
-            <dd>Retime anything without touching its code. The playground has a curve editor.</dd>
-          </div>
-          <div>
-            <dt>
-              <code>background · grid · grain</code>
-            </dt>
-            <dd>Transparent by default. Ask for a stage and it brings its own backdrop and film grain.</dd>
-          </div>
-        </dl>
+        <SecHead no="02" label="The playground" title="Make it yours.">
+          Every effect comes with an interactive playground. Experiment with timing, easing, colors and composition before bringing it into your project.
+        </SecHead>
+        <ol className="steps">
+          {STEPS.map((s, i) => (
+            <li key={s.t}>
+              <span className="steps-n">{String(i + 1).padStart(2, "0")}</span>
+              <h3>{s.t}</h3>
+              <p>{s.d}</p>
+            </li>
+          ))}
+        </ol>
       </section>
 
       <section className="lp-sec">
-        <header className="lp-h">
-          <span className="lp-no">C</span>
-          <h2>For agents</h2>
-          <p>The library describes itself. A skill file tells an agent how to choose, time and theme effects; this manifest lists every prop.</p>
-        </header>
+        <SecHead no="03" label="The system" title="Different effects. A consistent language.">
+          A shared animation architecture makes it easy to combine, customize and reuse effects across entire video projects.
+        </SecHead>
+        <div className="sys">
+          <ul className="sys-list">
+            {SYSTEM.map((x, i) => (
+              <li key={x}>
+                <span>{String(i + 1).padStart(2, "0")}</span>
+                {x}
+              </li>
+            ))}
+          </ul>
+          <p className="sys-close">
+            Less time rebuilding animations. <em>More time deciding what to create.</em>
+          </p>
+        </div>
+      </section>
+
+      <section className="lp-sec">
+        <SecHead no="04" label="Agentic video" title="A motion toolkit for your AI agent.">
+          AI agents shouldn't have to reinvent a text reveal, a transition or a chart animation every time they create a video. Give your agent a library of
+          reusable motion components, along with the knowledge to select, customize and sequence them.
+        </SecHead>
         <div className="ag">
           <Manifest />
           <ul className="ag-files">
             <li>
-              <b>SKILL.md</b>
-              <span>How an agent picks an effect for a beat, times it to the edit and themes it to the brand.</span>
+              <b>Agent Skill</b>
+              <span>Instructions for choosing and implementing motion effects within video compositions.</span>
             </li>
             <li>
-              <b>llms-components.txt</b>
-              <span>Every effect, prop, default and preset in plain text.</span>
+              <b>Component Manifest</b>
+              <span>A machine-readable catalogue of available effects, parameters and presets.</span>
             </li>
             <li>
-              <b>components.json</b>
-              <span>The same catalogue for tools.</span>
+              <b>Source Components</b>
+              <span>Editable React components that integrate directly into Remotion projects.</span>
             </li>
-            <li>
+            <li className="ag-cta">
+              <a className="btn primary lg" href={SKILL_URL} target="_blank" rel="noopener noreferrer">
+                Explore agent resources <Icon name="right" />
+              </a>
               <a className="btn lg" href={REPO} target="_blank" rel="noopener noreferrer">
-                Point your agent at the repo <Icon name="right" />
+                <Icon name="github" /> View repository
               </a>
             </li>
           </ul>
         </div>
       </section>
 
-      <section className="lp-end">
-        <p className="lp-big" aria-hidden="true">
-          p = 1.00
-        </p>
-        <div className="lp-end-row">
-          <p>Copy the files into your Remotion project. They are yours to edit.</p>
-          <a className="btn primary lg" href="#/effects">
-            Start browsing <Icon name="right" />
-          </a>
+      <section className="lp-why">
+        <p className="lp-label">05 / Why this exists</p>
+        <h2>
+          Spend more time directing motion, <em>less time rebuilding it.</em>
+        </h2>
+        <div className="lp-why-row">
+          <p>
+            As video creation becomes increasingly programmable, there's an opportunity to make good motion more accessible without sacrificing creative control.
+            This library is my contribution to that future.
+          </p>
+          <p className="lp-why-sign">Built for people who create with code, and the agents creating alongside them.</p>
         </div>
       </section>
 
       <footer className="lp-foot">
-        <span>Remotion Effects Library</span>
-        <span className="faint">By Saint · Remotion 4 · React 19</span>
-        <a href={REPO} target="_blank" rel="noopener noreferrer">
-          GitHub
-        </a>
+        <div>
+          <b>Motion Effects</b>
+          <span className="faint">An independent motion design resource by Saint. Built with Remotion and React.</span>
+        </div>
+        <nav aria-label="Footer">
+          <a href={REPO} target="_blank" rel="noopener noreferrer">
+            GitHub
+          </a>
+          <a href={X_URL} target="_blank" rel="noopener noreferrer">
+            X
+          </a>
+          <a href="#/effects">Browse effects</a>
+        </nav>
       </footer>
     </div>
   );

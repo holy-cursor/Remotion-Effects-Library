@@ -97,16 +97,16 @@ export const SHARED_PROPS: Readonly<Record<string, PropSpec>> = {
 };
 
 export const CATEGORIES: readonly Category[] = [
-  { id: "reveals", name: "Reveals & Masks", blurb: "Bring content on screen through a shape, pattern or blur." },
-  { id: "text", name: "Text", blurb: "Per-letter and per-word typography motion." },
-  { id: "numbers", name: "Numbers & Progress", blurb: "Counters, rings and meters that read at a glance." },
-  { id: "depth", name: "Depth & Camera", blurb: "3D turns, push-ins and parallax." },
-  { id: "transitions", name: "Transitions", blurb: "Slices, folds and peels between states." },
-  { id: "paths", name: "Paths & Particles", blurb: "Travel, orbit, echo and gather." },
-  { id: "texture", name: "Light & Texture", blurb: "Sheens, scans, CRT, halftone and colour fields." },
-  { id: "ui", name: "UI Stories", blurb: "Product-interface moments: chat, forms, toggles, rankings." },
-  { id: "data", name: "Data & Charts", blurb: "Series, candles, timelines and fills driven by your data." },
-  { id: "primitives", name: "Primitives", blurb: "Low-level building blocks with explicit geometry." },
+  { id: "reveals", name: "Reveals & Masks", blurb: "Creative ways to introduce and conceal content." },
+  { id: "text", name: "Typography", blurb: "Give words rhythm, character and movement." },
+  { id: "numbers", name: "Numbers & Progress", blurb: "Bring numbers, counters and indicators to life." },
+  { id: "depth", name: "Depth & Camera", blurb: "Create perspective, dimension and cinematic movement." },
+  { id: "transitions", name: "Transitions", blurb: "Move between scenes with intention." },
+  { id: "paths", name: "Paths & Particles", blurb: "Motion along curves, trajectories and dynamic patterns." },
+  { id: "texture", name: "Light & Texture", blurb: "Add atmosphere, character and visual depth." },
+  { id: "ui", name: "UI Animation", blurb: "Bring interfaces and product experiences to life." },
+  { id: "data", name: "Data & Charts", blurb: "Turn information into visual stories." },
+  { id: "primitives", name: "Primitives", blurb: "The building blocks of more complex motion." },
 ];
 
 const c = (v: Partial<Record<string, unknown>>, id: string, name: string, description: string): EffectPreset => ({

@@ -1,4 +1,4 @@
-# Remotion Effects Library: progress-driven Remotion effects
+# Motion Effects: progress-driven Remotion effects
 
 > Source: https://github.com/holy-cursor/Remotion-Effects-Library. Copy the library files (not gallery/) into a Remotion 4 project and import from them. Agents: see SKILL.md.
 > No license file yet: all rights reserved until one is added.
@@ -200,7 +200,7 @@ Chromatic split, scanlines, vignette and a rolling refresh bar.
 
 A drum picker: items curve away from a focus slot with depth, blur and fade.
 
-- Category: UI Stories. Kind: scene. Source: `shared-effects/ReviewEffects.tsx`.
+- Category: UI Animation. Kind: scene. Source: `shared-effects/ReviewEffects.tsx`.
 - Import: `import {FisheyePicker} from "./shared-effects";`
 
 - Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
@@ -332,7 +332,7 @@ Draws an SVG path with a bloom, a hot head and a faint guide track.
 
 A crest of accent colour travels through the text, lifting each letter it passes.
 
-- Category: Text. Kind: text. Source: `shared-effects/MoreEffects.tsx`.
+- Category: Typography. Kind: text. Source: `shared-effects/MoreEffects.tsx`.
 - Import: `import {ColorWave} from "./shared-effects";`
 
 - Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
@@ -354,7 +354,7 @@ Presets:
 
 Letters swing down from a top-left hinge and settle on a spring.
 
-- Category: Text. Kind: text. Source: `shared-effects/MoreEffects.tsx`.
+- Category: Typography. Kind: text. Source: `shared-effects/MoreEffects.tsx`.
 - Import: `import {LetterSwing} from "./shared-effects";`
 
 - Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
@@ -373,7 +373,7 @@ Presets:
 
 Decoder text: characters churn through a glyph pool and lock in left to right.
 
-- Category: Text. Kind: text. Source: `shared-effects/MoreEffects.tsx`.
+- Category: Typography. Kind: text. Source: `shared-effects/MoreEffects.tsx`.
 - Import: `import {Scramble} from "./shared-effects";`
 
 - Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
@@ -394,7 +394,7 @@ Presets:
 
 Wide-tracked, blurred letters pull together into the final word shape.
 
-- Category: Text. Kind: wrapper. Source: `shared-effects/MoreEffects.tsx`.
+- Category: Typography. Kind: wrapper. Source: `shared-effects/MoreEffects.tsx`.
 - Import: `import {TrackingReveal} from "./shared-effects";`
 
 - Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
@@ -561,7 +561,7 @@ A glowing scan line sweeps down; scanned content is tinted.
 
 Letters rise from behind a baseline mask with a slight skew.
 
-- Category: Text. Kind: text. Source: `shared-effects/AdditionalEffects.tsx`.
+- Category: Typography. Kind: text. Source: `shared-effects/AdditionalEffects.tsx`.
 - Import: `import {MaskedRise} from "./shared-effects";`
 
 - Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
@@ -580,7 +580,7 @@ Presets:
 
 Letters pop up from small to full size on a bouncy spring.
 
-- Category: Text. Kind: text. Source: `shared-effects/AdditionalEffects.tsx`.
+- Category: Typography. Kind: text. Source: `shared-effects/AdditionalEffects.tsx`.
 - Import: `import {SpringPop} from "./shared-effects";`
 
 - Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
@@ -599,7 +599,7 @@ Presets:
 
 Characters type on with a blinking accent caret.
 
-- Category: Text. Kind: text. Source: `shared-effects/AdditionalEffects.tsx`.
+- Category: Typography. Kind: text. Source: `shared-effects/AdditionalEffects.tsx`.
 - Import: `import {Typewriter} from "./shared-effects";`
 
 - Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
@@ -618,7 +618,7 @@ Presets:
 
 Letters flip up on their baseline with a soft spring and a colour fade.
 
-- Category: Text. Kind: text. Source: `shared-effects/AdditionalEffects.tsx`.
+- Category: Typography. Kind: text. Source: `shared-effects/AdditionalEffects.tsx`.
 - Import: `import {CharacterFlip} from "./shared-effects";`
 
 - Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
@@ -637,7 +637,7 @@ Presets:
 
 The baseline ripples like a plucked string and settles flat.
 
-- Category: Text. Kind: text. Source: `shared-effects/AdditionalEffects.tsx`.
+- Category: Typography. Kind: text. Source: `shared-effects/AdditionalEffects.tsx`.
 - Import: `import {ElasticBaseline} from "./shared-effects";`
 
 - Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
@@ -656,7 +656,7 @@ Presets:
 
 Words slide in from behind their own masks, one after another.
 
-- Category: Text. Kind: text. Source: `shared-effects/AdditionalEffects.tsx`.
+- Category: Typography. Kind: text. Source: `shared-effects/AdditionalEffects.tsx`.
 - Import: `import {WordSlide} from "./shared-effects";`
 
 - Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
@@ -675,7 +675,7 @@ Presets:
 
 Letters unfold upward from the baseline with a small overshoot.
 
-- Category: Text. Kind: text. Source: `shared-effects/AdditionalEffects.tsx`.
+- Category: Typography. Kind: text. Source: `shared-effects/AdditionalEffects.tsx`.
 - Import: `import {TextUnfold} from "./shared-effects";`
 
 - Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
@@ -694,7 +694,7 @@ Presets:
 
 A highlighter selection sweeps across the text with a caret.
 
-- Category: Text. Kind: text. Source: `shared-effects/AdditionalEffects.tsx`.
+- Category: Typography. Kind: text. Source: `shared-effects/AdditionalEffects.tsx`.
 - Import: `import {SelectionHighlight} from "./shared-effects";`
 
 - Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
@@ -713,7 +713,7 @@ Presets:
 
 An outline draws in, then fills left to right.
 
-- Category: Text. Kind: text. Source: `shared-effects/AdditionalEffects.tsx`.
+- Category: Typography. Kind: text. Source: `shared-effects/AdditionalEffects.tsx`.
 - Import: `import {OutlineFill} from "./shared-effects";`
 
 - Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
@@ -732,7 +732,7 @@ Presets:
 
 Scattered, spinning letters gather into the word.
 
-- Category: Text. Kind: text. Source: `shared-effects/AdditionalEffects.tsx`.
+- Category: Typography. Kind: text. Source: `shared-effects/AdditionalEffects.tsx`.
 - Import: `import {CharacterScatter} from "./shared-effects";`
 
 - Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
@@ -924,7 +924,7 @@ Top and bottom halves slide in from opposite sides.
 
 A gap opens between two words and an object springs into it.
 
-- Category: Text. Kind: scene. Source: `shared-effects/InventoryEffects.tsx`.
+- Category: Typography. Kind: scene. Source: `shared-effects/InventoryEffects.tsx`.
 - Import: `import {WordGapInsert} from "./shared-effects";`
 
 - Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
@@ -941,7 +941,7 @@ A gap opens between two words and an object springs into it.
 
 A vector selection box turns filled glyphs into outlines.
 
-- Category: UI Stories. Kind: scene. Source: `shared-effects/InventoryEffects.tsx`.
+- Category: UI Animation. Kind: scene. Source: `shared-effects/InventoryEffects.tsx`.
 - Import: `import {GlyphSelection} from "./shared-effects";`
 
 - Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
@@ -970,7 +970,7 @@ Proof cards tumble off a stack one by one; the last one stays.
 
 Drag a selection, cycle candidates, lock one and expand it.
 
-- Category: UI Stories. Kind: scene. Source: `shared-effects/InventoryEffects.tsx`.
+- Category: UI Animation. Kind: scene. Source: `shared-effects/InventoryEffects.tsx`.
 - Import: `import {SelectionRoulette} from "./shared-effects";`
 
 - Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
@@ -985,7 +985,7 @@ Drag a selection, cycle candidates, lock one and expand it.
 
 A highlighted row lifts, overtakes the others and settles at the top.
 
-- Category: UI Stories. Kind: scene. Source: `shared-effects/InventoryEffects.tsx`.
+- Category: UI Animation. Kind: scene. Source: `shared-effects/InventoryEffects.tsx`.
 - Import: `import {LeaderboardPromotion} from "./shared-effects";`
 
 - Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
@@ -1001,7 +1001,7 @@ A highlighted row lifts, overtakes the others and settles at the top.
 
 The send button presses, the form contracts into an envelope, its flap closes, and the envelope flies away.
 
-- Category: UI Stories. Kind: scene. Source: `shared-effects/InventoryEffects.tsx`.
+- Category: UI Animation. Kind: scene. Source: `shared-effects/InventoryEffects.tsx`.
 - Import: `import {FormSendFlight} from "./shared-effects";`
 
 - Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
@@ -1018,7 +1018,7 @@ The send button presses, the form contracts into an envelope, its flap closes, a
 
 Cards drop behind a folder rim, each landing with a pulse.
 
-- Category: UI Stories. Kind: scene. Source: `shared-effects/InventoryEffects.tsx`.
+- Category: UI Animation. Kind: scene. Source: `shared-effects/InventoryEffects.tsx`.
 - Import: `import {FolderCatch} from "./shared-effects";`
 
 - Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
@@ -1033,7 +1033,7 @@ Cards drop behind a folder rim, each landing with a pulse.
 
 Sent, delivered and seen checks, then the message body expands.
 
-- Category: UI Stories. Kind: scene. Source: `shared-effects/InventoryEffects.tsx`.
+- Category: UI Animation. Kind: scene. Source: `shared-effects/InventoryEffects.tsx`.
 - Import: `import {DeliveryStatus} from "./shared-effects";`
 
 - Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
@@ -1186,7 +1186,7 @@ Pulsing radial field and deterministic wrapped dots; expose density, seed and di
 
 Letters swing before whole composition whips; expose pivot, anticipation and travel.
 
-- Category: Text. Kind: scene. Source: `shared-effects/CompleteTypography.tsx`.
+- Category: Typography. Kind: scene. Source: `shared-effects/CompleteTypography.tsx`.
 - Import: `import {WhipLetters} from "./shared-effects";`
 
 - Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
@@ -1204,7 +1204,7 @@ Letters swing before whole composition whips; expose pivot, anticipation and tra
 
 Letter collapse, moneybag replacement, neighboring pushes/wobble, fall and spread, then logo compression; template needs supplied icons.
 
-- Category: Text. Kind: scene. Source: `shared-effects/CompleteTypography.tsx`.
+- Category: Typography. Kind: scene. Source: `shared-effects/CompleteTypography.tsx`.
 - Import: `import {WordIconSwap} from "./shared-effects";`
 
 - Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
@@ -1223,7 +1223,7 @@ Letter collapse, moneybag replacement, neighboring pushes/wobble, fall and sprea
 
 Words enter with delays distributed around the center; expose origin and propagation delay.
 
-- Category: Text. Kind: scene. Source: `shared-effects/CompleteTypography.tsx`.
+- Category: Typography. Kind: scene. Source: `shared-effects/CompleteTypography.tsx`.
 - Import: `import {CenterRipple} from "./shared-effects";`
 
 - Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
@@ -1242,7 +1242,7 @@ Words enter with delays distributed around the center; expose origin and propaga
 
 Seeded strip offsets and channel shadows around impact; older scene source, not necessarily in current composition.
 
-- Category: Text. Kind: scene. Source: `shared-effects/CompleteTypography.tsx`.
+- Category: Typography. Kind: scene. Source: `shared-effects/CompleteTypography.tsx`.
 - Import: `import {SliceGlitch} from "./shared-effects";`
 
 - Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
@@ -1262,7 +1262,7 @@ Seeded strip offsets and channel shadows around impact; older scene source, not 
 
 Connected pixel strokes keep heading legible; separate raster/glyph construction from layout.
 
-- Category: Text. Kind: scene. Source: `shared-effects/CompleteTypography.tsx`.
+- Category: Typography. Kind: scene. Source: `shared-effects/CompleteTypography.tsx`.
 - Import: `import {PixelStroke} from "./shared-effects";`
 
 - Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
@@ -1281,7 +1281,7 @@ Connected pixel strokes keep heading legible; separate raster/glyph construction
 
 Alternating-direction text rows, masked center text, bars and panel wipes; source is retained even where not mounted in latest film.
 
-- Category: Text. Kind: scene. Source: `shared-effects/CompleteTypography.tsx`.
+- Category: Typography. Kind: scene. Source: `shared-effects/CompleteTypography.tsx`.
 - Import: `import {ScrollingType} from "./shared-effects";`
 
 - Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
@@ -1300,7 +1300,7 @@ Alternating-direction text rows, masked center text, bars and panel wipes; sourc
 
 Gradient-edge reveal plus small lift; independent from metric content.
 
-- Category: Text. Kind: scene. Source: `shared-effects/CompleteTypography.tsx`.
+- Category: Typography. Kind: scene. Source: `shared-effects/CompleteTypography.tsx`.
 - Import: `import {SoftText} from "./shared-effects";`
 
 - Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
@@ -1318,7 +1318,7 @@ Gradient-edge reveal plus small lift; independent from metric content.
 
 Timed text chunks and cue captions; use explicit cue timings rather than claim word-level audio alignment.
 
-- Category: Text. Kind: scene. Source: `shared-effects/CompleteTypography.tsx`.
+- Category: Typography. Kind: scene. Source: `shared-effects/CompleteTypography.tsx`.
 - Import: `import {CaptionCues} from "./shared-effects";`
 
 - Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
@@ -1717,7 +1717,7 @@ Logo becomes verification badge and docks into profile; artwork crossfade with g
 
 Generic cursor path/timing and press; variants elsewhere should share this foundation.
 
-- Category: UI Stories. Kind: scene. Source: `shared-effects/CompleteInterface.tsx`.
+- Category: UI Animation. Kind: scene. Source: `shared-effects/CompleteInterface.tsx`.
 - Import: `import {CursorClick} from "./shared-effects";`
 
 - Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
@@ -1737,7 +1737,7 @@ Generic cursor path/timing and press; variants elsewhere should share this found
 
 Raised pill, moving shine, press into Z, fill response and cursor-led whip camera.
 
-- Category: UI Stories. Kind: scene. Source: `shared-effects/CompleteInterface.tsx`.
+- Category: UI Animation. Kind: scene. Source: `shared-effects/CompleteInterface.tsx`.
 - Import: `import {ButtonPress} from "./shared-effects";`
 
 - Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
@@ -1760,7 +1760,7 @@ Presets:
 
 Backdrop blur, translucent border, fade and vertical lift; separate from founder name/artwork.
 
-- Category: UI Stories. Kind: scene. Source: `shared-effects/CompleteInterface.tsx`.
+- Category: UI Animation. Kind: scene. Source: `shared-effects/CompleteInterface.tsx`.
 - Import: `import {LowerThird} from "./shared-effects";`
 
 - Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
@@ -1799,7 +1799,7 @@ Phone conversation bubble enlarges into an isolated composition; shared-object b
 
 Ink texture, stamp landing and unfolding label; isolate typography/art from texture and timing.
 
-- Category: UI Stories. Kind: scene. Source: `shared-effects/CompleteInterface.tsx`.
+- Category: UI Animation. Kind: scene. Source: `shared-effects/CompleteInterface.tsx`.
 - Import: `import {InkStamp} from "./shared-effects";`
 
 - Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
@@ -1818,7 +1818,7 @@ Ink texture, stamp landing and unfolding label; isolate typography/art from text
 
 Browser search page with typed query, result titles, site icons, snippets, pointer selection and page-load progress.
 
-- Category: UI Stories. Kind: scene. Source: `shared-effects/CompleteInterface.tsx`.
+- Category: UI Animation. Kind: scene. Source: `shared-effects/CompleteInterface.tsx`.
 - Import: `import {SearchJourney} from "./shared-effects";`
 
 - Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
@@ -2032,7 +2032,7 @@ Grain, dot size variation and framing marks; independent texture helpers.
 
 Chosen failure is emphasized while others dim; card flattens into red route.
 
-- Category: UI Stories. Kind: scene. Source: `shared-effects/CompleteWorkflow.tsx`.
+- Category: UI Animation. Kind: scene. Source: `shared-effects/CompleteWorkflow.tsx`.
 - Import: `import {FailureRoute} from "./shared-effects";`
 
 - Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
@@ -2093,7 +2093,7 @@ Temporal motion blur on a falling rounded rectangle with gravity, diminishing re
 
 A per-letter blue-white light sweep: a bright front, colored wake, return to white and a retained final word. No camera motion.
 
-- Category: Text. Kind: scene. Source: `shared-effects/TextLightSweep.tsx`.
+- Category: Typography. Kind: scene. Source: `shared-effects/TextLightSweep.tsx`.
 - Import: `import {TextLightSweep} from "./shared-effects";`
 
 - Accepts the shared props (progress, theme, palette, accent, fontFamily, background, scale, speed, delay, grain, grid, tokens).
